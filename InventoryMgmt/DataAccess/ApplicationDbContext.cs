@@ -20,9 +20,17 @@ namespace InventoryMgmt.DataAccess
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ItemModel>().ToTable("tbl_item");
+            modelBuilder.Entity<ItemModel>()
+                .HasMany(a => a.stocks)
+                .WithOne(b => b.item)
+                .HasForeignKey(b => b.itemId);
             modelBuilder.Entity<UserModel>().ToTable("tbl_user");
             modelBuilder.Entity<StockModel>().ToTable("tbl_stock");
             modelBuilder.Entity<StoreModel>().ToTable("tbl_store");
+            modelBuilder.Entity<StoreModel>()
+                .HasMany(a => a.stocks)
+                .WithOne(b => b.store)
+                .HasForeignKey(b => b.storeId);
         }
 
     }

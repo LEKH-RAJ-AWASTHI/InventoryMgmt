@@ -1,5 +1,4 @@
-﻿using InventoryMgmt.DataAccess;
-using InventoryMgmt.Model;
+﻿using InventoryMgmt.Model;
 using InventoryMgmt.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,8 +10,6 @@ namespace InventoryMgmt.Controllers
     [ApiController]
     public class ItemController : ControllerBase
     {
-        ApplicationDbContext db = new ApplicationDbContext();
-
         private readonly IItemService _itemService;
         public ItemController(IItemService itemService)
         {

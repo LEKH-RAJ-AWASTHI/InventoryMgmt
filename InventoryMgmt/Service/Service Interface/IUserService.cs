@@ -4,9 +4,9 @@ namespace InventoryMgmt.Service.Service_Interface
 {
     public interface IUserService
     {
-        void Adduser();
-        void Deleteuser();
+        bool Deleteuser(LoginModel login);
         List<UserModel> GetAllUser();
-        void UpdateuserPassword();
+        string UpdateuserPassword(LoginModel model, string newPwd);
+        UserModel GetUserByUsername(string username);
     }
 }

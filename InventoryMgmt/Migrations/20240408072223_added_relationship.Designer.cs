@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryMgmt.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240407090558_v1")]
-    partial class v1
+    [Migration("20240408072223_added_relationship")]
+    partial class added_relationship
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,6 +85,10 @@ namespace InventoryMgmt.Migrations
 
                     b.HasKey("stockId");
 
+                    b.HasIndex("itemId");
+
+                    b.HasIndex("storeId");
+
                     b.ToTable("tbl_stock", (string)null);
                 });
 
@@ -139,6 +143,35 @@ namespace InventoryMgmt.Migrations
                     b.HasKey("userId");
 
                     b.ToTable("tbl_user", (string)null);
+                });
+
+            modelBuilder.Entity("InventoryMgmt.Model.StockModel", b =>
+                {
+                    b.HasOne("InventoryMgmt.Model.ItemModel", "item")
+                        .WithMany("stocks")
+                        .HasForeignKey("itemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InventoryMgmt.Model.StoreModel", "store")
+                        .WithMany("stocks")
+                        .HasForeignKey("storeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("item");
+
+                    b.Navigation("store");
+                });
+
+            modelBuilder.Entity("InventoryMgmt.Model.ItemModel", b =>
+                {
+                    b.Navigation("stocks");
+                });
+
+            modelBuilder.Entity("InventoryMgmt.Model.StoreModel", b =>
+                {
+                    b.Navigation("stocks");
                 });
 #pragma warning restore 612, 618
         }

@@ -7,7 +7,7 @@ namespace InventoryMgmt.Model
     public class UserModel 
     {
         [Key]
-        public Guid userId {  get; set; }
+        public int  userId {  get; set; }
         [Required]
         public string fullName { get; set; }
         [Required]

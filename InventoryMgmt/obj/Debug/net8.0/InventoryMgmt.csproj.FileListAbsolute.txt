@@ -141,3 +141,7 @@ E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\obj\Debug\net8.0\In
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\obj\Debug\net8.0\InventoryMgmt.genruntimeconfig.cache
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\obj\Debug\net8.0\ref\InventoryMgmt.dll
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\obj\Debug\net8.0\InventoryMgmt.sourcelink.json
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Scrutor.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Swashbuckle.AspNetCore.Filters.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
