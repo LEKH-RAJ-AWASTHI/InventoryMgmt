@@ -43,11 +43,15 @@ namespace InventoryMgmt.Service
         }
         public List<UserModel> GetAllUser()
         { 
-            return _dbContext.users.ToList<UserModel>();
+            return _dbContext.users.Where(u=> u.isActive==true).ToList();
         }
         public UserModel GetUserByUsername(string username)
         {
-            var userFromServer = _dbContext.users.Where(u => u.username == username ).FirstOrDefault();
+            var userFromServer = _dbContext.users.Where(u => u.username == username && u.isActive == true ).FirstOrDefault();
+            if (userFromServer == null)
+            {
+                throw new InvalidOperationException($"Cannot find matching detail");
+            }
             return userFromServer;
         }
     }

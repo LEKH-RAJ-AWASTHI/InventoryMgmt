@@ -23,11 +23,18 @@ namespace InventoryMgmt.Controllers
         [HttpGet]
         public IActionResult GetAllUsers()
         {
-            if (_userService.GetAllUser() == null)
+            try
             {
-                return Ok(Enumerable.Empty<UserModel>());
+                if (_userService.GetAllUser() == null)
+                {
+                    return Ok(Enumerable.Empty<UserModel>());
+                }
+                return Ok(_userService.GetAllUser());
             }
-            return Ok(_userService.GetAllUser());
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // GET api/<UserController>/5
@@ -81,7 +88,7 @@ namespace InventoryMgmt.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status404NotFound, "User Not Found in the Server");
+                return StatusCode(StatusCodes.Status404NotFound, $"User Not Found in the Server. Exception {ex}");
             }
         }
     }

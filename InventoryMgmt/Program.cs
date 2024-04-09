@@ -56,6 +56,8 @@ builder.Services.AddSwaggerGen(swagger =>
 builder.Services.AddTransient<IItemService, ItemService>();
 builder.Services.AddTransient<IValidation, Validation>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IStoreService, StoreService>();
+
 
 //builder.Services.AddIdentity<UserModel, IdentityRole>()
 //    .AddEntityFrameworkStores<ApplicationDbContext>()

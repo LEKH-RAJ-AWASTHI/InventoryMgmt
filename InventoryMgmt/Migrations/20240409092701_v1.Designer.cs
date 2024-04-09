@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryMgmt.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240408072223_added_relationship")]
-    partial class added_relationship
+    [Migration("20240409092701_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,9 +100,8 @@ namespace InventoryMgmt.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("storeId"));
 
-                    b.Property<string>("isActive")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("storeName")
                         .IsRequired()

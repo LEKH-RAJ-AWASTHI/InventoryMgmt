@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InventoryMgmt.Migrations
 {
     /// <inheritdoc />
-    public partial class added_relationship : Migration
+    public partial class v1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,13 +17,13 @@ namespace InventoryMgmt.Migrations
                 {
                     ItemId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     ItemCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ItemName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BrandName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UnitOfMeasurement = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PurchaseRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    SalesRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    SalesRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,8 +36,8 @@ namespace InventoryMgmt.Migrations
                 {
                     storeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    storeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    isActive = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    isActive = table.Column<bool>(type: "bit", nullable: false),
+                    storeName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

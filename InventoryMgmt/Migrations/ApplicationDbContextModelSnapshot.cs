@@ -97,9 +97,8 @@ namespace InventoryMgmt.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("storeId"));
 
-                    b.Property<string>("isActive")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("storeName")
                         .IsRequired()

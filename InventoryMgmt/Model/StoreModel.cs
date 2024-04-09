@@ -1,17 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using InventoryMgmt.Model.ApiUseModel;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography.X509Certificates;
 
 namespace InventoryMgmt.Model
 {
     //tbl_stores(storeId, storeName, isActive)
-    public class StoreModel
+    public class StoreModel : StoreRegisterModel
     {
-        [Key]
-        public int storeId {  get; set; }
+
         [Required]
-        public string storeName { get; set; }
-        [Required]
-        public string isActive
+        public bool isActive
         {
             get; set;
         }

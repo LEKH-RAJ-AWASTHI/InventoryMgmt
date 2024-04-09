@@ -51,7 +51,6 @@ namespace InventoryMgmt.Controllers
             string fullName = user.fullName;
             string pwd= user.password;
             string role = user.role;
-            bool isActive = true;
             var userFromServer = db.users
                                    .Where(u => u.username == uname).FirstOrDefault();
             if (userFromServer is null)
