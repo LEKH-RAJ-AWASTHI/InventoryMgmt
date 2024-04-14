@@ -7,7 +7,11 @@ namespace InventoryMgmt.Service
 {
     public class StoreService : IStoreService
     {
-        ApplicationDbContext _context= new ApplicationDbContext();
+        private readonly ApplicationDbContext _context;
+        public StoreService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public bool AddStore(string storeName)
         {
             if (storeName == null)

@@ -62,6 +62,7 @@ builder.Services.AddTransient<IItemService, ItemService>();
 builder.Services.AddTransient<IValidation, Validation>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IStoreService, StoreService>();
+builder.Services.AddTransient<IReusableLogic,  ReusableLogic>();
 
 
 //builder.Services.AddValidatorsFromAssemblyContaining<ItemValidationRules>();
@@ -74,6 +75,8 @@ builder.Services.AddTransient<IStoreService, StoreService>();
 
 
 builder.Configuration.AddJsonFile("appsettings.json");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDb")));
 
 var jwt = builder.Configuration.GetSection("jwt").Get<Jwt>();
 

@@ -23,10 +23,19 @@ namespace InventoryMgmt.Controllers
     [ApiController]
     public class ItemController : ControllerBase
     {
-        ApplicationDbContext context = new ApplicationDbContext();
+        private readonly ApplicationDbContext _context;
+
         private readonly IItemService _itemService;
-        public ItemController(IItemService itemService)
+        private readonly IReusableLogic _logic;
+        public ItemController
+            (
+            IReusableLogic logic,
+            IItemService itemService,
+            ApplicationDbContext context
+            )
         {
+            _logic = logic;
+            _context = context;
             _itemService = itemService;
         }
 
@@ -130,7 +139,7 @@ namespace InventoryMgmt.Controllers
                 {
                     { "Store", storeName }
                 };
-                List<dynamic> result = ReusableLogic.ExecuteStoredProcedure(procedureName, parameters);
+                List<dynamic> result = _logic.ExecuteStoredProcedure(procedureName, parameters);
 
                 return Ok(result);
             }

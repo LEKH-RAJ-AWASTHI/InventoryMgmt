@@ -17,19 +17,20 @@ namespace InventoryMgmt.Controllers
     [ApiController]
     public class SecurityController : ControllerBase
     {
-        string role;
+        string role="";
 
         private readonly IConfiguration _configuration;
         private readonly IValidation _validation;
+        private readonly ApplicationDbContext _context;
         public SecurityController(
             IConfiguration configuration, 
-            IValidation validation)
+            IValidation validation,
+            ApplicationDbContext context)
         {
             _configuration = configuration;
             _validation = validation;
+            _context = context;
         }
-
-        ApplicationDbContext db = new ApplicationDbContext();
 
         // GET api/<SecurityController>/5  for user registration
         [Authorize(Policy = "AdminOnly")]
@@ -51,7 +52,7 @@ namespace InventoryMgmt.Controllers
             string fullName = user.fullName;
             string pwd= user.password;
             string role = user.role;
-            var userFromServer = db.users
+            var userFromServer = _context.users
                                    .Where(u => u.username == uname).FirstOrDefault();
 
             //userfromserver is null means user is not present in the database so we now create a new user
@@ -63,8 +64,8 @@ namespace InventoryMgmt.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError, error);
                 }
                     //call entity framework to save the data
-                    db.users.Add(u);
-                    db.SaveChanges();
+                    _context.users.Add(u);
+                    _context.SaveChanges();
                     return Ok("User Added Successfully");
             }
             else
@@ -81,10 +82,10 @@ namespace InventoryMgmt.Controllers
             {
                 throw new ArgumentNullException($"{nameof(user)} is required to Login!");
             }
-            var userFromServer = db.users
+            var userFromServer = _context.users
                                    .Where(u => u.username == user.username && u.password==user.password).FirstOrDefault();
 
-            //UserModel u = (from temp in db.users where temp.username == uname && temp.password == pwd select temp).FirstOrDefault();
+            //UserModel u = (from temp in _context.users where temp.username == uname && temp.password == pwd select temp).FirstOrDefault();
             if (userFromServer is null)
             {
                 return StatusCode(StatusCodes.Status401Unauthorized, "Wrong Credentials, Please try again");

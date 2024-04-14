@@ -8,9 +8,13 @@ namespace InventoryMgmt.Service
 {
     public class ItemService : IItemService
     {
-        ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext _context;
         ItemModel itemModel = new ItemModel();
         StockModel stockModel = new StockModel();
+        public ItemService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         public bool AddItem(AddItemFormModel item)
         {
@@ -34,12 +38,12 @@ namespace InventoryMgmt.Service
             {
                 throw new InvalidOperationException($"The fields (Purchase Rate, Sales Rate, Quantity) cannot be zero");
             }
-            StoreModel serverStoreModel = db.stores.Where(s => s.storeName == storeName && s.isActive == true).FirstOrDefault();
+            StoreModel serverStoreModel = _context.stores.Where(s => s.storeName == storeName && s.isActive == true).FirstOrDefault();
             if (serverStoreModel is null)
             {
                 throw new InvalidOperationException($"Cannot find matching detail. Store not added or deleted. You first have to add new Store");
             }
-            ItemModel serverItemModel = db.items.Where(i => i.ItemCode == itemCode).FirstOrDefault();
+            ItemModel serverItemModel = _context.items.Where(i => i.ItemCode == itemCode).FirstOrDefault();
             if (serverItemModel is not null)
             {
                 throw new InvalidDataException($"Item code already exist. Please use another item code");
@@ -53,9 +57,9 @@ namespace InventoryMgmt.Service
             itemModel.SalesRate = salesRate;
             itemModel.UnitOfMeasurement = unitOfMeasurement;
             itemModel.IsActive = true;
-            db.items.Add(itemModel);
-            db.SaveChanges();
-            serverItemModel = db.items.Where(i => i.ItemCode == itemCode && i.IsActive == true).FirstOrDefault();
+            _context.items.Add(itemModel);
+            _context.SaveChanges();
+            serverItemModel = _context.items.Where(i => i.ItemCode == itemCode && i.IsActive == true).FirstOrDefault();
             if (serverItemModel is null)
             {
                 throw new InvalidOperationException($"Cannot find matching detail. ");
@@ -67,8 +71,8 @@ namespace InventoryMgmt.Service
             stockModel.itemId = serverItemModel.ItemId;
             stockModel.quantity = quantity;
             stockModel.expiryDate = expiryDate;
-            db.stocks.Add(stockModel);
-            db.SaveChanges();
+            _context.stocks.Add(stockModel);
+            _context.SaveChanges();
             return true;
         }
         public bool Update(int itemId, ItemFormModel item)
@@ -93,7 +97,7 @@ namespace InventoryMgmt.Service
             {
                 throw new InvalidOperationException($"The fields (Purchase Rate, Sales Rate, Quantity) cannot be zero");
             }
-            ItemModel serverItemModel = db.items.Where(i => i.ItemId == itemId).FirstOrDefault();
+            ItemModel serverItemModel = _context.items.Where(i => i.ItemId == itemId).FirstOrDefault();
             if (serverItemModel is null)
             {
                 throw new InvalidOperationException($"Cannot find matching detail. ");
@@ -107,14 +111,14 @@ namespace InventoryMgmt.Service
 
 
             //Mapping StockModel
-            StockModel serverStockModel = db.stocks.Where(s => s.itemId == serverItemModel.ItemId).FirstOrDefault();
+            StockModel serverStockModel = _context.stocks.Where(s => s.itemId == serverItemModel.ItemId).FirstOrDefault();
             if (serverStockModel is null)
             {
                 return false;
             }
             serverStockModel.quantity = quantity;
             serverStockModel.expiryDate = expiryDate;
-            db.SaveChanges();
+            _context.SaveChanges();
 
             return true;
         }
@@ -125,7 +129,7 @@ namespace InventoryMgmt.Service
                 throw new InvalidOperationException($"ItemId cannot be zero");
             }
 
-            ItemModel serverItemModel = db.items.Where(i => i.ItemId == itemId).FirstOrDefault();
+            ItemModel serverItemModel = _context.items.Where(i => i.ItemId == itemId).FirstOrDefault();
             
 
 
@@ -144,13 +148,13 @@ namespace InventoryMgmt.Service
 
             serverItemModel.IsActive = !serverItemModel.IsActive;
 
-            //StockModel serverStockModel = db.stocks.Where(s => s.itemId == serverItemModel.ItemId).FirstOrDefault();
+            //StockModel serverStockModel = _context.stocks.Where(s => s.itemId == serverItemModel.ItemId).FirstOrDefault();
             //if (serverStockModel is null)
             //{
             //    return false;
             //}
             //serverStockModel.quantity = 0;
-            db.SaveChanges();
+            _context.SaveChanges();
             return true;
         }
         public ItemModelClass Get(int itemId)
@@ -160,7 +164,7 @@ namespace InventoryMgmt.Service
                 throw new InvalidOperationException($"ItemId cannot be zero");
             }
 
-            ItemModel serverItemModel = db.items.Where(i => i.ItemId == itemId).FirstOrDefault();
+            ItemModel serverItemModel = _context.items.Where(i => i.ItemId == itemId).FirstOrDefault();
 
             if (serverItemModel is null)
             {
@@ -171,7 +175,7 @@ namespace InventoryMgmt.Service
         }
         public IEnumerable<ItemModel> GetAll()
         {
-            return db.items.Where(i => i.IsActive == true).ToList<ItemModel>();
+            return _context.items.Where(i => i.IsActive == true).ToList<ItemModel>();
         }
     }
 }

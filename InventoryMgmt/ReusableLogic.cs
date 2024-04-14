@@ -8,11 +8,16 @@ using System.Dynamic;
 using System.Security.Cryptography.X509Certificates;
 namespace InventoryMgmt
 {
-    public class ReusableLogic
+    public class ReusableLogic : IReusableLogic
     {
-        
-        public static ApplicationDbContext context = new ApplicationDbContext();
-        public static List<dynamic> ExecuteStoredProcedure(string storedProcedureName, Dictionary<string, object> parameters)
+
+        private readonly ApplicationDbContext _context;
+        public ReusableLogic(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public List<dynamic> ExecuteStoredProcedure(string storedProcedureName, Dictionary<string, object> parameters)
         {
             //var result = new DataTable();
             //DbCommand cmd = context.Database.GetDbConnection().CreateCommand();
@@ -45,7 +50,7 @@ namespace InventoryMgmt
             //return result;
             var result = new List<dynamic>();
 
-            using (var command = context.Database.GetDbConnection().CreateCommand())
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
             {
                 command.CommandText = storedProcedureName;
                 command.CommandType = CommandType.StoredProcedure;
@@ -56,7 +61,7 @@ namespace InventoryMgmt
                 }
 
 
-                context.Database.OpenConnection();
+                _context.Database.OpenConnection();
 
                 using (var reader = command.ExecuteReader())
                 {

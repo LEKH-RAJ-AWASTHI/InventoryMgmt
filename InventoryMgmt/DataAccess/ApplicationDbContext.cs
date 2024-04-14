@@ -6,17 +6,17 @@ namespace InventoryMgmt.DataAccess
 {
     public class ApplicationDbContext : DbContext
     {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
+        {
+            
+        }
+        private readonly IConfiguration _configuration;
+
         public DbSet<ItemModel> items { get; set; }
         public DbSet<UserModel> users { get; set; }
         public DbSet<StoreModel> stores { get; set; }
         public DbSet<StockModel> stocks { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-
-            optionsBuilder.UseSqlServer(@"Server =.\SQLEXPRESS; Database = Inventory_DB; Trusted_Connection = True; MultipleActiveResultSets = true; TrustServerCertificate = true");
-
-        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ItemModel>().ToTable("tbl_item");
@@ -32,6 +32,5 @@ namespace InventoryMgmt.DataAccess
                 .WithOne(b => b.store)
                 .HasForeignKey(b => b.storeId);
         }
-
     }
 }

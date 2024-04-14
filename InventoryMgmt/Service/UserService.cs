@@ -9,7 +9,12 @@ namespace InventoryMgmt.Service
     
     public class UserService : IUserService
     {
-        ApplicationDbContext _dbContext = new ApplicationDbContext();
+        private readonly ApplicationDbContext _dbContext;
+        public UserService(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public string UpdateuserPassword(LoginModel loginModel, string newPwd) 
         { 
             var userFromServer= _dbContext.users.Where(u=> u.username==loginModel.username && u.password == loginModel.password).FirstOrDefault();
