@@ -33,7 +33,7 @@ namespace InventoryMgmt.Model
             var credentials = new SigningCredentials(securityKey, algo);
             var token = new JwtSecurityToken(getAppsettingValue("issuer"), getAppsettingValue("audience"),
               claims,
-              expires: DateTime.Now.AddSeconds(300),
+              expires: DateTime.Now.AddSeconds(3000),
               signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

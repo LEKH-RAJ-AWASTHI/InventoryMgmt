@@ -67,8 +67,8 @@ namespace InventoryMgmt.Controllers
         }
 
         // DELETE api/<UserController>/5
-        [HttpDelete("Delete User")]
-        public IActionResult Delete(LoginModel login)
+        [HttpPut("ChangeUserActiveStatus")]
+        public IActionResult ChangeUserActiveStatus(LoginModel login)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace InventoryMgmt.Controllers
                 {
                     throw new ArgumentNullException($"{nameof(login)} is required!");
                 }
-                bool response = _userService.Deleteuser(login);
+                bool response = _userService.ChangeUserActiveStatus(login);
                 if (response)
                 {
                     return StatusCode(StatusCodes.Status200OK, "User is successfully deleted!");

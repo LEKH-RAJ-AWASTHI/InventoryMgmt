@@ -53,6 +53,8 @@ namespace InventoryMgmt.Controllers
             string role = user.role;
             var userFromServer = db.users
                                    .Where(u => u.username == uname).FirstOrDefault();
+
+            //userfromserver is null means user is not present in the database so we now create a new user
             if (userFromServer is null)
             {
                 string error =_validation.RegisterUserValidation(user);

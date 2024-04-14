@@ -86,8 +86,8 @@ namespace InventoryMgmt.Controllers
         }
 
         // DELETE api/<StoreController>/5
-        [HttpDelete("DeleteStore")]
-        public IActionResult Delete(string storeName)
+        [HttpPut("ChangeStoreActiveStatus")]
+        public IActionResult ChangeStoreActiveStatus(string storeName)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace InventoryMgmt.Controllers
                 {
                     throw new ArgumentNullException($"{nameof(storeName)} is required!");
                 }
-                bool response = _storeService.DeleteStore(storeName);
+                bool response = _storeService.ChangeStoreActiveStatus(storeName);
                 if (response)
                 {
                     return Ok("Store Deleted Successfully");

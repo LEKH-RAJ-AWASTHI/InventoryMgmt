@@ -1,8 +1,12 @@
+using FluentValidation;
 using InventoryMgmt;
 using InventoryMgmt.DataAccess;
+using InventoryMgmt.EntityValidations;
 using InventoryMgmt.Model;
 using InventoryMgmt.Service;
 using InventoryMgmt.Service.Service_Interface;
+using InventoryMgmt.Validation_Rules;
+using InventoryMgmt.Validations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -53,12 +57,17 @@ builder.Services.AddSwaggerGen(swagger =>
                     }
                 });
 });
+builder.Services.AddMvc();
 builder.Services.AddTransient<IItemService, ItemService>();
 builder.Services.AddTransient<IValidation, Validation>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IStoreService, StoreService>();
 
 
+//builder.Services.AddValidatorsFromAssemblyContaining<ItemValidationRules>();
+//builder.Services.AddValidatorsFromAssemblyContaining<UserValidationRules>();
+//builder.Services.AddValidatorsFromAssemblyContaining<StoreValidationRules>();
+//builder.Services.AddValidatorsFromAssemblyContaining<StockValidationRules>();
 //builder.Services.AddIdentity<UserModel, IdentityRole>()
 //    .AddEntityFrameworkStores<ApplicationDbContext>()
 //    .AddDefaultTokenProviders();

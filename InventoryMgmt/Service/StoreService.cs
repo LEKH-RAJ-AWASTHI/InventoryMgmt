@@ -36,7 +36,7 @@ namespace InventoryMgmt.Service
             _context.SaveChanges();
             return true;
         }
-        public bool DeleteStore(string storeName)
+        public bool ChangeStoreActiveStatus(string storeName)
         {
             if (storeName is null)
             {
@@ -47,7 +47,7 @@ namespace InventoryMgmt.Service
             {
                 throw new InvalidOperationException($"Cannot find matching detail");
             }
-            storeFromServer.isActive = false;
+            storeFromServer.isActive = !storeFromServer.isActive;
             _context.SaveChanges();
             return true;
         }

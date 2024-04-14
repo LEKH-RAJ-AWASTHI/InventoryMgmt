@@ -6,7 +6,7 @@ namespace InventoryMgmt.Service
     public interface IItemService
     {
         bool AddItem(AddItemFormModel item);
-        bool Delete(int itemId);
+        bool ChangeItemActiveStatus(int itemId);
         ItemModelClass Get(int itemId);
         IEnumerable<ItemModel> GetAll();
         bool Update(int itemId, ItemFormModel item);

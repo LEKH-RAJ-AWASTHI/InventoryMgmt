@@ -1,4 +1,5 @@
 ﻿using InventoryMgmt.DataAccess;
+using InventoryMgmt.EntityValidations;
 using InventoryMgmt.Model;
 using InventoryMgmt.Model.ApiUseModel;
 using System.Security.Cryptography.X509Certificates;
@@ -22,6 +23,8 @@ namespace InventoryMgmt.Service
             decimal quantity = item.quantity;
             DateTime expiryDate = item.expiryDate;
             string storeName = item.storeName;
+
+            ValidateItem validateItem = new ValidateItem();
 
             if (itemCode is "" && itemName is "" && brandName is "" && unitOfMeasurement is "" && storeName is "")
             {
@@ -115,7 +118,7 @@ namespace InventoryMgmt.Service
 
             return true;
         }
-        public bool Delete(int itemId)
+        public bool ChangeItemActiveStatus(int itemId)
         {
             if (itemId is 0)
             {
@@ -123,20 +126,30 @@ namespace InventoryMgmt.Service
             }
 
             ItemModel serverItemModel = db.items.Where(i => i.ItemId == itemId).FirstOrDefault();
+            
+
 
             if (serverItemModel is null)
             {
                 throw new InvalidOperationException($"Cannot find matching detail. ");
             }
+            //if (serverItemModel.IsActive == false) 
+            //{
+            //    serverItemModel.IsActive = true;
+            //}
+            //else
+            //{
+            //    serverItemModel.IsActive= false;
+            //}
 
-            serverItemModel.IsActive = false;
+            serverItemModel.IsActive = !serverItemModel.IsActive;
 
-            StockModel serverStockModel = db.stocks.Where(s => s.itemId == serverItemModel.ItemId).FirstOrDefault();
-            if (serverStockModel is null)
-            {
-                return false;
-            }
-            serverStockModel.quantity = 0;
+            //StockModel serverStockModel = db.stocks.Where(s => s.itemId == serverItemModel.ItemId).FirstOrDefault();
+            //if (serverStockModel is null)
+            //{
+            //    return false;
+            //}
+            //serverStockModel.quantity = 0;
             db.SaveChanges();
             return true;
         }

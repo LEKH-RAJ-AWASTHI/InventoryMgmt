@@ -30,7 +30,7 @@ namespace InventoryMgmt.Service
             _dbContext.SaveChanges();
             return "";
         }
-        public bool Deleteuser(LoginModel loginModel)
+        public bool ChangeUserActiveStatus(LoginModel loginModel)
         {
                 var userFromServer = _dbContext.users.Where(u => u.username == loginModel.username && u.password == loginModel.password).FirstOrDefault();
                 if (userFromServer == null)
