@@ -13,6 +13,8 @@ using System.Data.Common;
 using StoredProcedureEFCore;
 using Microsoft.OpenApi.Any;
 using System.Dynamic;
+using FluentValidation;
+using FluentValidation.Results;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,19 +29,30 @@ namespace InventoryMgmt.Controllers
 
         private readonly IItemService _itemService;
         private readonly IReusableLogic _logic;
+        private readonly IValidator<AddItemFormModel> _addItemValidator;
+        private readonly IValidator<ItemFormModel> _updateItemValidator;
+
         public ItemController
             (
-            IReusableLogic logic,
-            IItemService itemService,
-            ApplicationDbContext context
+                IReusableLogic logic,
+                IItemService itemService,
+                ApplicationDbContext context,
+                IValidator<AddItemFormModel> validator,
+                IValidator<ItemFormModel> updateItemValidator
             )
         {
             _logic = logic;
             _context = context;
             _itemService = itemService;
+            _addItemValidator = validator;
+            _updateItemValidator = updateItemValidator;
         }
 
         // GET: api/<ItemController>
+        /// <summary>
+        /// this endpoint
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("GetAllProduct")]
         public IActionResult Get()
         {
@@ -84,13 +97,19 @@ namespace InventoryMgmt.Controllers
 
         // POST api/<ItemController>
         [HttpPost("AddNewItem")]
-        public IActionResult Post([FromBody] AddItemFormModel item)
+        public async Task<IActionResult> Post([FromBody] AddItemFormModel item)
         {
             try
             {
                 if (item is null)
                 {
                     throw new ArgumentNullException($"{nameof(item)} is required");
+                }
+                ValidationResult result = await _addItemValidator.ValidateAsync(item);
+                string errorMessage = result.ToString("\n");
+                if(errorMessage is not null)
+                {
+                    throw new InvalidOperationException(errorMessage);
                 }
                 bool response = _itemService.AddItem(item);
                 if (response)
@@ -128,26 +147,6 @@ namespace InventoryMgmt.Controllers
         //        return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
         //    }
         //}
-        [AllowAnonymous]
-        [HttpGet("AnotherMethod")]
-        public IActionResult GetResult(string storeName)
-        {
-            try
-            {
-                string procedureName = "FetchStockByStore";
-                var parameters = new Dictionary<string, object>
-                {
-                    { "Store", storeName }
-                };
-                List<dynamic> result = _logic.ExecuteStoredProcedure(procedureName, parameters);
-
-                return Ok(result);
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-        }
 
         // PUT api/<ItemController>/5
         [HttpPut("UpdateItem")]
@@ -163,6 +162,13 @@ namespace InventoryMgmt.Controllers
                 {
                     throw new Exception("ItemId cannot be zero");
                 }
+                ValidationResult result = _updateItemValidator.Validate(item);
+                string errorMessage = result.ToString("\n");
+                if(errorMessage != null)
+                {
+                    throw new InvalidOperationException(errorMessage);
+                }
+
                 bool response = _itemService.Update(itemId, item);
                 if (response)
                 {
@@ -203,6 +209,30 @@ namespace InventoryMgmt.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
 
+            }
+        }
+        [AllowAnonymous]
+        [HttpGet("GetItemByStoreName")]
+        public IActionResult GetResult(string storeName)
+        {
+            try
+            {
+                if (storeName is null && storeName is "")
+                {
+                    throw new InvalidOperationException("Item cannot be null and empty");
+                }
+                string procedureName = "FetchStockByStore";
+                var parameters = new Dictionary<string, object>
+                {
+                    { "Store", storeName }
+                };
+                List<dynamic> result = _logic.ExecuteStoredProcedure(procedureName, parameters);
+
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
     }

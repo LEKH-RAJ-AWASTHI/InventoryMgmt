@@ -10,8 +10,6 @@ namespace InventoryMgmt.DataAccess
         {
             
         }
-        private readonly IConfiguration _configuration;
-
         public DbSet<ItemModel> items { get; set; }
         public DbSet<UserModel> users { get; set; }
         public DbSet<StoreModel> stores { get; set; }

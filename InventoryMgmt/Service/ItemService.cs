@@ -28,16 +28,18 @@ namespace InventoryMgmt.Service
             DateTime expiryDate = item.expiryDate;
             string storeName = item.storeName;
 
-            ValidateItem validateItem = new ValidateItem();
+            //all of below commented validations are replaced by Fluent valdation   
 
-            if (itemCode is "" && itemName is "" && brandName is "" && unitOfMeasurement is "" && storeName is "")
-            {
-                throw new InvalidOperationException($"All fields are required");
-            }
-            if (purchaseRate is 0 && salesRate is 0 && quantity is 0)
-            {
-                throw new InvalidOperationException($"The fields (Purchase Rate, Sales Rate, Quantity) cannot be zero");
-            }
+            //ValidateItem validateItem = new ValidateItem();
+
+            //if (itemCode is "" && itemName is "" && brandName is "" && unitOfMeasurement is "" && storeName is "")
+            //{
+            //    throw new InvalidOperationException($"All fields are required");
+            //}
+            //if (purchaseRate is 0 && salesRate is 0 && quantity is 0)
+            //{
+            //    throw new InvalidOperationException($"The fields (Purchase Rate, Sales Rate, Quantity) cannot be zero");
+            //}
             StoreModel serverStoreModel = _context.stores.Where(s => s.storeName == storeName && s.isActive == true).FirstOrDefault();
             if (serverStoreModel is null)
             {
@@ -78,6 +80,7 @@ namespace InventoryMgmt.Service
         public bool Update(int itemId, ItemFormModel item)
         {
             string itemName = item.itemName;
+            string itemCode = item.itemCode;
             string brandName = item.brandName;
             string unitOfMeasurement = item.unitOfMeasurement;
             decimal purchaseRate = item.purchaseRate;
@@ -89,14 +92,16 @@ namespace InventoryMgmt.Service
                 throw new InvalidOperationException($"ItemId cannot be zero");
 
             }
-            if (itemName is "" && brandName is "" && unitOfMeasurement is "")
-            {
-                throw new InvalidOperationException($"All fields are required");
-            }
-            if (purchaseRate is 0 && salesRate is 0 && quantity is 0)
-            {
-                throw new InvalidOperationException($"The fields (Purchase Rate, Sales Rate, Quantity) cannot be zero");
-            }
+            //all of below commented validations are replaced by Fluent valdation   
+
+            //if (itemName is "" && brandName is "" && unitOfMeasurement is "")
+            //{
+            //    throw new InvalidOperationException($"All fields are required");
+            //}
+            //if (purchaseRate is 0 && salesRate is 0 && quantity is 0)
+            //{
+            //    throw new InvalidOperationException($"The fields (Purchase Rate, Sales Rate, Quantity) cannot be zero");
+            //}
             ItemModel serverItemModel = _context.items.Where(i => i.ItemId == itemId).FirstOrDefault();
             if (serverItemModel is null)
             {
@@ -145,7 +150,7 @@ namespace InventoryMgmt.Service
             //{
             //    serverItemModel.IsActive= false;
             //}
-
+            //this is shortcut method of above 8 lines
             serverItemModel.IsActive = !serverItemModel.IsActive;
 
             //StockModel serverStockModel = _context.stocks.Where(s => s.itemId == serverItemModel.ItemId).FirstOrDefault();

@@ -5,7 +5,7 @@ namespace InventoryMgmt.Validation_Rules
 {
     public class StockValidationRules : AbstractValidator<StockModel>
     {
-        StockValidationRules()
+        public StockValidationRules()
         {
             RuleFor(x=> x.stockId).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(EmptyMessage("Stock Id"))

@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
 using InventoryMgmt.Model;
+using InventoryMgmt.Model.ApiUseModel;
 
 namespace InventoryMgmt.Validation_Rules
 {
-    public class StoreValidationRules :AbstractValidator<StoreModel>
+    public class StoreValidationRules :AbstractValidator<StoreRegisterModel>
     {
         public StoreValidationRules()
         {

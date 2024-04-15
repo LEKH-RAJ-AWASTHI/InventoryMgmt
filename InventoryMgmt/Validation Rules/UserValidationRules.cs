@@ -4,14 +4,14 @@ using InventoryMgmt.Model;
 
 namespace InventoryMgmt.Validation_Rules
 {
-    public class UserValidationRules : AbstractValidator<UserModel>
+    public class UserValidationRules : AbstractValidator<RegisterUserModel>
     {
         public UserValidationRules() 
         {
-            RuleFor(x=>x.userId).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage(EmptyMessage("User Id"))
-                .NotNull().WithMessage(NullMessage("User Id"))
-                .NotEqual(0).WithMessage("User Id Must Not be equal to 0");
+            //RuleFor(x=>x.userId).Cascade(CascadeMode.Stop)
+            //    .NotEmpty().WithMessage(EmptyMessage("User Id"))
+            //    .NotNull().WithMessage(NullMessage("User Id"))
+            //    .NotEqual(0).WithMessage("User Id Must Not be equal to 0");
 
             RuleFor(x => x.username).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(EmptyMessage("UserName"))
@@ -21,6 +21,7 @@ namespace InventoryMgmt.Validation_Rules
                 .NotEmpty().WithMessage(EmptyMessage("password"))
                 .NotNull().WithMessage(NullMessage("password"))
                 .MinimumLength(4).WithMessage("Password length should be atleast 4");
+
             RuleFor(x => x.fullName).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(EmptyMessage("FullName"))
                 .NotNull().WithMessage(NullMessage("FullName"));

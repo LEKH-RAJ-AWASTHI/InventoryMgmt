@@ -36,7 +36,7 @@ namespace InventoryMgmt.Controllers
             try
             {
 
-                if(value == null)
+                if(value is null)
                 {
                      throw new ArgumentNullException($"{nameof(value)} is required!");
                 }
@@ -63,7 +63,7 @@ namespace InventoryMgmt.Controllers
         {
             try
             {
-                if (oldStoreName == null)
+                if (oldStoreName is null && oldStoreName is "")
                 {
                     throw new ArgumentNullException($"{nameof(oldStoreName)} is required!");
                 }

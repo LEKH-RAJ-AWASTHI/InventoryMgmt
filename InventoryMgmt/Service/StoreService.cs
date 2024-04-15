@@ -14,7 +14,7 @@ namespace InventoryMgmt.Service
         }
         public bool AddStore(string storeName)
         {
-            if (storeName == null)
+            if (storeName is null && storeName is "")
             {
                 return false;
             }
@@ -27,7 +27,7 @@ namespace InventoryMgmt.Service
         }
         public bool UpdateStore(string oldStoreName, string newStoreName)
         {
-            if (oldStoreName is null)
+            if (oldStoreName is null && oldStoreName is "")
             {
                 return false;
             }
@@ -42,7 +42,7 @@ namespace InventoryMgmt.Service
         }
         public bool ChangeStoreActiveStatus(string storeName)
         {
-            if (storeName is null)
+            if (storeName is null && storeName is "")
             {
                 return false;
             }

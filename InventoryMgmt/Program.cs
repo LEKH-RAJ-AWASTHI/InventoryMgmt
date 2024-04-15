@@ -1,7 +1,9 @@
 using FluentValidation;
 using InventoryMgmt;
 using InventoryMgmt.DataAccess;
+using InventoryMgmt.DependencyInjections;
 using InventoryMgmt.EntityValidations;
+using InventoryMgmt.Filters;
 using InventoryMgmt.Model;
 using InventoryMgmt.Service;
 using InventoryMgmt.Service.Service_Interface;
@@ -19,7 +21,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers
+    (
+        options => options.Filters.Add(new ItemValidationFilter())
+    );
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(swagger =>
@@ -57,14 +62,12 @@ builder.Services.AddSwaggerGen(swagger =>
                     }
                 });
 });
-builder.Services.AddMvc();
-builder.Services.AddTransient<IItemService, ItemService>();
-builder.Services.AddTransient<IValidation, Validation>();
-builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<IStoreService, StoreService>();
-builder.Services.AddTransient<IReusableLogic,  ReusableLogic>();
+//builder.Services.AddMvc(options => options.Filters.Add(new ValidationActionFilter()));
+builder.Services.RegisterAppServices();
+builder.Services.RegisterFluentValidationServices();
 
 
+#region ValidationRules Adding From Assembly
 //builder.Services.AddValidatorsFromAssemblyContaining<ItemValidationRules>();
 //builder.Services.AddValidatorsFromAssemblyContaining<UserValidationRules>();
 //builder.Services.AddValidatorsFromAssemblyContaining<StoreValidationRules>();
@@ -72,6 +75,7 @@ builder.Services.AddTransient<IReusableLogic,  ReusableLogic>();
 //builder.Services.AddIdentity<UserModel, IdentityRole>()
 //    .AddEntityFrameworkStores<ApplicationDbContext>()
 //    .AddDefaultTokenProviders();
+#endregion
 
 
 builder.Configuration.AddJsonFile("appsettings.json");

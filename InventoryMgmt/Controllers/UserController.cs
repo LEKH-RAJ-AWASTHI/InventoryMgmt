@@ -1,4 +1,6 @@
-﻿using InventoryMgmt.Model;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using InventoryMgmt.Model;
 using InventoryMgmt.Service.Service_Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +16,16 @@ namespace InventoryMgmt.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IValidator<LoginModel> _loginValidator;
 
-        public UserController(IUserService userService)
+        public UserController
+            (
+                IUserService userService,
+                IValidator<LoginModel> loginValidator
+            )
         {
             _userService = userService;
+            _loginValidator = loginValidator;
         }
         // GET: api/<UserController>
         [HttpGet]
@@ -55,14 +63,29 @@ namespace InventoryMgmt.Controllers
         [HttpPut("Update Password")]
         public IActionResult Put(LoginModel login, string newPwd)
         {
-            string error = _userService.UpdateuserPassword(login, newPwd);
-            if(error.Length is 0)
+            try
             {
-                return Ok("Password Updated Successfully");
+
+                ValidationResult result = _loginValidator.Validate(login);
+                string errorMessage= result.ToString("\n");
+                if (errorMessage.Length > 0)
+                {
+                    throw new InvalidOperationException(errorMessage);
+                }
+                string error = _userService.UpdateuserPassword(login, newPwd);
+
+                if(error.Length is 0)
+                {
+                    return Ok("Password Updated Successfully");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, error);
+                }
             }
-            else
+            catch(Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, error);
+                return StatusCode(StatusCodes.Status406NotAcceptable, ex);
             }
         }
 

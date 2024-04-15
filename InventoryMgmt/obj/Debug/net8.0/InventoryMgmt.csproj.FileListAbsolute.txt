@@ -7,6 +7,9 @@ E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\In
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\InventoryMgmt.pdb
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Azure.Core.dll
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Azure.Identity.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\FluentValidation.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Humanizer.dll
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
@@ -40,6 +43,7 @@ E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Mi
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Mono.TextTemplating.dll
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Scrutor.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\StoredProcedureEFCore.dll
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Swashbuckle.AspNetCore.Filters.dll
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
@@ -145,7 +149,3 @@ E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\obj\Debug\net8.0\re
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\obj\Debug\net8.0\InventoryMgmt.pdb
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\obj\Debug\net8.0\InventoryMgmt.genruntimeconfig.cache
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\obj\Debug\net8.0\ref\InventoryMgmt.dll
-E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\StoredProcedureEFCore.dll
-E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\FluentValidation.dll
-E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
-E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll

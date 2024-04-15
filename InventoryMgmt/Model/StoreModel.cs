@@ -7,8 +7,6 @@ namespace InventoryMgmt.Model
     //tbl_stores(storeId, storeName, isActive)
     public class StoreModel : StoreRegisterModel
     {
-
-        [Required]
         public bool isActive
         {
             get; set;

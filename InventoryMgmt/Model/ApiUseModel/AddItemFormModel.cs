@@ -6,9 +6,6 @@ namespace InventoryMgmt.Model.ApiUseModel
 //itemCode, itemName, brandName, unitOfMeasurement, purchaseRate, salesRate, quantity, expiryDate, storeName,
     public class AddItemFormModel : ItemFormModel
     {
-        public string itemCode {  get; set; }
-
         public string   storeName { get; set; }
-
     }
 }

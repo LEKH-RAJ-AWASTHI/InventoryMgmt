@@ -1,10 +1,14 @@
-﻿using InventoryMgmt.DataAccess;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using InventoryMgmt.DataAccess;
 using InventoryMgmt.Model;
+using InventoryMgmt.Validation_Rules;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -20,27 +24,39 @@ namespace InventoryMgmt.Controllers
         string role="";
 
         private readonly IConfiguration _configuration;
-        private readonly IValidation _validation;
         private readonly ApplicationDbContext _context;
+        private readonly IValidator<RegisterUserModel> _validator;
+        private readonly IValidator<LoginModel> _loginValidator;
+
         public SecurityController(
             IConfiguration configuration, 
-            IValidation validation,
-            ApplicationDbContext context)
+        ApplicationDbContext context,
+            IValidator<RegisterUserModel> validator,
+            IValidator<LoginModel> loginValidator)
         {
             _configuration = configuration;
-            _validation = validation;
             _context = context;
+            _validator = validator;
+            _loginValidator = loginValidator;
         }
-
         // GET api/<SecurityController>/5  for user registration
         [Authorize(Policy = "AdminOnly")]
         [HttpPost("Register")]
-        public IActionResult Register([FromBody] RegisterUserModel user)
+        public async Task<IActionResult> Register([FromBody] RegisterUserModel user)
         {
             if (user is null)
             {
                 throw new ArgumentNullException($"{nameof(user)} is required to Login!");
             }
+
+            ValidationResult result = await _validator.ValidateAsync(user);
+
+            string allMessages = result.ToString(",\n");
+            if(allMessages.Length > 0)
+            {
+                throw new InvalidOperationException(allMessages);
+            }
+
             UserModel u= new UserModel();
             u.username = user.username;
             u.fullName= user.fullName;
@@ -58,11 +74,11 @@ namespace InventoryMgmt.Controllers
             //userfromserver is null means user is not present in the database so we now create a new user
             if (userFromServer is null)
             {
-                string error =_validation.RegisterUserValidation(user);
-                if (error.Length is not 0)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, error);
-                }
+                //string error =_validation.RegisterUserValidation(user);
+                //if (error.Length is not 0)
+                //{
+                //    return StatusCode(StatusCodes.Status500InternalServerError, error);
+                //}
                     //call entity framework to save the data
                     _context.users.Add(u);
                     _context.SaveChanges();
@@ -76,12 +92,20 @@ namespace InventoryMgmt.Controllers
         }
         // POST api/<SecurityController> for user Login
         [HttpPost("Login")]
-        public IActionResult Login([FromBody] LoginModel user)
+        public async Task<IActionResult> Login([FromBody] LoginModel user)
         {
             if (user is null)
             {
                 throw new ArgumentNullException($"{nameof(user)} is required to Login!");
             }
+
+            ValidationResult result = await _loginValidator.ValidateAsync(user);
+            string errorMessage = result.ToString("\n");
+            if (errorMessage.Length > 0)
+            {
+                throw new InvalidOperationException(errorMessage);
+            }
+
             var userFromServer = _context.users
                                    .Where(u => u.username == user.username && u.password==user.password).FirstOrDefault();
 

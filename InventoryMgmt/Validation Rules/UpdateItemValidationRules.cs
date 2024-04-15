@@ -1,45 +1,47 @@
 ﻿using FluentValidation;
-using InventoryMgmt.Model;
+using InventoryMgmt.Model.ApiUseModel;
 
-namespace InventoryMgmt.Validations
+namespace InventoryMgmt.Validation_Rules
 {
-    public class ItemValidationRules : AbstractValidator<ItemModel>
+    public class UpdateItemValidationRules : AbstractValidator<ItemFormModel>
     {
-        public ItemValidationRules()
+        public UpdateItemValidationRules()
         {
-            RuleFor(x=> x.ItemId).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage(EmptyMessage("Item Id"))
-                .NotNull().WithMessage(NullMessage("Item Id"))
-                .NotEqual(0).WithMessage("Item Id Must Not be equal to 0");
-
-            RuleFor(x => x.ItemCode).Cascade(CascadeMode.Stop)
+            RuleFor(x => x.itemCode).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(EmptyMessage("Item Code"))
                 .NotNull().WithMessage(NullMessage("Item Code"));
 
-            RuleFor(x => x.ItemName).Cascade(CascadeMode.Stop)
+            RuleFor(x => x.itemName).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(EmptyMessage("Item Name"))
                 .NotNull().WithMessage(NullMessage("Item Name"));
 
-            RuleFor(x => x.BrandName).Cascade(CascadeMode.Stop)
+            RuleFor(x => x.brandName).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(EmptyMessage("Brand Name"))
                 .NotNull().WithMessage(NullMessage("Brand Name"));
 
-            RuleFor(x => x.UnitOfMeasurement).Cascade(CascadeMode.Stop)
+            RuleFor(x => x.unitOfMeasurement).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(EmptyMessage("Unit of Measurement"))
                 .NotNull().WithMessage(NullMessage("Unit of Measurement"));
 
-            RuleFor(x => x.PurchaseRate).Cascade(CascadeMode.Stop).   
+            RuleFor(x => x.purchaseRate).Cascade(CascadeMode.Stop).
                 NotEmpty().WithMessage(EmptyMessage("Purchase Rate"))
                 .NotNull().WithMessage(NullMessage("Purchase Rate"))
                 .LessThanOrEqualTo(0).WithMessage("Purchase Rate should be greater than 0");
 
-            RuleFor(x => x.SalesRate).Cascade(CascadeMode.Stop).NotEmpty()
+            RuleFor(x => x.salesRate).Cascade(CascadeMode.Stop).NotEmpty()
                 .WithMessage(EmptyMessage("Sales Rate"))
                 .NotNull().WithMessage(NullMessage("Sales Rate"))
                 .LessThanOrEqualTo(0).WithMessage("Sales Rate should be greater than 0");
-            
 
-            //RuleFor(x => x.IsActive).NotEmpty().WithMessage("IsActive is required");
+            RuleFor(x => x.quantity).Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage(EmptyMessage("Quantity"))
+                .NotNull().WithMessage(NullMessage("Quantity"))
+                .LessThanOrEqualTo(0).WithMessage("Quantity should be greater than 0");
+
+            RuleFor(x => x.expiryDate).Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage(EmptyMessage("Expiry Date"))
+                .NotNull().WithMessage(NullMessage("Expiry Date"))
+                .GreaterThan(DateTime.Today).WithMessage("Expiry date should be ");
         }
         private string NullMessage(string property)
         {

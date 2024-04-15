@@ -6,7 +6,6 @@ namespace InventoryMgmt.Model.ApiUseModel
     {
         [Key]
         public int storeId { get; set; }
-        [Required]
         public string storeName { get; set; }
 
     }

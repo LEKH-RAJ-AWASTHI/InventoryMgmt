@@ -8,8 +8,6 @@ namespace InventoryMgmt.Model
     {
         [Key]
         public int  userId {  get; set; }
-
-        [Required]
         public bool isActive { get; set; }
     }
 }
