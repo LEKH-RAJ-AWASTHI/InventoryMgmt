@@ -22,6 +22,11 @@ namespace InventoryMgmt.DataAccess
                 .HasMany(a => a.stocks)
                 .WithOne(b => b.item)
                 .HasForeignKey(b => b.itemId);
+
+            //making itemCode as unique attribute
+            modelBuilder.Entity<ItemModel>()
+                .HasIndex(u => u.ItemCode)
+                .IsUnique();
             modelBuilder.Entity<UserModel>().ToTable("tbl_user");
             modelBuilder.Entity<StockModel>().ToTable("tbl_stock");
             modelBuilder.Entity<StoreModel>().ToTable("tbl_store");

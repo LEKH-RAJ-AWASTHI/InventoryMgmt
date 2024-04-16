@@ -10,5 +10,6 @@ namespace InventoryMgmt.Service
         ItemModelClass Get(int itemId);
         IEnumerable<ItemModel> GetAll();
         bool Update(int itemId, ItemFormModel item);
+        bool InsertBulkItems(int storeId, List<ItemFormModel> items);
     }
 }

@@ -14,9 +14,6 @@ namespace InventoryMgmt.Validations
             //    .NotEqual(0).WithMessage("Item Id Must Not be equal to 0");
             //RuleSet("WithoutStore", () =>
             //{ 
-            RuleFor(x => x.itemCode).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithMessage(EmptyMessage("Item Code"))
-                .NotNull().WithMessage(NullMessage("Item Code"));
 
             RuleFor(x => x.itemName).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(EmptyMessage("Item Name"))
@@ -30,20 +27,21 @@ namespace InventoryMgmt.Validations
                 .NotEmpty().WithMessage(EmptyMessage("Unit of Measurement"))
                 .NotNull().WithMessage(NullMessage("Unit of Measurement"));
 
-            RuleFor(x => x.purchaseRate).Cascade(CascadeMode.Stop).   
+            RuleFor(x => x.purchaseRate).Cascade(CascadeMode.Stop).
                 NotEmpty().WithMessage(EmptyMessage("Purchase Rate"))
                 .NotNull().WithMessage(NullMessage("Purchase Rate"))
-                .LessThanOrEqualTo(0).WithMessage("Purchase Rate should be greater than 0");
+                .GreaterThan(0).WithMessage("Purchase Rate should be greater than 0");
+                
 
-            RuleFor(x => x.salesRate).Cascade(CascadeMode.Stop).NotEmpty()
-                .WithMessage(EmptyMessage("Sales Rate"))
+            RuleFor(x => x.salesRate).Cascade(CascadeMode.Stop)
+                .NotEmpty().WithMessage(EmptyMessage("Sales Rate"))
                 .NotNull().WithMessage(NullMessage("Sales Rate"))
-                .LessThanOrEqualTo(0).WithMessage("Sales Rate should be greater than 0");
+                .GreaterThan(0).WithMessage("Sales Rate should be greater than 0");
 
             RuleFor(x => x.quantity).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(EmptyMessage("Quantity"))
                 .NotNull().WithMessage(NullMessage("Quantity"))
-                .LessThanOrEqualTo(0).WithMessage("Quantity should be greater than 0");
+                .GreaterThan(0).WithMessage("Quantity should be greater than 0");
 
             RuleFor(x => x.expiryDate).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(EmptyMessage("Expiry Date"))

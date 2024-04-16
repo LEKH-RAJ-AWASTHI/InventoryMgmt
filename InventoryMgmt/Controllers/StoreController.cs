@@ -1,4 +1,5 @@
-﻿using InventoryMgmt.Model;
+﻿using InventoryMgmt.DataAccess;
+using InventoryMgmt.Model;
 using InventoryMgmt.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -111,5 +112,21 @@ namespace InventoryMgmt.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, $"Exception {ex}");
             }
         }
+        [AllowAnonymous]
+        [HttpGet("StockLevel")]
+        public IActionResult GetStockLevel()
+        {
+            try
+            {
+                List<dynamic> list = _storeService.showStockLevel();
+                return Ok(list);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, ex);
+            }
+        }
+
+       
     }
 }

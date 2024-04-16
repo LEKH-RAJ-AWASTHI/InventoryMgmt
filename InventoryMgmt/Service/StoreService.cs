@@ -69,5 +69,56 @@ namespace InventoryMgmt.Service
             }
             return srmList;
         }
+        public List<dynamic> showStockLevel()
+        {
+            List<dynamic> list = new List<dynamic>();
+            //var stockLevel = from item in _context.items
+            //                 join stock in _context.stocks on item.ItemId equals stock.itemId
+            //                 join store in _context.stores on stock.storeId equals store.storeId
+            //                 select new
+            //                 {
+            //                     item,
+            //                     stock,
+            //                     store
+            //                 };
+            var stockLevel = (from item in 
+                                 (from item in _context.items
+                                 select new
+                                 {
+                                     item.ItemId,
+                                     item.ItemName,
+                                     item.ItemCode,
+                                     item.BrandName
+                                 })
+                             join stock in 
+                                 (from stock in _context.stocks
+                                  select new
+                                  {
+                                    stock.itemId,
+                                    stock.storeId,
+                                    stock.quantity
+                                  })
+                                  on item.ItemId equals stock.itemId
+
+                             join store in
+                                (from store in _context.stores
+                                 select new
+                                 {
+                                     store.storeId, store.storeName,
+                                 })
+                             
+                              on stock.storeId equals store.storeId
+                             select new
+                             {
+                                 store.storeName,
+                                 item.ItemName,
+                                 item.ItemCode,
+                                 item.BrandName,
+                                 stock.quantity,
+                             }).ToList<dynamic>();
+            return stockLevel;
+            
+        }
+        
     }
 }

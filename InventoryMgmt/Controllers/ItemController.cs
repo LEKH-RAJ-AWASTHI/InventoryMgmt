@@ -107,7 +107,7 @@ namespace InventoryMgmt.Controllers
                 }
                 ValidationResult result = await _addItemValidator.ValidateAsync(item);
                 string errorMessage = result.ToString("\n");
-                if(errorMessage is not null)
+                if(errorMessage is not "")
                 {
                     throw new InvalidOperationException(errorMessage);
                 }
@@ -233,6 +233,45 @@ namespace InventoryMgmt.Controllers
             catch(Exception ex)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+        }
+        [HttpPost("InsertBulkItem")]
+        public IActionResult InsertBulkItem(int storeId, List<ItemFormModel> items)
+        {
+
+            int n = 0;
+            try
+            {
+                if(items is null )
+                {
+                    throw new InvalidOperationException("Cannot insert null items");
+                }
+                foreach(ItemFormModel item in items)
+                { 
+                    if (item is null)
+                    {
+                        throw new ArgumentNullException($"{nameof(item)} is required");
+                    }
+                    ValidationResult result = _updateItemValidator.Validate(item);
+                    string errorMessage = result.ToString("\n");
+                    if (errorMessage is not "")
+                    {
+                        throw new InvalidOperationException(errorMessage);
+                    }
+                    n++;
+
+
+                }
+                bool response = _itemService.InsertBulkItems(storeId,items);
+                if(!response)
+                {
+                    throw new InvalidOperationException("Cannot add Item");
+                }
+                return Ok($"{n} items added succesfully");
+            }
+            catch(Exception ex ) 
+            {
+                return StatusCode(StatusCodes.Status406NotAcceptable, ex.Message);
             }
         }
     }

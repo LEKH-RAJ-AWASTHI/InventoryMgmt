@@ -9,5 +9,6 @@ namespace InventoryMgmt.Service
         bool ChangeStoreActiveStatus(string storeName);
         List<StoreRegisterModel> ShowAllStores();
         bool UpdateStore(string oldStoreName, string newStoreName);
+        List<dynamic> showStockLevel();
     }
 }
