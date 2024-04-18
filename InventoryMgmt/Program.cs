@@ -2,7 +2,6 @@ using FluentValidation;
 using InventoryMgmt;
 using InventoryMgmt.DataAccess;
 using InventoryMgmt.DependencyInjections;
-using InventoryMgmt.EntityValidations;
 using InventoryMgmt.Filters;
 using InventoryMgmt.Model;
 using InventoryMgmt.Service;
@@ -126,7 +125,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseMiddleware<ExceptionHandling>();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

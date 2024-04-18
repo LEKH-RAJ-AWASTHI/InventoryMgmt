@@ -1,5 +1,4 @@
 ﻿using InventoryMgmt.DataAccess;
-using InventoryMgmt.EntityValidations;
 using InventoryMgmt.Model;
 using InventoryMgmt.Model.ApiUseModel;
 using Microsoft.Data.SqlClient;

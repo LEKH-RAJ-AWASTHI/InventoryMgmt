@@ -15,6 +15,7 @@ using Microsoft.OpenApi.Any;
 using System.Dynamic;
 using FluentValidation;
 using FluentValidation.Results;
+using InventoryMgmt.CustomException;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,7 +27,6 @@ namespace InventoryMgmt.Controllers
     public class ItemController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
         private readonly IItemService _itemService;
         private readonly IReusableLogic _logic;
         private readonly IValidator<AddItemFormModel> _addItemValidator;
@@ -53,6 +53,8 @@ namespace InventoryMgmt.Controllers
         /// this endpoint
         /// </summary>
         /// <returns></returns>
+        /// 
+        [AllowAnonymous]
         [HttpGet("GetAllProduct")]
         public IActionResult Get()
         {
@@ -74,7 +76,7 @@ namespace InventoryMgmt.Controllers
         }
 
         // GET api/<ItemController>/5
-        [HttpGet("{id}")]
+        [HttpGet("GetItemById")]
         public IActionResult Get(int id)
         {
             try
@@ -82,7 +84,7 @@ namespace InventoryMgmt.Controllers
 
                 if(id is 0)
                 {
-                    throw new Exception("ItemId cannot be zero");
+                    throw new FieldEmptyException("ItemId cannot be zero");
                 }
                 ItemModelClass itemModelClass = new ItemModelClass();
                 itemModelClass = _itemService.Get(id);
@@ -123,7 +125,7 @@ namespace InventoryMgmt.Controllers
             }
             catch(Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+                return StatusCode((int)UserDefinedErrorCode.ErrorCode.InsertItemError, ex.Message);
             }
         }
         //[AllowAnonymous]
@@ -160,7 +162,7 @@ namespace InventoryMgmt.Controllers
                 }
                 if (itemId is 0)
                 {
-                    throw new Exception("ItemId cannot be zero");
+                    throw new FieldEmptyException("ItemId cannot be zero");
                 }
                 ValidationResult result = _updateItemValidator.Validate(item);
                 string errorMessage = result.ToString("\n");
