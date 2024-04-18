@@ -1,0 +1,7 @@
+2024-04-18 15:05:34.144 +05:45 [INF] Generating Item Code For Bulk Item
+2024-04-18 15:06:19.324 +05:45 [DBG] List of registered output formatters, in the following order: ["Microsoft.AspNetCore.Mvc.Formatters.HttpNoContentOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.StreamOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonOutputFormatter"]
+2024-04-18 15:06:19.358 +05:45 [DBG] No information found on request to perform content negotiation.
+2024-04-18 15:06:19.361 +05:45 [DBG] Attempting to select an output formatter without using a content type as no explicit content types were specified for the response.
+2024-04-18 15:06:19.364 +05:45 [DBG] Attempting to select the first formatter in the output formatters list which can write the result.
+2024-04-18 15:06:19.372 +05:45 [DBG] Selected output formatter 'Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter' and content type 'text/plain' to write the response.
+2024-04-18 15:06:19.377 +05:45 [INF] Executing OkObjectResult, writing value of type 'System.String'.

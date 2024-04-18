@@ -3,6 +3,7 @@ using InventoryMgmt.Model;
 using InventoryMgmt.Model.ApiUseModel;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography.X509Certificates;
 using System.Transactions;
@@ -21,6 +22,7 @@ namespace InventoryMgmt.Service
 
         public bool AddItem(AddItemFormModel item)
         {
+
             string itemName = item.itemName;
             string brandName = item.brandName;
             string unitOfMeasurement = item.unitOfMeasurement;
@@ -199,6 +201,7 @@ namespace InventoryMgmt.Service
             {
                 try
                 {
+                    var ItemNo = _context.items.Max(i => i.ItemNo);
                     foreach (var item in items)
                     {
                         StoreModel serverStoreModel = _context.stores.Where(s => s.storeId == storeId && s.isActive == true).FirstOrDefault();
@@ -209,7 +212,6 @@ namespace InventoryMgmt.Service
                         ItemModel itm = new ItemModel();
 
                         //getting max Item number in the database
-                        var ItemNo = _context.items.Max(i => i.ItemNo);
                         //Mapping ItemModel 
                         itm.ItemCode = itm.GetItemCode(ItemNo);
 
@@ -297,12 +299,18 @@ namespace InventoryMgmt.Service
         }
         private void GenerateItemCodeForBulkItem(List<ItemModel> itmList)
         {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+                .WriteTo.File("E:/All of Lekhraj/IMark practice/InventoryMgmt/InventoryMgmt/Log/SampleLog.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
             try
             {
+                Log.Information("Generating Item Code For Bulk Item");
                 for(int i=0; i<itmList.Count; i++)
                 {
-                        int itemNo = _context.items.Max(i => i.ItemNo);
-                        itmList[i].ItemCode = itmList[i].GetItemCode(itemNo + i);
+                    int itemNo = _context.items.Max(i => i.ItemNo);  
+                    itmList[i].ItemCode = itmList[i].GetItemCode(itemNo + i);
                 }
                     _context.items.AddRange(itmList);
                     _context.SaveChanges();
@@ -329,6 +337,7 @@ Cannot insert duplicate key row in object 'dbo.tbl_item' with unique index 'IX_t
                     var innerExp = ex.InnerException as SqlException;
                     if(innerExp.Number is 2601)
                     {
+                        Log.Error(innerExp.Message);
                         GenerateItemCodeForBulkItem(itmList);
                     }
                 }

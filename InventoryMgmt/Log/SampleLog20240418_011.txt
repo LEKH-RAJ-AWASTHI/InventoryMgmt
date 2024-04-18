@@ -1,0 +1,306 @@
+2024-04-18 14:23:52.057 +05:45 [INF] Generating Item Code For Bulk Item
+2024-04-18 14:30:34.410 +05:45 [INF] Generating Item Code For Bulk Item
+2024-04-18 14:31:01.788 +05:45 [DBG] List of registered output formatters, in the following order: ["Microsoft.AspNetCore.Mvc.Formatters.HttpNoContentOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.StreamOutputFormatter","Microsoft.AspNetCore.Mvc.Formatters.SystemTextJsonOutputFormatter"]
+2024-04-18 14:31:01.826 +05:45 [DBG] No information found on request to perform content negotiation.
+2024-04-18 14:31:01.831 +05:45 [DBG] Attempting to select an output formatter without using a content type as no explicit content types were specified for the response.
+2024-04-18 14:31:01.835 +05:45 [DBG] Attempting to select the first formatter in the output formatters list which can write the result.
+2024-04-18 14:31:01.845 +05:45 [DBG] Selected output formatter 'Microsoft.AspNetCore.Mvc.Formatters.StringOutputFormatter' and content type 'text/plain' to write the response.
+2024-04-18 14:31:01.850 +05:45 [INF] Executing OkObjectResult, writing value of type 'System.String'.
+2024-04-18 14:32:38.582 +05:45 [DBG] AuthenticationScheme: Bearer was not authenticated.
+2024-04-18 14:32:38.656 +05:45 [DBG] Entity Framework Core 8.0.3 initialized 'ApplicationDbContext' using provider 'Microsoft.EntityFrameworkCore.SqlServer:8.0.3' with options: None
+2024-04-18 14:32:38.666 +05:45 [DBG] Creating DbConnection.
+2024-04-18 14:32:38.678 +05:45 [DBG] Created DbConnection. (6ms).
+2024-04-18 14:32:38.686 +05:45 [DBG] Opening connection to database 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS'.
+2024-04-18 14:32:38.694 +05:45 [DBG] Opened connection to database 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS'.
+2024-04-18 14:32:38.698 +05:45 [DBG] Beginning transaction with isolation level 'Unspecified'.
+2024-04-18 14:32:38.707 +05:45 [DBG] Began transaction with isolation level 'ReadCommitted'.
+2024-04-18 14:32:38.712 +05:45 [DBG] Creating DbCommand for 'ExecuteReader'.
+2024-04-18 14:32:38.723 +05:45 [DBG] Created DbCommand for 'ExecuteReader' (3ms).
+2024-04-18 14:32:38.732 +05:45 [DBG] Initialized DbCommand for 'ExecuteReader' (20ms).
+2024-04-18 14:32:38.754 +05:45 [DBG] Executing DbCommand [Parameters=[@__storeId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[storeId], [t].[isActive], [t].[storeName]
+FROM [tbl_store] AS [t]
+WHERE [t].[storeId] = @__storeId_0 AND [t].[isActive] = CAST(1 AS bit)
+2024-04-18 14:32:38.778 +05:45 [INF] Executed DbCommand (26ms) [Parameters=[@__storeId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[storeId], [t].[isActive], [t].[storeName]
+FROM [tbl_store] AS [t]
+WHERE [t].[storeId] = @__storeId_0 AND [t].[isActive] = CAST(1 AS bit)
+2024-04-18 14:32:38.789 +05:45 [DBG] Context 'ApplicationDbContext' started tracking 'StoreModel' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2024-04-18 14:32:38.793 +05:45 [DBG] Closing data reader to 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS'.
+2024-04-18 14:32:38.805 +05:45 [DBG] A data reader for 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS' is being disposed after spending 8ms reading results.
+2024-04-18 14:32:38.810 +05:45 [DBG] Creating DbCommand for 'ExecuteReader'.
+2024-04-18 14:32:38.813 +05:45 [DBG] Created DbCommand for 'ExecuteReader' (3ms).
+2024-04-18 14:32:38.819 +05:45 [DBG] Initialized DbCommand for 'ExecuteReader' (8ms).
+2024-04-18 14:32:38.825 +05:45 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT MAX([t].[ItemNo])
+FROM [tbl_item] AS [t]
+2024-04-18 14:32:39.125 +05:45 [INF] Executed DbCommand (301ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT MAX([t].[ItemNo])
+FROM [tbl_item] AS [t]
+2024-04-18 14:32:39.136 +05:45 [DBG] Closing data reader to 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS'.
+2024-04-18 14:32:39.145 +05:45 [DBG] A data reader for 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS' is being disposed after spending 8ms reading results.
+2024-04-18 14:32:39.154 +05:45 [DBG] Creating DbCommand for 'ExecuteReader'.
+2024-04-18 14:32:39.159 +05:45 [DBG] Created DbCommand for 'ExecuteReader' (5ms).
+2024-04-18 14:32:39.163 +05:45 [DBG] Initialized DbCommand for 'ExecuteReader' (8ms).
+2024-04-18 14:32:39.166 +05:45 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[ItemId], [t].[BrandName], [t].[IsActive], [t].[ItemCode], [t].[ItemName], [t].[ItemNo], [t].[PurchaseRate], [t].[SalesRate], [t].[UnitOfMeasurement]
+FROM [tbl_item] AS [t]
+WHERE 0 = 1
+2024-04-18 14:32:39.177 +05:45 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[ItemId], [t].[BrandName], [t].[IsActive], [t].[ItemCode], [t].[ItemName], [t].[ItemNo], [t].[PurchaseRate], [t].[SalesRate], [t].[UnitOfMeasurement]
+FROM [tbl_item] AS [t]
+WHERE 0 = 1
+2024-04-18 14:32:39.187 +05:45 [DBG] Closing data reader to 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS'.
+2024-04-18 14:32:39.192 +05:45 [DBG] A data reader for 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS' is being disposed after spending 5ms reading results.
+2024-04-18 14:32:39.199 +05:45 [DBG] Creating DbCommand for 'ExecuteReader'.
+2024-04-18 14:32:39.204 +05:45 [DBG] Created DbCommand for 'ExecuteReader' (4ms).
+2024-04-18 14:32:39.211 +05:45 [DBG] Initialized DbCommand for 'ExecuteReader' (11ms).
+2024-04-18 14:32:39.218 +05:45 [DBG] Executing DbCommand [Parameters=[@__storeId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[storeId], [t].[isActive], [t].[storeName]
+FROM [tbl_store] AS [t]
+WHERE [t].[storeId] = @__storeId_0 AND [t].[isActive] = CAST(1 AS bit)
+2024-04-18 14:32:39.229 +05:45 [INF] Executed DbCommand (11ms) [Parameters=[@__storeId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[storeId], [t].[isActive], [t].[storeName]
+FROM [tbl_store] AS [t]
+WHERE [t].[storeId] = @__storeId_0 AND [t].[isActive] = CAST(1 AS bit)
+2024-04-18 14:32:39.240 +05:45 [DBG] Closing data reader to 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS'.
+2024-04-18 14:32:39.244 +05:45 [DBG] A data reader for 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS' is being disposed after spending 4ms reading results.
+2024-04-18 14:32:39.253 +05:45 [DBG] Creating DbCommand for 'ExecuteReader'.
+2024-04-18 14:32:39.257 +05:45 [DBG] Created DbCommand for 'ExecuteReader' (3ms).
+2024-04-18 14:32:39.265 +05:45 [DBG] Initialized DbCommand for 'ExecuteReader' (12ms).
+2024-04-18 14:32:39.269 +05:45 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT MAX([t].[ItemNo])
+FROM [tbl_item] AS [t]
+2024-04-18 14:32:39.279 +05:45 [INF] Executed DbCommand (10ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT MAX([t].[ItemNo])
+FROM [tbl_item] AS [t]
+2024-04-18 14:32:39.289 +05:45 [DBG] Closing data reader to 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS'.
+2024-04-18 14:32:39.296 +05:45 [DBG] A data reader for 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS' is being disposed after spending 6ms reading results.
+2024-04-18 14:32:39.302 +05:45 [DBG] Creating DbCommand for 'ExecuteReader'.
+2024-04-18 14:32:39.309 +05:45 [DBG] Created DbCommand for 'ExecuteReader' (6ms).
+2024-04-18 14:32:39.316 +05:45 [DBG] Initialized DbCommand for 'ExecuteReader' (13ms).
+2024-04-18 14:32:39.324 +05:45 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[ItemId], [t].[BrandName], [t].[IsActive], [t].[ItemCode], [t].[ItemName], [t].[ItemNo], [t].[PurchaseRate], [t].[SalesRate], [t].[UnitOfMeasurement]
+FROM [tbl_item] AS [t]
+WHERE 0 = 1
+2024-04-18 14:32:39.336 +05:45 [INF] Executed DbCommand (11ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT TOP(1) [t].[ItemId], [t].[BrandName], [t].[IsActive], [t].[ItemCode], [t].[ItemName], [t].[ItemNo], [t].[PurchaseRate], [t].[SalesRate], [t].[UnitOfMeasurement]
+FROM [tbl_item] AS [t]
+WHERE 0 = 1
+2024-04-18 14:32:39.365 +05:45 [DBG] Closing data reader to 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS'.
+2024-04-18 14:32:39.369 +05:45 [DBG] A data reader for 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS' is being disposed after spending 4ms reading results.
+2024-04-18 14:32:39.396 +05:45 [DBG] Creating DbCommand for 'ExecuteReader'.
+2024-04-18 14:32:39.400 +05:45 [DBG] Created DbCommand for 'ExecuteReader' (3ms).
+2024-04-18 14:32:39.407 +05:45 [DBG] Initialized DbCommand for 'ExecuteReader' (10ms).
+2024-04-18 14:32:39.414 +05:45 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT MAX([t].[ItemNo])
+FROM [tbl_item] AS [t]
+2024-04-18 14:32:39.423 +05:45 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT MAX([t].[ItemNo])
+FROM [tbl_item] AS [t]
+2024-04-18 14:32:39.429 +05:45 [DBG] Closing data reader to 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS'.
+2024-04-18 14:32:39.433 +05:45 [DBG] A data reader for 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS' is being disposed after spending 4ms reading results.
+2024-04-18 14:32:49.179 +05:45 [DBG] Creating DbCommand for 'ExecuteReader'.
+2024-04-18 14:32:49.185 +05:45 [DBG] Created DbCommand for 'ExecuteReader' (6ms).
+2024-04-18 14:32:49.195 +05:45 [DBG] Initialized DbCommand for 'ExecuteReader' (15ms).
+2024-04-18 14:32:49.201 +05:45 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT MAX([t].[ItemNo])
+FROM [tbl_item] AS [t]
+2024-04-18 14:32:49.207 +05:45 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT MAX([t].[ItemNo])
+FROM [tbl_item] AS [t]
+2024-04-18 14:32:49.213 +05:45 [DBG] Closing data reader to 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS'.
+2024-04-18 14:32:49.221 +05:45 [DBG] A data reader for 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS' is being disposed after spending 8ms reading results.
+2024-04-18 14:33:09.432 +05:45 [DBG] 'ApplicationDbContext' generated a temporary value for the property 'ItemModel.ItemId'. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2024-04-18 14:33:09.439 +05:45 [DBG] Context 'ApplicationDbContext' started tracking 'ItemModel' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2024-04-18 14:33:09.448 +05:45 [DBG] 'ApplicationDbContext' generated a temporary value for the property 'ItemModel.ItemId'. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2024-04-18 14:33:09.451 +05:45 [DBG] Context 'ApplicationDbContext' started tracking 'ItemModel' entity. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see key values.
+2024-04-18 14:33:10.102 +05:45 [DBG] SaveChanges starting for 'ApplicationDbContext'.
+2024-04-18 14:33:10.107 +05:45 [DBG] DetectChanges starting for 'ApplicationDbContext'.
+2024-04-18 14:33:10.112 +05:45 [DBG] DetectChanges completed for 'ApplicationDbContext'.
+2024-04-18 14:33:10.117 +05:45 [DBG] Executing 2 update commands as a batch.
+2024-04-18 14:33:10.121 +05:45 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2024-04-18 14:33:10.124 +05:45 [DBG] Creating DbCommand for 'ExecuteReader'.
+2024-04-18 14:33:10.132 +05:45 [DBG] Created DbCommand for 'ExecuteReader' (7ms).
+2024-04-18 14:33:10.140 +05:45 [DBG] Initialized DbCommand for 'ExecuteReader' (15ms).
+2024-04-18 14:33:10.144 +05:45 [DBG] Executing DbCommand [Parameters=[@p0='?' (Size = 4000), @p1='?' (DbType = Boolean), @p2='?' (Size = 450), @p3='?' (Size = 4000), @p4='?' (DbType = Int32), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p7='?' (Size = 4000), @p8='?' (Size = 4000), @p9='?' (DbType = Boolean), @p10='?' (Size = 450), @p11='?' (Size = 4000), @p12='?' (DbType = Int32), @p13='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p14='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p15='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+MERGE [tbl_item] USING (
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, 0),
+(@p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, 1)) AS i ([BrandName], [IsActive], [ItemCode], [ItemName], [ItemNo], [PurchaseRate], [SalesRate], [UnitOfMeasurement], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([BrandName], [IsActive], [ItemCode], [ItemName], [ItemNo], [PurchaseRate], [SalesRate], [UnitOfMeasurement])
+VALUES (i.[BrandName], i.[IsActive], i.[ItemCode], i.[ItemName], i.[ItemNo], i.[PurchaseRate], i.[SalesRate], i.[UnitOfMeasurement])
+OUTPUT INSERTED.[ItemId], i._Position;
+2024-04-18 14:33:10.152 +05:45 [INF] Executed DbCommand (8ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (DbType = Boolean), @p2='?' (Size = 450), @p3='?' (Size = 4000), @p4='?' (DbType = Int32), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p7='?' (Size = 4000), @p8='?' (Size = 4000), @p9='?' (DbType = Boolean), @p10='?' (Size = 450), @p11='?' (Size = 4000), @p12='?' (DbType = Int32), @p13='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p14='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p15='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+MERGE [tbl_item] USING (
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, 0),
+(@p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, 1)) AS i ([BrandName], [IsActive], [ItemCode], [ItemName], [ItemNo], [PurchaseRate], [SalesRate], [UnitOfMeasurement], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([BrandName], [IsActive], [ItemCode], [ItemName], [ItemNo], [PurchaseRate], [SalesRate], [UnitOfMeasurement])
+VALUES (i.[BrandName], i.[IsActive], i.[ItemCode], i.[ItemName], i.[ItemNo], i.[PurchaseRate], i.[SalesRate], i.[UnitOfMeasurement])
+OUTPUT INSERTED.[ItemId], i._Position;
+2024-04-18 14:33:10.167 +05:45 [DBG] Closing data reader to 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS'.
+2024-04-18 14:33:10.174 +05:45 [DBG] A data reader for 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS' is being disposed after spending 16ms reading results.
+2024-04-18 14:33:10.249 +05:45 [ERR] An exception occurred in the database while saving changes for context type 'InventoryMgmt.DataAccess.ApplicationDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot insert duplicate key row in object 'dbo.tbl_item' with unique index 'IX_tbl_item_ItemCode'. The duplicate key value is (ITM-5).
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.Read()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDataReader.Read()
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSet(Int32 startCommandIndex, RelationalDataReader reader)
+ClientConnectionId:db7b0c63-257f-44f4-8ec0-19d4aa0f7447
+Error Number:2601,State:1,Class:14
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSet(Int32 startCommandIndex, RelationalDataReader reader)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.Consume(RelationalDataReader reader)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__112_0(DbContext _, ValueTuple`2 t)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot insert duplicate key row in object 'dbo.tbl_item' with unique index 'IX_tbl_item_ItemCode'. The duplicate key value is (ITM-5).
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.Read()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDataReader.Read()
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSet(Int32 startCommandIndex, RelationalDataReader reader)
+ClientConnectionId:db7b0c63-257f-44f4-8ec0-19d4aa0f7447
+Error Number:2601,State:1,Class:14
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSet(Int32 startCommandIndex, RelationalDataReader reader)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.Consume(RelationalDataReader reader)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__112_0(DbContext _, ValueTuple`2 t)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+2024-04-18 14:33:21.478 +05:45 [DBG] Creating DbCommand for 'ExecuteReader'.
+2024-04-18 14:33:21.492 +05:45 [DBG] Created DbCommand for 'ExecuteReader' (14ms).
+2024-04-18 14:33:21.497 +05:45 [DBG] Initialized DbCommand for 'ExecuteReader' (18ms).
+2024-04-18 14:33:21.502 +05:45 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT MAX([t].[ItemNo])
+FROM [tbl_item] AS [t]
+2024-04-18 14:33:21.508 +05:45 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT MAX([t].[ItemNo])
+FROM [tbl_item] AS [t]
+2024-04-18 14:33:21.518 +05:45 [DBG] Closing data reader to 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS'.
+2024-04-18 14:33:21.527 +05:45 [DBG] A data reader for 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS' is being disposed after spending 9ms reading results.
+2024-04-18 14:33:30.058 +05:45 [DBG] Creating DbCommand for 'ExecuteReader'.
+2024-04-18 14:33:30.063 +05:45 [DBG] Created DbCommand for 'ExecuteReader' (4ms).
+2024-04-18 14:33:30.072 +05:45 [DBG] Initialized DbCommand for 'ExecuteReader' (13ms).
+2024-04-18 14:33:30.079 +05:45 [DBG] Executing DbCommand [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT MAX([t].[ItemNo])
+FROM [tbl_item] AS [t]
+2024-04-18 14:33:30.088 +05:45 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT MAX([t].[ItemNo])
+FROM [tbl_item] AS [t]
+2024-04-18 14:33:30.094 +05:45 [DBG] Closing data reader to 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS'.
+2024-04-18 14:33:30.097 +05:45 [DBG] A data reader for 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS' is being disposed after spending 3ms reading results.
+2024-04-18 14:33:35.202 +05:45 [DBG] SaveChanges starting for 'ApplicationDbContext'.
+2024-04-18 14:33:35.208 +05:45 [DBG] DetectChanges starting for 'ApplicationDbContext'.
+2024-04-18 14:33:35.216 +05:45 [DBG] The unchanged property 'ItemModel.ItemCode' was detected as changed and will be marked as modified. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see property values.
+2024-04-18 14:33:35.224 +05:45 [DBG] DetectChanges completed for 'ApplicationDbContext'.
+2024-04-18 14:33:35.227 +05:45 [DBG] Executing 2 update commands as a batch.
+2024-04-18 14:33:35.232 +05:45 [WRN] Savepoints are disabled because Multiple Active Result Sets (MARS) is enabled. If 'SaveChanges' fails, then the transaction cannot be automatically rolled back to a known clean state. Instead, the transaction should be rolled back by the application before retrying 'SaveChanges'. See https://go.microsoft.com/fwlink/?linkid=2149338 for more information and examples. To identify the code which triggers this warning, call 'ConfigureWarnings(w => w.Throw(SqlServerEventId.SavepointsDisabledBecauseOfMARS))'.
+2024-04-18 14:33:35.238 +05:45 [DBG] Creating DbCommand for 'ExecuteReader'.
+2024-04-18 14:33:35.246 +05:45 [DBG] Created DbCommand for 'ExecuteReader' (7ms).
+2024-04-18 14:33:35.251 +05:45 [DBG] Initialized DbCommand for 'ExecuteReader' (12ms).
+2024-04-18 14:33:35.254 +05:45 [DBG] Executing DbCommand [Parameters=[@p0='?' (Size = 4000), @p1='?' (DbType = Boolean), @p2='?' (Size = 450), @p3='?' (Size = 4000), @p4='?' (DbType = Int32), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p7='?' (Size = 4000), @p8='?' (Size = 4000), @p9='?' (DbType = Boolean), @p10='?' (Size = 450), @p11='?' (Size = 4000), @p12='?' (DbType = Int32), @p13='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p14='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p15='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+MERGE [tbl_item] USING (
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, 0),
+(@p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, 1)) AS i ([BrandName], [IsActive], [ItemCode], [ItemName], [ItemNo], [PurchaseRate], [SalesRate], [UnitOfMeasurement], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([BrandName], [IsActive], [ItemCode], [ItemName], [ItemNo], [PurchaseRate], [SalesRate], [UnitOfMeasurement])
+VALUES (i.[BrandName], i.[IsActive], i.[ItemCode], i.[ItemName], i.[ItemNo], i.[PurchaseRate], i.[SalesRate], i.[UnitOfMeasurement])
+OUTPUT INSERTED.[ItemId], i._Position;
+2024-04-18 14:33:35.261 +05:45 [INF] Executed DbCommand (7ms) [Parameters=[@p0='?' (Size = 4000), @p1='?' (DbType = Boolean), @p2='?' (Size = 450), @p3='?' (Size = 4000), @p4='?' (DbType = Int32), @p5='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p6='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p7='?' (Size = 4000), @p8='?' (Size = 4000), @p9='?' (DbType = Boolean), @p10='?' (Size = 450), @p11='?' (Size = 4000), @p12='?' (DbType = Int32), @p13='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p14='?' (Precision = 18) (Scale = 2) (DbType = Decimal), @p15='?' (Size = 4000)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+MERGE [tbl_item] USING (
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, 0),
+(@p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, 1)) AS i ([BrandName], [IsActive], [ItemCode], [ItemName], [ItemNo], [PurchaseRate], [SalesRate], [UnitOfMeasurement], _Position) ON 1=0
+WHEN NOT MATCHED THEN
+INSERT ([BrandName], [IsActive], [ItemCode], [ItemName], [ItemNo], [PurchaseRate], [SalesRate], [UnitOfMeasurement])
+VALUES (i.[BrandName], i.[IsActive], i.[ItemCode], i.[ItemName], i.[ItemNo], i.[PurchaseRate], i.[SalesRate], i.[UnitOfMeasurement])
+OUTPUT INSERTED.[ItemId], i._Position;
+2024-04-18 14:33:35.273 +05:45 [DBG] Closing data reader to 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS'.
+2024-04-18 14:33:35.277 +05:45 [DBG] A data reader for 'Inventory_DB' on server 'DESKTOP-HPE8JCD\SQLEXPRESS' is being disposed after spending 4ms reading results.
+2024-04-18 14:33:35.284 +05:45 [ERR] An exception occurred in the database while saving changes for context type 'InventoryMgmt.DataAccess.ApplicationDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot insert duplicate key row in object 'dbo.tbl_item' with unique index 'IX_tbl_item_ItemCode'. The duplicate key value is (ITM-5).
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.Read()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDataReader.Read()
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSet(Int32 startCommandIndex, RelationalDataReader reader)
+ClientConnectionId:db7b0c63-257f-44f4-8ec0-19d4aa0f7447
+Error Number:2601,State:1,Class:14
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSet(Int32 startCommandIndex, RelationalDataReader reader)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.Consume(RelationalDataReader reader)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__112_0(DbContext _, ValueTuple`2 t)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot insert duplicate key row in object 'dbo.tbl_item' with unique index 'IX_tbl_item_ItemCode'. The duplicate key value is (ITM-5).
+   at Microsoft.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at Microsoft.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at Microsoft.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryHasMoreRows(Boolean& moreRows)
+   at Microsoft.Data.SqlClient.SqlDataReader.TryReadInternal(Boolean setTimeout, Boolean& more)
+   at Microsoft.Data.SqlClient.SqlDataReader.Read()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDataReader.Read()
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSet(Int32 startCommandIndex, RelationalDataReader reader)
+ClientConnectionId:db7b0c63-257f-44f4-8ec0-19d4aa0f7447
+Error Number:2601,State:1,Class:14
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.ConsumeResultSet(Int32 startCommandIndex, RelationalDataReader reader)
+   at Microsoft.EntityFrameworkCore.Update.AffectedCountModificationCommandBatch.Consume(RelationalDataReader reader)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChanges(IList`1 entries)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.<>c.<SaveChanges>b__112_0(DbContext _, ValueTuple`2 t)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)

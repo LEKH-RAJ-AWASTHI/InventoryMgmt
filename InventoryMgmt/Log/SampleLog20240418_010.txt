@@ -1,0 +1,3 @@
+2024-04-18 14:12:22.249 +05:45 [INF] Generating Item Code For Bulk Item
+2024-04-18 14:21:14.011 +05:45 [INF] Generating Item Code For Bulk Item
+2024-04-18 14:23:51.380 +05:45 [ERR] Cannot insert duplicate key row in object 'dbo.tbl_item' with unique index 'IX_tbl_item_ItemCode'. The duplicate key value is (ITM-4).

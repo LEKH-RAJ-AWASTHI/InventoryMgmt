@@ -237,6 +237,7 @@ namespace InventoryMgmt.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
+        [AllowAnonymous]
         [HttpPost("InsertBulkItem")]
         public IActionResult InsertBulkItem(int storeId, List<ItemFormModel> items)
         {

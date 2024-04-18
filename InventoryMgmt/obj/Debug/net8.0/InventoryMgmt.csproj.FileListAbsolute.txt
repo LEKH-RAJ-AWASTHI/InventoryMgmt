@@ -149,3 +149,14 @@ E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\obj\Debug\net8.0\re
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\obj\Debug\net8.0\InventoryMgmt.pdb
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\obj\Debug\net8.0\InventoryMgmt.genruntimeconfig.cache
 E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\obj\Debug\net8.0\ref\InventoryMgmt.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Serilog.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Serilog.AspNetCore.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Serilog.Enrichers.Environment.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Serilog.Enrichers.Thread.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Serilog.Extensions.Hosting.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Serilog.Extensions.Logging.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Serilog.Formatting.Compact.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Serilog.Settings.Configuration.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Serilog.Sinks.Console.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Serilog.Sinks.Debug.dll
+E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\bin\Debug\net8.0\Serilog.Sinks.File.dll
