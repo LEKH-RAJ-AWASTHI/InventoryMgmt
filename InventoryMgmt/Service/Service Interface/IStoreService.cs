@@ -10,5 +10,6 @@ namespace InventoryMgmt.Service
         List<StoreRegisterModel> ShowAllStores();
         bool UpdateStore(string oldStoreName, string newStoreName);
         List<dynamic> showStockLevel();
+        //bool SalesOfItem(int StoreId, int itemId, decimal Quantity);
     }
 }

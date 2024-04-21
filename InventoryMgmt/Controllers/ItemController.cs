@@ -16,6 +16,7 @@ using System.Dynamic;
 using FluentValidation;
 using FluentValidation.Results;
 using InventoryMgmt.CustomException;
+using Serilog;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -64,6 +65,7 @@ namespace InventoryMgmt.Controllers
                 items = (List<ItemModel>)_itemService.GetAll();
                 if(items is null)
                 {
+                    Log.Error("Item Cannot be found in database");
                     throw new Exception("Items not found");
                 }
             
@@ -105,6 +107,7 @@ namespace InventoryMgmt.Controllers
             {
                 if (item is null)
                 {
+                    Log.Error("Item is null here in AddNewItem API End Point");
                     throw new ArgumentNullException($"{nameof(item)} is required");
                 }
                 ValidationResult result = await _addItemValidator.ValidateAsync(item);
@@ -213,7 +216,7 @@ namespace InventoryMgmt.Controllers
 
             }
         }
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpGet("GetItemByStoreName")]
         public IActionResult GetResult(string storeName)
         {
@@ -237,7 +240,7 @@ namespace InventoryMgmt.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
-        [AllowAnonymous]
+        //[AllowAnonymous]
         [HttpPost("InsertBulkItem")]
         public IActionResult InsertBulkItem(int storeId, List<ItemFormModel> items)
         {

@@ -1,6 +1,7 @@
 ﻿using InventoryMgmt.DataAccess;
 using InventoryMgmt.Model;
 using InventoryMgmt.Model.ApiUseModel;
+using Serilog;
 
 
 namespace InventoryMgmt.Service
@@ -119,6 +120,54 @@ namespace InventoryMgmt.Service
             return stockLevel;
             
         }
-        
+
     }
 }
+        //public bool SalesOfItem(int StoreId, int ItemId, decimal Quantity)
+        //{
+        //    StoreModel StoreFromServer = _context.stores.Where(s => s.storeId == StoreId && s.isActive == true).FirstOrDefault();
+        //    if (StoreFromServer == null)
+        //    {
+        //        Log.Error("Store Not Found in the server while searching for Sales Of Item");
+        //        return false;
+        //    }
+        //    ItemModel ItemFromServer = _context.items.Where(i => i.ItemId == ItemId && i.IsActive == true).FirstOrDefault();
+        //    if (ItemFromServer == null)
+        //    {
+        //        Log.Error("Store Not Found in the server while searching for Sales Of Item");
+        //        return false;
+        //    }
+
+        //    StockModel StockFromServer = _context.stocks.Where(s=>s.itemId == ItemId && s.storeId== s.storeId).FirstOrDefault();
+        //    if(StockFromServer==null)
+        //    {
+        //        Log.Error("Stock of item Not Found in the server while searching for Sales Of Item");
+        //        return false;
+        //    }
+        //    if(StockFromServer.quantity< Quantity)
+        //    {
+        //        throw new Exception("Quantity Not Available for that item");
+        //    }
+        //    if(StockFromServer.expiryDate < DateTime.Now)
+        //    {
+        //        throw new Exception("Item has Expired");
+        //    }
+        //    SalesModel salesModel = new SalesModel();
+        //    salesModel.Quantity= Quantity;
+        //    salesModel.dateTime = DateTime.Now;
+        //    salesModel.itemId = ItemId;
+        //    salesModel.SalesPrice = ItemFromServer.SalesRate;
+        //    salesModel.TotalPrice = Quantity * ItemFromServer.SalesRate;
+        //    salesModel.storeId = StoreId;
+
+        //    _context.sales.Add(salesModel);
+
+
+        //    decimal RemainingQuantity = StockFromServer.quantity- Quantity;
+
+        //    StockFromServer.quantity = RemainingQuantity;
+
+        //    _context.SaveChanges();
+
+        //    return true;
+        //}

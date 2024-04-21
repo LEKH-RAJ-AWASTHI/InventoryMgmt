@@ -19,7 +19,7 @@ namespace InventoryMgmt
             if (user.password.Length is < 4)
             {
 
-                return "passoword length should be minimum 4";
+                return "Passoword length should be minimum 4";
             }
 
             // Role Can be either "Admin" OR "User"

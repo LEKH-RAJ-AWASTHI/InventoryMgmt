@@ -18,7 +18,6 @@ namespace InventoryMgmt.Filters
         {
             //throw new NotImplementedException();
             Console.WriteLine("Filters before execution");
-
         }
     }
 }

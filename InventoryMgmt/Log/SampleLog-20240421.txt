@@ -1,0 +1,45 @@
+2024-04-21 11:42:28.209 +05:45 [ERR] Exception Occured Quantity Not Available for that item
+System.Exception: Quantity Not Available for that item
+   at InventoryMgmt.Service.StoreService.SalesOfItem(Int32 StoreId, Int32 ItemId, Decimal Quantity) in E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\Service\StoreService.cs:line 146
+   at InventoryMgmt.Controllers.StoreController.SalesOfItem(Int32 StoreId, Int32 ItemId, Decimal Quantity) in E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\Controllers\StoreController.cs:line 143
+   at lambda_method2(Closure, Object, Object[])
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.SyncActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeNextActionFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at InventoryMgmt.ExceptionHandling.InvokeAsync(HttpContext context) in E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\ExceptionHandling.cs:line 22
+2024-04-21 14:17:07.643 +05:45 [ERR] Exception occured while selling Item Object reference not set to an instance of an object.
+2024-04-21 14:23:47.942 +05:45 [ERR] Exception Occured Unable to resolve service for type 'InventoryMgmt.Service.SalesService' while attempting to activate 'InventoryMgmt.Controllers.SalesController'.
+System.InvalidOperationException: Unable to resolve service for type 'InventoryMgmt.Service.SalesService' while attempting to activate 'InventoryMgmt.Controllers.SalesController'.
+   at Microsoft.Extensions.DependencyInjection.ActivatorUtilities.ThrowHelperUnableToResolveService(Type type, Type requiredBy)
+   at lambda_method3(Closure, IServiceProvider, Object[])
+   at Microsoft.AspNetCore.Mvc.Controllers.ControllerFactoryProvider.<>c__DisplayClass6_0.<CreateControllerFactory>g__CreateController|0(ControllerContext controllerContext)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at InventoryMgmt.ExceptionHandling.InvokeAsync(HttpContext context) in E:\All of Lekhraj\IMark practice\InventoryMgmt\InventoryMgmt\ExceptionHandling.cs:line 22
+2024-04-21 14:31:49.626 +05:45 [ERR] Store Not Found in the server while searching for Sales Of Item
+2024-04-21 14:33:24.274 +05:45 [ERR] Store Not Found in the server while searching for Sales Of Item
+2024-04-21 14:41:10.398 +05:45 [ERR] Item Not Found in the server while searching for Sales Of Item
+2024-04-21 14:46:14.230 +05:45 [ERR] Item Not Found in the server while searching for Sales Of Item
+2024-04-21 15:16:36.863 +05:45 [ERR] Exception occured while selling Item Quantity Cannot be in Negative
+2024-04-21 15:21:54.742 +05:45 [ERR] Exception occured while selling Item Quantity Cannot be in Negative
+2024-04-21 15:21:55.324 +05:45 [ERR] Exception occured while selling Item Quantity Cannot be in Negative
+2024-04-21 15:21:55.565 +05:45 [ERR] Exception occured while selling Item Quantity Cannot be in Negative
+2024-04-21 15:21:55.822 +05:45 [ERR] Exception occured while selling Item Quantity Cannot be in Negative
+2024-04-21 15:21:55.986 +05:45 [ERR] Exception occured while selling Item Quantity Cannot be in Negative

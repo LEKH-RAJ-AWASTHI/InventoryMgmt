@@ -19,35 +19,7 @@ namespace InventoryMgmt
 
         public List<dynamic> ExecuteStoredProcedure(string storedProcedureName, Dictionary<string, object> parameters)
         {
-            //var result = new DataTable();
-            //DbCommand cmd = context.Database.GetDbConnection().CreateCommand();
-            //cmd.CommandType = CommandType.StoredProcedure;
-            //cmd.CommandText = "FetchStockByStore";
-            //foreach (var parameter in parameters)
-            //{
-            //    cmd.Parameters.Add(new SqlParameter($"@{parameter.Key}", parameter.Value));
-            //}
-            //try
-            //{
-            //    // executes
-            //    context.Database.OpenConnection();
-            //    //var reader = cmd.ExecuteReader();
-            //    using (var reader = cmd.ExecuteReader())
-            //    {
 
-            //        while (reader.Read())
-            //        {
-            //            result.Load(reader);
-            //            //result.Load(reader);
-            //        }
-            //    }
-            //}
-            //finally
-            //{
-            //    // closes the connection
-            //    ReusableLogic.context.Database.CloseConnection();
-            //}
-            //return result;
             var result = new List<dynamic>();
 
             using (var command = _context.Database.GetDbConnection().CreateCommand())

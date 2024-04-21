@@ -17,6 +17,7 @@ namespace InventoryMgmt
             new StoreValidationRules();
             //new UserValidationRules();
             new StockValidationRules();
+            new SalesDTOValidation();
 
         }
 

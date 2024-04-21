@@ -12,6 +12,8 @@ namespace InventoryMgmt.DependencyInjections
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IStoreService, StoreService>();
             services.AddTransient<IReusableLogic, ReusableLogic>();
+            services.AddTransient<ISalesService, SalesService>();
+            services.AddTransient<IStockService, StockService>();
         }
 
     }

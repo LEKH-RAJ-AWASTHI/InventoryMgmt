@@ -22,7 +22,7 @@ namespace InventoryMgmt.Service
 
         public bool AddItem(AddItemFormModel item)
         {
-
+            Log.Information("Adding Single Item to Database");
             string itemName = item.itemName;
             string brandName = item.brandName;
             string unitOfMeasurement = item.unitOfMeasurement;
@@ -85,6 +85,7 @@ namespace InventoryMgmt.Service
         }
         public bool Update(int itemId, ItemFormModel item)
         {
+            Log.Information("Updating Item ");
             string itemName = item.itemName;
             string brandName = item.brandName;
             string unitOfMeasurement = item.unitOfMeasurement;
@@ -134,15 +135,14 @@ namespace InventoryMgmt.Service
         }
         public bool ChangeItemActiveStatus(int itemId)
         {
+            Log.Information($"Changing Active status of the Item. ItemId {itemId}");
             if (itemId is 0)
             {
+                Log.Error("ItemId Cannot be zero");
                 throw new InvalidOperationException($"ItemId cannot be zero");
             }
 
             ItemModel serverItemModel = _context.items.Where(i => i.ItemId == itemId).FirstOrDefault();
-
-
-
             if (serverItemModel is null)
             {
                 throw new InvalidOperationException($"Cannot find matching detail. ");
@@ -169,8 +169,10 @@ namespace InventoryMgmt.Service
         }
         public ItemModelClass Get(int itemId)
         {
+            Log.Information($"Getting information of Item having itemId {itemId}" );
             if (itemId is 0)
             {
+                Log.Error("ItemId Cannot be zero");
                 throw new InvalidOperationException($"ItemId cannot be zero");
             }
 
@@ -178,6 +180,7 @@ namespace InventoryMgmt.Service
 
             if (serverItemModel is null)
             {
+                
                 throw new InvalidOperationException($"Cannot find matching detail. ");
             }
 
@@ -185,6 +188,7 @@ namespace InventoryMgmt.Service
         }
         public IEnumerable<ItemModel> GetAll()
         {
+            Log.Information("Getting Information of all Items");
             return _context.items.Where(i => i.IsActive == true).ToList<ItemModel>();
         }
         //how to make the function take only one request at one time
@@ -207,6 +211,7 @@ namespace InventoryMgmt.Service
                         StoreModel serverStoreModel = _context.stores.Where(s => s.storeId == storeId && s.isActive == true).FirstOrDefault();
                         if (serverStoreModel is null)
                         {
+                            Log.Error($"Cannot Find Matching detail of StoreId: {storeId}");
                             throw new InvalidOperationException($"Cannot find matching detail. Store not added or deleted. You first have to add new Store");
                         }
                         ItemModel itm = new ItemModel();
@@ -265,12 +270,12 @@ namespace InventoryMgmt.Service
 
                     _context.SaveChanges();
 
-                    //Rest of the logic goes here.
                     context.Commit();
 
                 }
                 catch (Exception ex)
                 {
+                    Log.Error($"Adding ItemList to database Failed : {ex.Message}");
                     context.Rollback();
                     throw new InvalidOperationException(ex.Message);
                     //return false;
@@ -280,6 +285,7 @@ namespace InventoryMgmt.Service
         }
         private void GenerateItemCodeAndRetry(ItemModel itm)
         {
+            Log.Information("Generating Item code for a Item");
             //int attempt = 0;
             try
             {
@@ -292,18 +298,14 @@ namespace InventoryMgmt.Service
             catch(SqlException ex)
             {
                 if(ex.Number is 2601){
-                   
+                    Log.Error($"Error while generating new Item Code : {ex.Message}");
+
                     GenerateItemCodeAndRetry(itm);
                 }
             }
         }
         private void GenerateItemCodeForBulkItem(List<ItemModel> itmList)
         {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Console()
-                .WriteTo.File("E:/All of Lekhraj/IMark practice/InventoryMgmt/InventoryMgmt/Log/SampleLog.txt", rollingInterval: RollingInterval.Day)
-                .CreateLogger();
             try
             {
                 Log.Information("Generating Item Code For Bulk Item");
@@ -327,6 +329,7 @@ Cannot insert duplicate key row in object 'dbo.tbl_item' with unique index 'IX_t
                
                 if (ex.Number is 2601)
                 {
+                    Log.Error($"Error while generating new Item Code : {ex.Message}");
                      GenerateItemCodeForBulkItem(itmList);
                 }
             }
@@ -337,7 +340,7 @@ Cannot insert duplicate key row in object 'dbo.tbl_item' with unique index 'IX_t
                     var innerExp = ex.InnerException as SqlException;
                     if(innerExp.Number is 2601)
                     {
-                        Log.Error(innerExp.Message);
+                        Log.Error($"Error while generating new Item Code : {ex.Message}");
                         GenerateItemCodeForBulkItem(itmList);
                     }
                 }

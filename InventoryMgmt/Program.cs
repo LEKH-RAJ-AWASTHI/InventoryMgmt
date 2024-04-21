@@ -28,7 +28,22 @@ builder.Services.AddControllers
     );
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSerilog();
+//this is adding serilog in global level
+//builder.Services.AddSerilog();
+
+//-----------------------this is Addition of serilog with static file names-----------------
+//Log.Logger = new LoggerConfiguration()
+//    .MinimumLevel.Debug()
+//    .WriteTo.Console()
+//    .WriteTo.File("E:/All of Lekhraj/IMark practice/InventoryMgmt/InventoryMgmt/Log/SampleLog-.txt", rollingInterval: RollingInterval.Day)
+//    .CreateLogger();
+
+//--------------------this is addition of serilog reading the configuration from the appsettings.json file---------------
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+
+//builder.Services.AddCors()
 builder.Services.AddSwaggerGen(swagger =>
 {
     //This is to generate the Default UI of Swagger Documentation

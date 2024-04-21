@@ -3,6 +3,9 @@ using InventoryMgmt.Model;
 using InventoryMgmt.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Serilog;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography.X509Certificates;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -126,6 +129,26 @@ namespace InventoryMgmt.Controllers
                 return StatusCode(StatusCodes.Status404NotFound, ex);
             }
         }
+        //[AllowAnonymous]
+        //[HttpPut("SalesOfItem")]
+        //public IActionResult SalesOfItem(int  StoreId, int ItemId, decimal Quantity)
+        //{
+        //    if(StoreId is 0  && ItemId is 0 && Quantity is 0)
+        //    {
+        //        Log.Error("User Input is zero in SalesOfItem API Endpoint");
+        //        return StatusCode(StatusCodes.Status400BadRequest, "Given Fields Cannot be Zero");
+        //    }
+        //    else
+        //    {
+        //        bool response =_storeService.SalesOfItem(StoreId, ItemId, Quantity);
+        //        if (response) { return Ok("Sale of item successful"); }
+        //        else
+        //        {
+        //            return BadRequest();
+        //        }
+        //    }
+        //}
+
 
        
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace InventoryMgmt
 {
@@ -25,7 +26,7 @@ namespace InventoryMgmt
             // what type of error can occur in HttpContext
             catch(Exception ex)
             {
-                _logger.LogError(ex, $"Exception Occured {ex.Message}");
+                Log.Error(ex, $"Exception Occured {ex.Message}");
                 var problemDetails = new ProblemDetails
                 {
                     Status = StatusCodes.Status500InternalServerError,

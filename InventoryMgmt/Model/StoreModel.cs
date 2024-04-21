@@ -13,5 +13,7 @@ namespace InventoryMgmt.Model
         }
 
         public List<StockModel> stocks { get; set; }
+        public List<SalesModel> sales { get; set; }
+
     }
 }
