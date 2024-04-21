@@ -49,8 +49,8 @@ namespace InventoryMgmt.Service
             {
                 throw new InvalidOperationException($"Cannot find matching detail. Store not added or deleted. You first have to add new Store");
             }
-            
-            var ItemNo= _context.items.Max(i => i.ItemNo);
+
+            var ItemNo = _context.items.Max(i => i.ItemNo);
             //Mapping ItemModel 
             itemModel.ItemCode = itemModel.GetItemCode(ItemNo);
 
@@ -59,10 +59,10 @@ namespace InventoryMgmt.Service
             if (serverItemModel is not null)
             {
                 //throw new InvalidDataException($"Item code already exist. Please use another item code");
-                itemModel.ItemCode = itemModel.GetItemCode(ItemNo+1);
+                itemModel.ItemCode = itemModel.GetItemCode(ItemNo + 1);
 
             }
-            itemModel.ItemNo = ++ItemNo ;
+            itemModel.ItemNo = ++ItemNo;
             itemModel.ItemName = itemName;
             itemModel.BrandName = brandName;
             itemModel.PurchaseRate = purchaseRate;
@@ -169,7 +169,7 @@ namespace InventoryMgmt.Service
         }
         public ItemModelClass Get(int itemId)
         {
-            Log.Information($"Getting information of Item having itemId {itemId}" );
+            Log.Information($"Getting information of Item having itemId {itemId}");
             if (itemId is 0)
             {
                 Log.Error("ItemId Cannot be zero");
@@ -180,7 +180,7 @@ namespace InventoryMgmt.Service
 
             if (serverItemModel is null)
             {
-                
+
                 throw new InvalidOperationException($"Cannot find matching detail. ");
             }
 
@@ -205,7 +205,9 @@ namespace InventoryMgmt.Service
             {
                 try
                 {
-                    var ItemNo = _context.items.Max(i => i.ItemNo);
+
+                    var ItemNo = _context.items.Select(i => i.ItemNo).DefaultIfEmpty(0).Max();
+
                     foreach (var item in items)
                     {
                         StoreModel serverStoreModel = _context.stores.Where(s => s.storeId == storeId && s.isActive == true).FirstOrDefault();
@@ -249,7 +251,7 @@ namespace InventoryMgmt.Service
 
                         stck.itemId = itemGroup[i].ItemId;
                         var itmGrp = itemGroup[i];
-                        var data = items.FirstOrDefault(i => i.itemName== itmGrp.ItemName && i.brandName== itmGrp.BrandName);
+                        var data = items.FirstOrDefault(i => i.itemName == itmGrp.ItemName && i.brandName == itmGrp.BrandName);
                         /*
                         1. Create ItemCode internally, Do not ask client to give ItemCode
                         2. Create logic that created unique ItemCodes for Every Items
@@ -295,9 +297,10 @@ namespace InventoryMgmt.Service
                 _context.SaveChanges();
 
             }
-            catch(SqlException ex)
+            catch (SqlException ex)
             {
-                if(ex.Number is 2601){
+                if (ex.Number is 2601)
+                {
                     Log.Error($"Error while generating new Item Code : {ex.Message}");
 
                     GenerateItemCodeAndRetry(itm);
@@ -309,15 +312,15 @@ namespace InventoryMgmt.Service
             try
             {
                 Log.Information("Generating Item Code For Bulk Item");
-                for(int i=0; i<itmList.Count; i++)
+                for (int i = 0; i < itmList.Count; i++)
                 {
-                    int itemNo = _context.items.Max(i => i.ItemNo);  
+                    int itemNo = _context.items.Max(i => i.ItemNo);
                     itmList[i].ItemCode = itmList[i].GetItemCode(itemNo + i);
                 }
-                    _context.items.AddRange(itmList);
-                    _context.SaveChanges();
+                _context.items.AddRange(itmList);
+                _context.SaveChanges();
             }
-            catch(SqlException ex)
+            catch (SqlException ex)
             {
                 /*
                  Msg 2601, Level 14, State 1, Line 1
@@ -326,19 +329,19 @@ Cannot insert duplicate key row in object 'dbo.tbl_item' with unique index 'IX_t
                 length = 5
                 start index = M and end index =after 1 
                  */
-               
+
                 if (ex.Number is 2601)
                 {
                     Log.Error($"Error while generating new Item Code : {ex.Message}");
-                     GenerateItemCodeForBulkItem(itmList);
+                    GenerateItemCodeForBulkItem(itmList);
                 }
             }
             catch (Exception ex)
             {
-                if(ex.InnerException is SqlException)
+                if (ex.InnerException is SqlException)
                 {
                     var innerExp = ex.InnerException as SqlException;
-                    if(innerExp.Number is 2601)
+                    if (innerExp.Number is 2601)
                     {
                         Log.Error($"Error while generating new Item Code : {ex.Message}");
                         GenerateItemCodeForBulkItem(itmList);

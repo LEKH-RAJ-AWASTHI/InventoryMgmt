@@ -1,6 +1,5 @@
 ﻿using InventoryMgmt.CustomException;
 using InventoryMgmt.DataAccess;
-using InventoryMgmt.Migrations;
 using InventoryMgmt.Model;
 using InventoryMgmt.Model.DTOs;
 using Serilog;

@@ -43,3 +43,5 @@ System.InvalidOperationException: Unable to resolve service for type 'InventoryM
 2024-04-21 15:21:55.565 +05:45 [ERR] Exception occured while selling Item Quantity Cannot be in Negative
 2024-04-21 15:21:55.822 +05:45 [ERR] Exception occured while selling Item Quantity Cannot be in Negative
 2024-04-21 15:21:55.986 +05:45 [ERR] Exception occured while selling Item Quantity Cannot be in Negative
+2024-04-21 15:58:53.810 +05:45 [INF] Adding Single Item to Database
+2024-04-21 15:58:55.801 +05:45 [INF] Generating Item code for a Item
