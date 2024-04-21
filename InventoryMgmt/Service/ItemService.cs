@@ -2,11 +2,7 @@
 using InventoryMgmt.Model;
 using InventoryMgmt.Model.ApiUseModel;
 using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography.X509Certificates;
-using System.Transactions;
 
 namespace InventoryMgmt.Service
 {
@@ -50,7 +46,7 @@ namespace InventoryMgmt.Service
                 throw new InvalidOperationException($"Cannot find matching detail. Store not added or deleted. You first have to add new Store");
             }
 
-            var ItemNo = _context.items.Max(i => i.ItemNo);
+            var ItemNo = _context.items.Select(i => i.ItemNo).DefaultIfEmpty(0).Max();
             //Mapping ItemModel 
             itemModel.ItemCode = itemModel.GetItemCode(ItemNo);
 
