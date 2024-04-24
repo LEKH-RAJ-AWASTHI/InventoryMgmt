@@ -1,5 +1,7 @@
 ﻿using InventoryMgmt.DataAccess;
 using InventoryMgmt.Model;
+using InventoryMgmt.Model.ApiUseModel;
+using InventoryMgmt.Model.DTOs;
 using InventoryMgmt.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,20 +33,23 @@ namespace InventoryMgmt.Controllers
             {
                 return StatusCode(StatusCodes.Status404NotFound, "User Not Found in the Server");
             }
-            return Ok(_storeService.ShowAllStores());
+            List<StoreRegisterModel> list = new List<StoreRegisterModel>();
+            list = _storeService.ShowAllStores();
+            return Ok(list);
         }
         // POST api/<StoreController>
         [HttpPost("AddStore")]
-        public IActionResult Post([FromBody] string value)
+        public IActionResult Post([FromBody] AddStoreDTO addStoreDTO)
         {
+            string StoreName= addStoreDTO.StoreName;
             try
             {
 
-                if(value is null)
+                if(StoreName is null)
                 {
-                     throw new ArgumentNullException($"{nameof(value)} is required!");
+                     throw new ArgumentNullException($"{nameof(StoreName)} is required!");
                 }
-                bool response =_storeService.AddStore(value);
+                bool response =_storeService.AddStore(StoreName);
                 if(response)
                 {
                     return Ok("Store Added Successfully");
@@ -63,15 +68,18 @@ namespace InventoryMgmt.Controllers
 
         // PUT api/<StoreController>/5
         [HttpPut("UpdateStore")]
-        public IActionResult Put(string oldStoreName, string newStringName)
+        public IActionResult Put(UpdateStoreDTO updateStoreDTO)
         {
+            string oldStoreName = updateStoreDTO.OldStoreName;
+            string newStoreName = updateStoreDTO.NewStoreName;
+
             try
             {
                 if (oldStoreName is null && oldStoreName is "")
                 {
                     throw new ArgumentNullException($"{nameof(oldStoreName)} is required!");
                 }
-                bool response = _storeService.UpdateStore(oldStoreName, newStringName);
+                bool response = _storeService.UpdateStore(oldStoreName, newStoreName);
                 if(response)
                 {
                     return Ok("Store Updated Successfully");
@@ -91,20 +99,21 @@ namespace InventoryMgmt.Controllers
 
         // DELETE api/<StoreController>/5
         [HttpPut("ChangeStoreActiveStatus")]
-        public IActionResult ChangeStoreActiveStatus(string storeName)
+        public IActionResult ChangeStoreActiveStatus(AddStoreDTO addStoreDTO )
         {
+            string StoreName = addStoreDTO.StoreName;
             try
             {
-                if (storeName == null)
+                if (StoreName == null)
                 {
-                    throw new ArgumentNullException($"{nameof(storeName)} is required!");
+                    throw new ArgumentNullException($"{nameof(StoreName)} is required!");
                 }
-                bool response = _storeService.ChangeStoreActiveStatus(storeName);
+                bool response = _storeService.ChangeStoreActiveStatus(StoreName);
                 if (response)
                 {
                     return Ok("Store Deleted Successfully");
                 }
-                else 
+                else
                 { 
                     return BadRequest("Something Went Wrong");
                 }

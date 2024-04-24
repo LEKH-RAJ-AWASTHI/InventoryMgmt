@@ -17,6 +17,8 @@ using FluentValidation;
 using FluentValidation.Results;
 using InventoryMgmt.CustomException;
 using Serilog;
+using Microsoft.Extensions.Caching.Memory;
+using System.Diagnostics;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -32,6 +34,8 @@ namespace InventoryMgmt.Controllers
         private readonly IReusableLogic _logic;
         private readonly IValidator<AddItemFormModel> _addItemValidator;
         private readonly IValidator<ItemFormModel> _updateItemValidator;
+        private IMemoryCache _memoryCache;
+        private readonly string cachekey = "itemCacheKey";
 
         public ItemController
             (
@@ -39,7 +43,8 @@ namespace InventoryMgmt.Controllers
                 IItemService itemService,
                 ApplicationDbContext context,
                 IValidator<AddItemFormModel> validator,
-                IValidator<ItemFormModel> updateItemValidator
+                IValidator<ItemFormModel> updateItemValidator,
+                IMemoryCache memoryCache
             )
         {
             _logic = logic;
@@ -47,6 +52,7 @@ namespace InventoryMgmt.Controllers
             _itemService = itemService;
             _addItemValidator = validator;
             _updateItemValidator = updateItemValidator;
+            _memoryCache = memoryCache;
         }
 
         // GET: api/<ItemController>
@@ -62,12 +68,29 @@ namespace InventoryMgmt.Controllers
             try
             {
                 List<ItemModel> items = new List<ItemModel>();
-                items = (List<ItemModel>)_itemService.GetAll();
+                var stopWatch = new Stopwatch();
+                stopWatch.Start();
+                if(_memoryCache.TryGetValue(cachekey, out items)) 
+                {
+                    Log.Information("Items found in the cache");
+                }
+                else
+                {
+                    Log.Information("Items not found in cache");
+                    items = (List<ItemModel>)_itemService.GetAll();
+                    var cacheSettings = new MemoryCacheEntryOptions()
+                        .SetSlidingExpiration(TimeSpan.FromMinutes(1))
+                        .SetAbsoluteExpiration(TimeSpan.FromMinutes(10))
+                        .SetPriority(CacheItemPriority.Normal);
+                    _memoryCache.Set(cachekey,items, cacheSettings);
+                }
+                
                 if(items is null)
                 {
                     Log.Error("Item Cannot be found in database");
                     throw new Exception("Items not found");
                 }
+                Log.Information("Passed time "+ stopWatch.ElapsedMilliseconds.ToString());
             
                 return Ok(items);
             }

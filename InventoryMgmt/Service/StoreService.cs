@@ -60,10 +60,11 @@ namespace InventoryMgmt.Service
         {
             //List<StoreModel> storeList = new List<StoreModel>();
             var storeList= _context.stores.Where(s => s.isActive  == true).ToList<StoreModel>();
-            StoreRegisterModel srm = new StoreRegisterModel();
+            
             List<StoreRegisterModel> srmList = new List<StoreRegisterModel>();
             foreach( var store in storeList )
             {
+                StoreRegisterModel srm = new StoreRegisterModel();
                 srm.storeId= store.storeId;
                 srm.storeName= store.storeName;
                 srmList.Add(srm);

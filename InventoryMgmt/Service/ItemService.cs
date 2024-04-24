@@ -2,7 +2,11 @@
 using InventoryMgmt.Model;
 using InventoryMgmt.Model.ApiUseModel;
 using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Diagnostics.CodeAnalysis;
+using System.Security.Cryptography.X509Certificates;
+using System.Transactions;
 
 namespace InventoryMgmt.Service
 {
@@ -28,37 +32,27 @@ namespace InventoryMgmt.Service
             DateTime expiryDate = item.expiryDate;
             string storeName = item.storeName;
 
-            //all of below commented validations are replaced by Fluent valdation   
 
-            //ValidateItem validateItem = new ValidateItem();
-
-            //if (itemCode is "" && itemName is "" && brandName is "" && unitOfMeasurement is "" && storeName is "")
-            //{
-            //    throw new InvalidOperationException($"All fields are required");
-            //}
-            //if (purchaseRate is 0 && salesRate is 0 && quantity is 0)
-            //{
-            //    throw new InvalidOperationException($"The fields (Purchase Rate, Sales Rate, Quantity) cannot be zero");
-            //}
             StoreModel serverStoreModel = _context.stores.Where(s => s.storeName == storeName && s.isActive == true).FirstOrDefault();
             if (serverStoreModel is null)
             {
                 throw new InvalidOperationException($"Cannot find matching detail. Store not added or deleted. You first have to add new Store");
             }
 
-            var ItemNo = _context.items.Select(i => i.ItemNo).DefaultIfEmpty(0).Max();
-            //Mapping ItemModel 
-            itemModel.ItemCode = itemModel.GetItemCode(ItemNo);
+            //var ItemNo = _context.items.Select(i => i.ItemNo).DefaultIfEmpty(0).Max();
+            ////Mapping ItemModel 
+            //itemModel.ItemCode = itemModel.GetItemCode(ItemNo);
 
             //checking for duplicate item model
             ItemModel serverItemModel = _context.items.Where(i => i.ItemCode == itemModel.ItemCode).FirstOrDefault();
-            if (serverItemModel is not null)
-            {
-                //throw new InvalidDataException($"Item code already exist. Please use another item code");
-                itemModel.ItemCode = itemModel.GetItemCode(ItemNo + 1);
+            //if (serverItemModel is not null)
+            //{
+            //    //
+            //    //throw new InvalidDataException($"Item code already exist. Please use another item code");
+            //    itemModel.ItemCode = itemModel.GetItemCode(ItemNo + 1);
 
-            }
-            itemModel.ItemNo = ++ItemNo;
+            //}
+            //itemModel.ItemNo = ++ItemNo;
             itemModel.ItemName = itemName;
             itemModel.BrandName = brandName;
             itemModel.PurchaseRate = purchaseRate;

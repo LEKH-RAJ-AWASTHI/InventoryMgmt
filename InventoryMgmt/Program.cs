@@ -38,12 +38,16 @@ builder.Services.AddEndpointsApiExplorer();
 //    .WriteTo.File("E:/All of Lekhraj/IMark practice/InventoryMgmt/InventoryMgmt/Log/SampleLog-.txt", rollingInterval: RollingInterval.Day)
 //    .CreateLogger();
 
+
 //--------------------this is addition of serilog reading the configuration from the appsettings.json file---------------
+
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .CreateLogger();
 
 //builder.Services.AddCors()
+
+
 builder.Services.AddSwaggerGen(swagger =>
 {
     //This is to generate the Default UI of Swagger Documentation
@@ -82,6 +86,8 @@ builder.Services.AddSwaggerGen(swagger =>
 //builder.Services.AddMvc(options => options.Filters.Add(new ValidationActionFilter()));
 builder.Services.RegisterAppServices();
 builder.Services.RegisterFluentValidationServices();
+
+builder.Services.AddMemoryCache();
 
 
 #region ValidationRules Adding From Assembly
