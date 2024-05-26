@@ -8,7 +8,7 @@ namespace InventoryMgmt.Service
         bool AddItem(AddItemFormModel item);
         bool ChangeItemActiveStatus(int itemId);
         ItemModelClass Get(int itemId);
-        IEnumerable<ItemModel> GetAll();
+        IEnumerable<GetItemModelDTO> GetAll();
         bool Update(int itemId, ItemFormModel item);
         bool InsertBulkItems(int storeId, List<ItemFormModel> items);
     }

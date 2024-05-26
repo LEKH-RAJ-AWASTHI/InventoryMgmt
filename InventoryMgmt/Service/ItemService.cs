@@ -2,6 +2,7 @@
 using InventoryMgmt.Model;
 using InventoryMgmt.Model.ApiUseModel;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Diagnostics.CodeAnalysis;
@@ -12,11 +13,20 @@ namespace InventoryMgmt.Service
 {
     public class ItemService : IItemService
     {
+        ItemService service;
         private readonly ApplicationDbContext _context;
         ItemModel itemModel = new ItemModel();
         StockModel stockModel = new StockModel();
-        public ItemService(ApplicationDbContext context)
+        private IMemoryCache _memoryCache;
+        private readonly string cachekey = "itemCacheKey";
+
+        public ItemService(
+            ApplicationDbContext context,
+            IMemoryCache memoryCache
+
+            )
         {
+            _memoryCache = memoryCache;
             _context = context;
         }
 
@@ -168,6 +178,8 @@ namespace InventoryMgmt.Service
 
             ItemModel serverItemModel = _context.items.Where(i => i.ItemId == itemId).FirstOrDefault();
 
+            
+
             if (serverItemModel is null)
             {
 
@@ -176,10 +188,54 @@ namespace InventoryMgmt.Service
 
             return serverItemModel;
         }
-        public IEnumerable<ItemModel> GetAll()
+        public IEnumerable<GetItemModelDTO> GetAll()
         {
+            List<GetItemModelDTO> GetItemList = new List<GetItemModelDTO>();
             Log.Information("Getting Information of all Items");
-            return _context.items.Where(i => i.IsActive == true).ToList<ItemModel>();
+
+            if (_memoryCache.TryGetValue(cachekey, out List<ItemModel>items))
+            {
+                Log.Information("Items found in the cache");
+            }
+            else
+            {
+                Log.Information("Items not found in cache");
+                items = _context.items.Where(i => i.IsActive == true).ToList<ItemModel>();
+                var getItemDTO= from stock in _context.stocks join
+                                store in _context.stores on stock.storeId equals store.storeId join 
+                                item in _context.items on stock.itemId equals item.ItemId
+                                select new{
+                                    itemId= item.ItemId,
+                                    itemName= item.ItemName,
+                                    itemCode = item.ItemCode,
+                                    storeId = store.storeId,
+                                    storeName = store.storeName,
+                                    stockRemaining= stock.quantity
+                                };
+
+                foreach(var item in getItemDTO)
+                {
+                    GetItemModelDTO getItem = new GetItemModelDTO
+                    {
+                        itemId = item.itemId,
+                        itemName = item.itemName,
+                        itemCode= item.itemCode,
+                        storeId= item.storeId,
+                        storeName= item.storeName,
+                        stockRemaining = item.stockRemaining
+                    };
+
+                    GetItemList.Add(getItem);
+                }
+
+
+                var cacheSettings = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(1))
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(10))
+                    .SetPriority(CacheItemPriority.Normal);
+                _memoryCache.Set(cachekey, items, cacheSettings);
+            }
+            return GetItemList;
         }
         //how to make the function take only one request at one time
         public bool InsertBulkItems(int storeId, List<ItemFormModel> items)

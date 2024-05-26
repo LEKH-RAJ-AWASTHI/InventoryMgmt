@@ -14,6 +14,8 @@ namespace InventoryMgmt.DependencyInjections
             services.AddTransient<IReusableLogic, ReusableLogic>();
             services.AddTransient<ISalesService, SalesService>();
             services.AddTransient<IStockService, StockService>();
+            services.AddTransient<INotificationService, NotificationService>();
+
         }
 
     }

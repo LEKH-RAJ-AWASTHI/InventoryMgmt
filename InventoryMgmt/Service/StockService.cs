@@ -1,7 +1,9 @@
 ﻿using InventoryMgmt.CustomException;
 using InventoryMgmt.DataAccess;
+using InventoryMgmt.Hubs;
 using InventoryMgmt.Model;
 using InventoryMgmt.Model.DTOs;
+using Microsoft.AspNetCore.SignalR;
 using Serilog;
 
 namespace InventoryMgmt.Service
@@ -9,9 +11,14 @@ namespace InventoryMgmt.Service
     public class StockService : IStockService
     {
         private readonly ApplicationDbContext _context;
-        public StockService(ApplicationDbContext context)
+        private readonly IServiceScopeFactory _scopeFactory;
+        private readonly ILogger<StockService> _logger;
+
+        public StockService(ApplicationDbContext context, IServiceScopeFactory scopeFactory, ILogger<StockService> logger)
         {
             _context = context;
+            _scopeFactory = scopeFactory;
+            _logger = logger;
         }
 
         public bool IsStockAvailable(AddSalesModel saleDTO)
@@ -51,6 +58,27 @@ namespace InventoryMgmt.Service
                     throw new NegativeQuantityException("Quantity Cannot be in Negative");
                 }
                 StockFromServer.quantity = RemainingQuantity;
+                // checking if the stock is running out of stock
+                using (var scope = _scopeFactory.CreateScope())
+                {
+                    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                    var hubContext = scope.ServiceProvider.GetRequiredService<IHubContext<InventoryHub>>();
+
+                    var inventoryItems = context.stocks.ToList();
+                    foreach (var item in inventoryItems)
+                    {
+                        if (item.quantity < 50)
+                        {
+                            ItemModel itemDetail = context.items.Where(i => i.ItemId == item.itemId).FirstOrDefault();
+                            if (itemDetail != null) { 
+
+                                 hubContext.Clients.All.SendAsync("ReceiveInventoryUpdate", itemDetail.ItemName, item.quantity);
+                                _logger.LogInformation($"Inventory update: {itemDetail.ItemName} - {item.quantity}");
+                            }
+                        }
+                    }
+                }
+
             //}
             return true;
         }

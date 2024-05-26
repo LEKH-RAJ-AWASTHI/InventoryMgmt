@@ -3,6 +3,7 @@ using InventoryMgmt;
 using InventoryMgmt.DataAccess;
 using InventoryMgmt.DependencyInjections;
 using InventoryMgmt.Filters;
+using InventoryMgmt.Hubs;
 using InventoryMgmt.Model;
 using InventoryMgmt.Service;
 using InventoryMgmt.Service.Service_Interface;
@@ -28,6 +29,14 @@ builder.Services.AddControllers
     );
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", builder => builder
+    .WithOrigins("http://localhost:4200")
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials());
+});
 //this is adding serilog in global level
 //builder.Services.AddSerilog();
 
@@ -89,6 +98,7 @@ builder.Services.RegisterFluentValidationServices();
 
 builder.Services.AddMemoryCache();
 
+builder.Services.AddSignalR();
 
 #region ValidationRules Adding From Assembly
 //builder.Services.AddValidatorsFromAssemblyContaining<ItemValidationRules>();
@@ -151,9 +161,10 @@ if (app.Environment.IsDevelopment())
 }
 app.UseMiddleware<ExceptionHandling>();
 app.UseHttpsRedirection();
+app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapHub<InventoryHub>("/hub");
 
 app.MapControllers();
-
 app.Run();

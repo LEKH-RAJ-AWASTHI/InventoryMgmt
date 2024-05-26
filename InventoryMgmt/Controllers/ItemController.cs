@@ -34,8 +34,6 @@ namespace InventoryMgmt.Controllers
         private readonly IReusableLogic _logic;
         private readonly IValidator<AddItemFormModel> _addItemValidator;
         private readonly IValidator<ItemFormModel> _updateItemValidator;
-        private IMemoryCache _memoryCache;
-        private readonly string cachekey = "itemCacheKey";
 
         public ItemController
             (
@@ -43,8 +41,7 @@ namespace InventoryMgmt.Controllers
                 IItemService itemService,
                 ApplicationDbContext context,
                 IValidator<AddItemFormModel> validator,
-                IValidator<ItemFormModel> updateItemValidator,
-                IMemoryCache memoryCache
+                IValidator<ItemFormModel> updateItemValidator
             )
         {
             _logic = logic;
@@ -52,8 +49,9 @@ namespace InventoryMgmt.Controllers
             _itemService = itemService;
             _addItemValidator = validator;
             _updateItemValidator = updateItemValidator;
-            _memoryCache = memoryCache;
         }
+
+        //_itemService= _serviceLocator.GetService(ask for IItemService object)
 
         // GET: api/<ItemController>
         /// <summary>
@@ -67,30 +65,13 @@ namespace InventoryMgmt.Controllers
         {
             try
             {
-                List<ItemModel> items = new List<ItemModel>();
-                var stopWatch = new Stopwatch();
-                stopWatch.Start();
-                if(_memoryCache.TryGetValue(cachekey, out items)) 
-                {
-                    Log.Information("Items found in the cache");
-                }
-                else
-                {
-                    Log.Information("Items not found in cache");
-                    items = (List<ItemModel>)_itemService.GetAll();
-                    var cacheSettings = new MemoryCacheEntryOptions()
-                        .SetSlidingExpiration(TimeSpan.FromMinutes(1))
-                        .SetAbsoluteExpiration(TimeSpan.FromMinutes(10))
-                        .SetPriority(CacheItemPriority.Normal);
-                    _memoryCache.Set(cachekey,items, cacheSettings);
-                }
-                
-                if(items is null)
+                List<GetItemModelDTO> items = new List<GetItemModelDTO>();
+                items = (List<GetItemModelDTO>)_itemService.GetAll();
+                if (items is null)
                 {
                     Log.Error("Item Cannot be found in database");
                     throw new Exception("Items not found");
                 }
-                Log.Information("Passed time "+ stopWatch.ElapsedMilliseconds.ToString());
             
                 return Ok(items);
             }
@@ -107,10 +88,6 @@ namespace InventoryMgmt.Controllers
             try
             {
 
-                if(id is 0)
-                {
-                    throw new FieldEmptyException("ItemId cannot be zero");
-                }
                 ItemModelClass itemModelClass = new ItemModelClass();
                 itemModelClass = _itemService.Get(id);
                 return Ok(itemModelClass);
