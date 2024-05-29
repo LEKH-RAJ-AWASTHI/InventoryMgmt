@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryMgmt.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240409092701_v1")]
-    partial class v1
+    [Migration("20240528092653_seed data added for user")]
+    partial class seeddataaddedforuser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,34 @@ namespace InventoryMgmt.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("InventoryMgmt.EmailLogs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsSent")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("User")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("email_logs", (string)null);
+                });
 
             modelBuilder.Entity("InventoryMgmt.Model.ItemModel", b =>
                 {
@@ -42,11 +70,14 @@ namespace InventoryMgmt.Migrations
 
                     b.Property<string>("ItemCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ItemName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ItemNo")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("PurchaseRate")
                         .HasColumnType("decimal(18,2)");
@@ -60,7 +91,48 @@ namespace InventoryMgmt.Migrations
 
                     b.HasKey("ItemId");
 
+                    b.HasIndex("ItemCode")
+                        .IsUnique();
+
                     b.ToTable("tbl_item", (string)null);
+                });
+
+            modelBuilder.Entity("InventoryMgmt.Model.SalesModel", b =>
+                {
+                    b.Property<int>("salesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("salesId"));
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SalesPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("dateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("itemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("storeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("salesId");
+
+                    b.HasIndex("itemId");
+
+                    b.HasIndex("storeId");
+
+                    b.ToTable("tbl_sales", (string)null);
                 });
 
             modelBuilder.Entity("InventoryMgmt.Model.StockModel", b =>
@@ -120,6 +192,10 @@ namespace InventoryMgmt.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("userId"));
 
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("fullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -142,6 +218,48 @@ namespace InventoryMgmt.Migrations
                     b.HasKey("userId");
 
                     b.ToTable("tbl_user", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            userId = 1,
+                            email = "lekhrajawasthi123@gmail.com",
+                            fullName = "Admin Admin",
+                            isActive = true,
+                            password = "pass123",
+                            role = "Admin",
+                            username = "admin"
+                        });
+                });
+
+            modelBuilder.Entity("InventoryMgmt.EmailLogs", b =>
+                {
+                    b.HasOne("InventoryMgmt.Model.ItemModel", "item")
+                        .WithMany("emailLogs")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("item");
+                });
+
+            modelBuilder.Entity("InventoryMgmt.Model.SalesModel", b =>
+                {
+                    b.HasOne("InventoryMgmt.Model.ItemModel", "item")
+                        .WithMany("sales")
+                        .HasForeignKey("itemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("InventoryMgmt.Model.StoreModel", "store")
+                        .WithMany("sales")
+                        .HasForeignKey("storeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("item");
+
+                    b.Navigation("store");
                 });
 
             modelBuilder.Entity("InventoryMgmt.Model.StockModel", b =>
@@ -165,11 +283,17 @@ namespace InventoryMgmt.Migrations
 
             modelBuilder.Entity("InventoryMgmt.Model.ItemModel", b =>
                 {
+                    b.Navigation("emailLogs");
+
+                    b.Navigation("sales");
+
                     b.Navigation("stocks");
                 });
 
             modelBuilder.Entity("InventoryMgmt.Model.StoreModel", b =>
                 {
+                    b.Navigation("sales");
+
                     b.Navigation("stocks");
                 });
 #pragma warning restore 612, 618

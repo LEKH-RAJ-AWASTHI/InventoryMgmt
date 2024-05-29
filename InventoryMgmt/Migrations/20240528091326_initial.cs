@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InventoryMgmt.Migrations
 {
     /// <inheritdoc />
-    public partial class v1 : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,7 +18,8 @@ namespace InventoryMgmt.Migrations
                     ItemId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    ItemCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ItemCode = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ItemNo = table.Column<int>(type: "int", nullable: false),
                     ItemName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BrandName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UnitOfMeasurement = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -50,15 +51,68 @@ namespace InventoryMgmt.Migrations
                 {
                     userId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    fullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    isActive = table.Column<bool>(type: "bit", nullable: false),
                     username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    fullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     role = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    isActive = table.Column<bool>(type: "bit", nullable: false)
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tbl_user", x => x.userId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "email_logs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ItemId = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsSent = table.Column<bool>(type: "bit", nullable: false),
+                    User = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_email_logs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_email_logs_tbl_item_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "tbl_item",
+                        principalColumn: "ItemId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tbl_sales",
+                columns: table => new
+                {
+                    salesId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    dateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    itemId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    SalesPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    storeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tbl_sales", x => x.salesId);
+                    table.ForeignKey(
+                        name: "FK_tbl_sales_tbl_item_itemId",
+                        column: x => x.itemId,
+                        principalTable: "tbl_item",
+                        principalColumn: "ItemId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_tbl_sales_tbl_store_storeId",
+                        column: x => x.storeId,
+                        principalTable: "tbl_store",
+                        principalColumn: "storeId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -90,6 +144,27 @@ namespace InventoryMgmt.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_email_logs_ItemId",
+                table: "email_logs",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tbl_item_ItemCode",
+                table: "tbl_item",
+                column: "ItemCode",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tbl_sales_itemId",
+                table: "tbl_sales",
+                column: "itemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tbl_sales_storeId",
+                table: "tbl_sales",
+                column: "storeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_tbl_stock_itemId",
                 table: "tbl_stock",
                 column: "itemId");
@@ -103,6 +178,12 @@ namespace InventoryMgmt.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "email_logs");
+
+            migrationBuilder.DropTable(
+                name: "tbl_sales");
+
             migrationBuilder.DropTable(
                 name: "tbl_stock");
 

@@ -10,8 +10,11 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Json;
 using System.Security.Claims;
 using System.Text;
+using Newtonsoft.Json;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -99,6 +102,7 @@ namespace InventoryMgmt.Controllers
                 throw new ArgumentNullException($"{nameof(user)} is required to Login!");
             }
 
+
             ValidationResult result = await _loginValidator.ValidateAsync(user);
             string errorMessage = result.ToString("\n");
             if (errorMessage.Length > 0)
@@ -118,9 +122,21 @@ namespace InventoryMgmt.Controllers
             JwtToken token = new JwtToken(_configuration);
             String t= token.GeneratedToken(userFromServer.username, role);
             
-            
             return Ok(t);
 
         }
+        private void SetSessionVariable(UserModel user)
+        {
+
+            var sessionVariable = new SessionVariable
+            {
+                Id = user.userId,
+                UserName = user.username,
+                FullName = user.fullName
+            };
+
+            HttpContext.Session.SetString("currentUser", JsonConvert.SerializeObject(sessionVariable));
+        }
+
     }
 }

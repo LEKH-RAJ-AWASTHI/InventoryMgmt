@@ -1,41 +1,52 @@
 ﻿using InventoryMgmt.DataAccess;
+using InventoryMgmt.Hubs;
 using InventoryMgmt.Model;
+using InventoryMgmt.Model.DTOs;
+using Microsoft.AspNetCore.SignalR;
+using Serilog;
 
 namespace InventoryMgmt.Service
 {
     public class NotificationService : INotificationService
     {
         private readonly ApplicationDbContext _context;
-        public NotificationService(ApplicationDbContext context)
+        private readonly IHubContext<InventoryHub> _hubContext;
+        public NotificationService(ApplicationDbContext context, IHubContext<InventoryHub> hubContext)
         {
             _context = context;
+            _hubContext= hubContext;
         }
-        public Notification GetNotification()
+        public void LowStockMessage()
         {
-            var productBelowThreshold = _context.stocks.Where(i => i.quantity < 50).FirstOrDefault();
-            if (productBelowThreshold is not null)
+            var inventoryItems = _context.stocks.ToList();
+            foreach (var item in inventoryItems)
             {
-                var item = _context.items.Where(i => i.ItemId == productBelowThreshold.itemId).FirstOrDefault();
-                if (item is not null)
+                if (item.quantity < 50)
                 {
-                    return new Notification
+                    ItemModel itemDetail = _context.items.Where(i => i.ItemId == item.itemId).FirstOrDefault();
+                    if (itemDetail != null)
                     {
-                        NotificationTitle = $"{item.ItemName} is low in Stock",
-                        Message = $"{item.ItemName} has {productBelowThreshold.quantity} quantity in stock. Please order this Item"
-                    };
-                }
-                else
-                {
-                    throw new Exception("ItemNot Found");
+                        _hubContext.Clients.All.SendAsync("ReceiveInventoryUpdate", DateTime.Now, itemDetail.ItemName, item.quantity);
+                        Log.Information($"Inventory update: {itemDetail.ItemName} - {item.quantity}");
+                    }
 
                 }
-
             }
-            else
+        }
+        public void MileStoneSalesMessage(AddSalesModel saleDTO)
+        {
+            ItemModel maxSaleItem = _context.items.Where(i=> i.ItemId == saleDTO.ItemId).FirstOrDefault();
+            StoreModel maxSaleItemStore = _context.stores.Where(s=>s.storeId == saleDTO.StoreId).FirstOrDefault();
+            
+            HubMessageDTO hubMessage = new HubMessageDTO
             {
-                throw new Exception("No Product below Threshold");
-            }
-
+                Item= maxSaleItem.ItemName,
+                StoreName = maxSaleItemStore.storeName,
+                Quantity= saleDTO.Quantity,
+                Date= DateTime.Now
+            };
+            _hubContext.Clients.All.SendAsync("MileStoneSales", hubMessage);
+            Log.Information($"Milestone sales : {maxSaleItem.ItemName} from store: {maxSaleItemStore.storeName} on date {DateTime.Now}");
         }
     }
 }

@@ -1,21 +1,13 @@
-using FluentValidation;
 using InventoryMgmt;
 using InventoryMgmt.DataAccess;
 using InventoryMgmt.DependencyInjections;
 using InventoryMgmt.Filters;
 using InventoryMgmt.Hubs;
-using InventoryMgmt.Model;
-using InventoryMgmt.Service;
-using InventoryMgmt.Service.Service_Interface;
-using InventoryMgmt.Validation_Rules;
-using InventoryMgmt.Validations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +29,9 @@ builder.Services.AddCors(options =>
     .AllowAnyHeader()
     .AllowCredentials());
 });
+//
+
+// Initialize the InventoryHub function once in the startup
 //this is adding serilog in global level
 //builder.Services.AddSerilog();
 
@@ -56,7 +51,12 @@ Log.Logger = new LoggerConfiguration()
 
 //builder.Services.AddCors()
 
-
+//builder.Services.AddSession(option =>
+//{
+//    option.IdleTimeout = TimeSpan.FromHours(2);
+//    option.Cookie.HttpOnly = true;
+//    option.Cookie.IsEssential = true;
+//});
 builder.Services.AddSwaggerGen(swagger =>
 {
     //This is to generate the Default UI of Swagger Documentation

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SignalrService } from './Services/signalR.service';
-import { HttpContext } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -21,5 +21,13 @@ export class AppComponent implements OnInit{
       const message = `Item: ${itemName}, Quantity: ${quantity} is below threshold.`;
       this.inventoryUpdates.push(message);
     });
+    // this.startHttpRequest();
   }
+  // private startHttpRequest = () =>{
+  //   this.http.get('http://localhost:7025/api/Notification')
+  //             .subscribe(res=> {
+  //               console.log(res);
+  //             });
+  // }
 }
+

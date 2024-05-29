@@ -16,8 +16,10 @@ namespace InventoryMgmt.DataAccess
         public DbSet<StockModel> stocks { get; set; }
         public DbSet<SalesModel> sales { get; set; }
 
+        public DbSet<EmailLogs> emailLogs {get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<EmailLogs>().ToTable("email_logs");
             modelBuilder.Entity<ItemModel>().ToTable("tbl_item");
             modelBuilder.Entity<ItemModel>()
                 .HasMany(a => a.stocks)
@@ -27,6 +29,12 @@ namespace InventoryMgmt.DataAccess
                 .HasMany(a=> a.sales)
                 .WithOne(b => b.item)
                 .HasForeignKey(b => b.itemId);
+
+            modelBuilder.Entity<UserModel>().HasData(new UserModel {userId=1,role="Admin", username = "admin", password = "pass123", email = "lekhrajawasthi123@gmail.com", fullName = "Admin Admin", isActive = true });
+            modelBuilder.Entity<ItemModel>()
+                .HasMany(a=> a.emailLogs)
+                .WithOne(b=> b.item)
+                .HasForeignKey(b=> b.ItemId);
 
             //making itemCode as unique attribute
             modelBuilder.Entity<ItemModel>()

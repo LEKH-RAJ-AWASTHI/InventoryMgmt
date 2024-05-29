@@ -6,5 +6,7 @@ namespace InventoryMgmt.Model
     {
         public string fullName { get; set; }
         public string role { get; set; }
+
+        public string email {get; set; }
     } 
 }
