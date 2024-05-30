@@ -2,7 +2,7 @@
 {
     public class ItemCodeDuplicationException : Exception
     {
-        public ItemCodeDuplicationException(string message) :base(message)
+        public ItemCodeDuplicationException(string message) : base(message)
         {
 
         }

@@ -24,7 +24,7 @@ namespace InventoryMgmt.Controllers
     [ApiController]
     public class SecurityController : ControllerBase
     {
-        string role="";
+        string role = "";
 
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
@@ -32,7 +32,7 @@ namespace InventoryMgmt.Controllers
         private readonly IValidator<LoginModel> _loginValidator;
 
         public SecurityController(
-            IConfiguration configuration, 
+            IConfiguration configuration,
         ApplicationDbContext context,
             IValidator<RegisterUserModel> validator,
             IValidator<LoginModel> loginValidator)
@@ -55,21 +55,21 @@ namespace InventoryMgmt.Controllers
             ValidationResult result = await _validator.ValidateAsync(user);
 
             string allMessages = result.ToString(",\n");
-            if(allMessages.Length > 0)
+            if (allMessages.Length > 0)
             {
                 throw new InvalidOperationException(allMessages);
             }
 
-            UserModel u= new UserModel();
+            UserModel u = new UserModel();
             u.username = user.username;
-            u.fullName= user.fullName;
-            u.password= user.password;
+            u.fullName = user.fullName;
+            u.password = user.password;
             u.role = user.role;
             u.isActive = true;
 
             string uname = user.username;
             string fullName = user.fullName;
-            string pwd= user.password;
+            string pwd = user.password;
             string role = user.role;
             var userFromServer = _context.users
                                    .Where(u => u.username == uname).FirstOrDefault();
@@ -82,10 +82,10 @@ namespace InventoryMgmt.Controllers
                 //{
                 //    return StatusCode(StatusCodes.Status500InternalServerError, error);
                 //}
-                    //call entity framework to save the data
-                    _context.users.Add(u);
-                    _context.SaveChanges();
-                    return Ok("User Added Successfully");
+                //call entity framework to save the data
+                _context.users.Add(u);
+                _context.SaveChanges();
+                return Ok("User Added Successfully");
             }
             else
             {
@@ -111,7 +111,7 @@ namespace InventoryMgmt.Controllers
             }
 
             var userFromServer = _context.users
-                                   .Where(u => u.username == user.username && u.password==user.password).FirstOrDefault();
+                                   .Where(u => u.username == user.username && u.password == user.password).FirstOrDefault();
 
             //UserModel u = (from temp in _context.users where temp.username == uname && temp.password == pwd select temp).FirstOrDefault();
             if (userFromServer is null)
@@ -120,8 +120,8 @@ namespace InventoryMgmt.Controllers
             }
             role = userFromServer.role;
             JwtToken token = new JwtToken(_configuration);
-            String t= token.GeneratedToken(userFromServer.username, role);
-            
+            String t = token.GeneratedToken(userFromServer.username, role);
+
             return Ok(t);
 
         }

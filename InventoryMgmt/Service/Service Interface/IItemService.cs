@@ -11,5 +11,7 @@ namespace InventoryMgmt.Service
         IEnumerable<GetItemModelDTO> GetAll();
         bool Update(int itemId, ItemFormModel item);
         bool InsertBulkItems(int storeId, List<ItemFormModel> items);
+        void InventoryUpdate(int itemId, decimal quantity);
+
     }
 }

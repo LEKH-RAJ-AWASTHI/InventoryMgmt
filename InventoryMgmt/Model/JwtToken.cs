@@ -8,10 +8,10 @@ namespace InventoryMgmt.Model
 {
     public class JwtToken
     {
-        
+
         private readonly IConfiguration _configuration;
 
-        public JwtToken(IConfiguration configuration) 
+        public JwtToken(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -43,6 +43,6 @@ namespace InventoryMgmt.Model
             var appSettingValue = _configuration.GetValue<string>($"jwt:{value}");
             return appSettingValue == null ? value : appSettingValue;
         }
-        
+
     }
 }

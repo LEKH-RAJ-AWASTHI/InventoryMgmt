@@ -59,14 +59,14 @@ namespace InventoryMgmt.Service
         public List<StoreRegisterModel> ShowAllStores()
         {
             //List<StoreModel> storeList = new List<StoreModel>();
-            var storeList= _context.stores.Where(s => s.isActive  == true).ToList<StoreModel>();
-            
+            var storeList = _context.stores.Where(s => s.isActive == true).ToList<StoreModel>();
+
             List<StoreRegisterModel> srmList = new List<StoreRegisterModel>();
-            foreach( var store in storeList )
+            foreach (var store in storeList)
             {
                 StoreRegisterModel srm = new StoreRegisterModel();
-                srm.storeId= store.storeId;
-                srm.storeName= store.storeName;
+                srm.storeId = store.storeId;
+                srm.storeName = store.storeName;
                 srmList.Add(srm);
             }
             return srmList;
@@ -83,92 +83,93 @@ namespace InventoryMgmt.Service
             //                     stock,
             //                     store
             //                 };
-            var stockLevel = (from item in 
+            var stockLevel = (from item in
                                  (from item in _context.items
-                                 select new
-                                 {
-                                     item.ItemId,
-                                     item.ItemName,
-                                     item.ItemCode,
-                                     item.BrandName
-                                 })
-                             join stock in 
-                                 (from stock in _context.stocks
                                   select new
                                   {
-                                    stock.itemId,
-                                    stock.storeId,
-                                    stock.quantity
+                                      item.ItemId,
+                                      item.ItemName,
+                                      item.ItemCode,
+                                      item.BrandName
                                   })
-                                  on item.ItemId equals stock.itemId
+                              join stock in
+                                  (from stock in _context.stocks
+                                   select new
+                                   {
+                                       stock.itemId,
+                                       stock.storeId,
+                                       stock.quantity
+                                   })
+                                   on item.ItemId equals stock.itemId
 
-                             join store in
-                                (from store in _context.stores
-                                 select new
-                                 {
-                                     store.storeId, store.storeName,
-                                 })
-                             
-                              on stock.storeId equals store.storeId
-                             select new
-                             {
-                                 store.storeName,
-                                 item.ItemName,
-                                 item.ItemCode,
-                                 item.BrandName,
-                                 stock.quantity,
-                             }).ToList<dynamic>();
+                              join store in
+                                 (from store in _context.stores
+                                  select new
+                                  {
+                                      store.storeId,
+                                      store.storeName,
+                                  })
+
+                               on stock.storeId equals store.storeId
+                              select new
+                              {
+                                  store.storeName,
+                                  item.ItemName,
+                                  item.ItemCode,
+                                  item.BrandName,
+                                  stock.quantity,
+                              }).ToList<dynamic>();
             return stockLevel;
-            
+
         }
 
     }
 }
-        //public bool SalesOfItem(int StoreId, int ItemId, decimal Quantity)
-        //{
-        //    StoreModel StoreFromServer = _context.stores.Where(s => s.storeId == StoreId && s.isActive == true).FirstOrDefault();
-        //    if (StoreFromServer == null)
-        //    {
-        //        Log.Error("Store Not Found in the server while searching for Sales Of Item");
-        //        return false;
-        //    }
-        //    ItemModel ItemFromServer = _context.items.Where(i => i.ItemId == ItemId && i.IsActive == true).FirstOrDefault();
-        //    if (ItemFromServer == null)
-        //    {
-        //        Log.Error("Store Not Found in the server while searching for Sales Of Item");
-        //        return false;
-        //    }
+//public bool SalesOfItem(int StoreId, int ItemId, decimal Quantity)
+//{
+//    StoreModel StoreFromServer = _context.stores.Where(s => s.storeId == StoreId && s.isActive == true).FirstOrDefault();
+//    if (StoreFromServer == null)
+//    {
+//        Log.Error("Store Not Found in the server while searching for Sales Of Item");
+//        return false;
+//    }
+//    ItemModel ItemFromServer = _context.items.Where(i => i.ItemId == ItemId && i.IsActive == true).FirstOrDefault();
+//    if (ItemFromServer == null)
+//    {
+//        Log.Error("Store Not Found in the server while searching for Sales Of Item");
+//        return false;
+//    }
 
-        //    StockModel StockFromServer = _context.stocks.Where(s=>s.itemId == ItemId && s.storeId== s.storeId).FirstOrDefault();
-        //    if(StockFromServer==null)
-        //    {
-        //        Log.Error("Stock of item Not Found in the server while searching for Sales Of Item");
-        //        return false;
-        //    }
-        //    if(StockFromServer.quantity< Quantity)
-        //    {
-        //        throw new Exception("Quantity Not Available for that item");
-        //    }
-        //    if(StockFromServer.expiryDate < DateTime.Now)
-        //    {
-        //        throw new Exception("Item has Expired");
-        //    }
-        //    SalesModel salesModel = new SalesModel();
-        //    salesModel.Quantity= Quantity;
-        //    salesModel.dateTime = DateTime.Now;
-        //    salesModel.itemId = ItemId;
-        //    salesModel.SalesPrice = ItemFromServer.SalesRate;
-        //    salesModel.TotalPrice = Quantity * ItemFromServer.SalesRate;
-        //    salesModel.storeId = StoreId;
+//    StockModel StockFromServer = _context.stocks.Where(s=>s.itemId == ItemId && s.storeId== s.storeId).FirstOrDefault();
+//    if(StockFromServer==null)
+//    {
+//        Log.Error("Stock of item Not Found in the server while searching for Sales Of Item");
+//        return false;
+//    }
+//    if(StockFromServer.quantity< Quantity)
+//    {
+//        throw new Exception("Quantity Not Available for that item");
+//    }
+//    if(StockFromServer.expiryDate < DateTime.Now)
+//    {
+//        throw new Exception("Item has Expired");
+//    }
+//    SalesModel salesModel = new SalesModel();
+//    salesModel.Quantity= Quantity;
+//    salesModel.dateTime = DateTime.Now;
+//    salesModel.itemId = ItemId;
+//    salesModel.SalesPrice = ItemFromServer.SalesRate;
+//    salesModel.TotalPrice = Quantity * ItemFromServer.SalesRate;
+//    salesModel.storeId = StoreId;
 
-        //    _context.sales.Add(salesModel);
+//    _context.sales.Add(salesModel);
 
 
-        //    decimal RemainingQuantity = StockFromServer.quantity- Quantity;
+//    decimal RemainingQuantity = StockFromServer.quantity- Quantity;
 
-        //    StockFromServer.quantity = RemainingQuantity;
+//    StockFromServer.quantity = RemainingQuantity;
 
-        //    _context.SaveChanges();
+//    _context.SaveChanges();
 
-        //    return true;
-        //}
+//    return true;
+//}

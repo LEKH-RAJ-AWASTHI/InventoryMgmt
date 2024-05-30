@@ -1,3 +1,4 @@
+using Common;
 using InventoryMgmt;
 using InventoryMgmt.DataAccess;
 using InventoryMgmt.DependencyInjections;
@@ -115,6 +116,12 @@ builder.Configuration.AddJsonFile("appsettings.json");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultDb")));
 
+var emailConfiguation = builder.Configuration
+    .GetSection("EmailConfiguration")
+    .Get<EmailConfiguration>();
+
+builder.Services.AddSingleton(emailConfiguation);
+
 var jwt = builder.Configuration.GetSection("jwt").Get<Jwt>();
 
 
@@ -142,14 +149,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //    options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
 
 //});
-    builder.Services.AddAuthorization(options =>
-    {
-        options.AddPolicy("AdminOnly", policy =>
-                          policy.RequireClaim("Role", "Admin"));
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy =>
+                      policy.RequireClaim("Role", "Admin"));
 
-        options.AddPolicy("UserOnly", policy =>
-                  policy.RequireClaim("Role", "User"));
-    });
+    options.AddPolicy("UserOnly", policy =>
+              policy.RequireClaim("Role", "User"));
+});
 
 var app = builder.Build();
 

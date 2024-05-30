@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace InventoryMgmt.Controllers
 {
-    [Authorize (Policy ="AdminOnly")]
+    [Authorize(Policy = "AdminOnly")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -53,7 +53,7 @@ namespace InventoryMgmt.Controllers
             {
                 return Ok("User Not found");
             }
-                
+
             return Ok(_userService.GetUserByUsername(username));
         }
 
@@ -67,14 +67,14 @@ namespace InventoryMgmt.Controllers
             {
 
                 ValidationResult result = _loginValidator.Validate(login);
-                string errorMessage= result.ToString("\n");
+                string errorMessage = result.ToString("\n");
                 if (errorMessage.Length > 0)
                 {
                     throw new InvalidOperationException(errorMessage);
                 }
                 string error = _userService.UpdateuserPassword(login, newPwd);
 
-                if(error.Length is 0)
+                if (error.Length is 0)
                 {
                     return Ok("Password Updated Successfully");
                 }
@@ -83,7 +83,7 @@ namespace InventoryMgmt.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError, error);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status406NotAcceptable, ex);
             }

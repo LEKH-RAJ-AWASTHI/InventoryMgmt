@@ -15,6 +15,7 @@ namespace InventoryMgmt.DependencyInjections
             services.AddTransient<ISalesService, SalesService>();
             services.AddTransient<IStockService, StockService>();
             services.AddTransient<INotificationService, NotificationService>();
+            services.AddScoped<IEmailSender, EmailSender>();
 
         }
 

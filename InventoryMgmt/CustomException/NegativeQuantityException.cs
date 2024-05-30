@@ -2,7 +2,7 @@
 {
     public class NegativeQuantityException : Exception
     {
-        public NegativeQuantityException(string message) : base(message) 
+        public NegativeQuantityException(string message) : base(message)
         {
         }
     }

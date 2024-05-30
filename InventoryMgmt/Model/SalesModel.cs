@@ -8,15 +8,15 @@ namespace InventoryMgmt.Model
         public int salesId { get; set; }
         public DateTime dateTime { get; set; }
 
-        public int itemId{ get; set; }
+        public int itemId { get; set; }
         public ItemModel item;
 
         public decimal Quantity { get; set; }
-        public decimal SalesPrice{ get; set; }
-        public decimal TotalPrice{ get; set; }
+        public decimal SalesPrice { get; set; }
+        public decimal TotalPrice { get; set; }
 
 
-        public int storeId{ get; set; }
+        public int storeId { get; set; }
         public StoreModel store;
 
 

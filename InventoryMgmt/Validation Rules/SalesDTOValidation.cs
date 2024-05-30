@@ -29,6 +29,6 @@ namespace InventoryMgmt.Validation_Rules
         {
             return $"{property} Cannot be Empty";
         }
-    
+
     }
 }

@@ -14,7 +14,7 @@ namespace InventoryMgmt
                 ILogger<ExceptionHandling> logger
             )
         {
-            _next= next;
+            _next = next;
             _logger = logger;
         }
         public async Task InvokeAsync(HttpContext context)
@@ -26,7 +26,7 @@ namespace InventoryMgmt
             }
             //how to see this log
             // what type of error can occur in HttpContext
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Error(ex, $"Exception Occured {ex.Message}");
                 var problemDetails = new ProblemDetails
@@ -34,7 +34,7 @@ namespace InventoryMgmt
                     Status = StatusCodes.Status500InternalServerError,
                     Title = "Server Error",
                     Type = "HttpContext Error",
-                    Detail= ex.Message,
+                    Detail = ex.Message,
 
                 };
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;

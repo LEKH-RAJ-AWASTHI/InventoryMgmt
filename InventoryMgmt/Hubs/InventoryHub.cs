@@ -11,5 +11,5 @@ namespace InventoryMgmt.Hubs;
 
 public class InventoryHub : Hub
 {
-    
+
 }

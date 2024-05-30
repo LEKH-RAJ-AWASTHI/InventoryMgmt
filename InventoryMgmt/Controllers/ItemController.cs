@@ -72,7 +72,7 @@ namespace InventoryMgmt.Controllers
                     Log.Error("Item Cannot be found in database");
                     throw new Exception("Items not found");
                 }
-            
+
                 return Ok(items);
             }
             catch (Exception ex)
@@ -92,7 +92,7 @@ namespace InventoryMgmt.Controllers
                 itemModelClass = _itemService.Get(id);
                 return Ok(itemModelClass);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, $"Exception: {ex}");
 
@@ -112,7 +112,7 @@ namespace InventoryMgmt.Controllers
                 }
                 ValidationResult result = await _addItemValidator.ValidateAsync(item);
                 string errorMessage = result.ToString("\n");
-                if(errorMessage is not "")
+                if (errorMessage is not "")
                 {
                     throw new InvalidOperationException(errorMessage);
                 }
@@ -126,7 +126,7 @@ namespace InventoryMgmt.Controllers
                     return BadRequest();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode((int)UserDefinedErrorCode.ErrorCode.InsertItemError, ex.Message);
             }
@@ -159,7 +159,7 @@ namespace InventoryMgmt.Controllers
         {
             try
             {
-                if(item is null)
+                if (item is null)
                 {
                     throw new ArgumentNullException($"{nameof(item)} is required");
                 }
@@ -169,7 +169,7 @@ namespace InventoryMgmt.Controllers
                 }
                 ValidationResult result = _updateItemValidator.Validate(item);
                 string errorMessage = result.ToString("\n");
-                if(errorMessage != null)
+                if (errorMessage != null)
                 {
                     throw new InvalidOperationException(errorMessage);
                 }
@@ -179,9 +179,9 @@ namespace InventoryMgmt.Controllers
                 {
                     return Ok("Item updated Successfully");
                 }
-                else 
-                { 
-                    return BadRequest("Unknown error"); 
+                else
+                {
+                    return BadRequest("Unknown error");
                 }
             }
             catch (Exception ex)
@@ -196,11 +196,11 @@ namespace InventoryMgmt.Controllers
         {
             try
             {
-                if(ItemId is 0)
+                if (ItemId is 0)
                 {
                     throw new Exception("Item Id cannot be zero");
                 }
-                bool response= _itemService.ChangeItemActiveStatus(ItemId);
+                bool response = _itemService.ChangeItemActiveStatus(ItemId);
                 if (response)
                 {
                     return Ok("Item deleted successfully");
@@ -210,7 +210,7 @@ namespace InventoryMgmt.Controllers
                     return BadRequest();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
 
@@ -235,7 +235,7 @@ namespace InventoryMgmt.Controllers
 
                 return Ok(result);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
@@ -248,12 +248,12 @@ namespace InventoryMgmt.Controllers
             int n = 0;
             try
             {
-                if(items is null )
+                if (items is null)
                 {
                     throw new InvalidOperationException("Cannot insert null items");
                 }
-                foreach(ItemFormModel item in items)
-                { 
+                foreach (ItemFormModel item in items)
+                {
                     if (item is null)
                     {
                         throw new ArgumentNullException($"{nameof(item)} is required");
@@ -268,17 +268,28 @@ namespace InventoryMgmt.Controllers
 
 
                 }
-                bool response = _itemService.InsertBulkItems(storeId,items);
-                if(!response)
+                bool response = _itemService.InsertBulkItems(storeId, items);
+                if (!response)
                 {
                     throw new InvalidOperationException("Cannot add Item");
                 }
                 return Ok($"{n} items added succesfully");
             }
-            catch(Exception ex ) 
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status406NotAcceptable, ex.Message);
             }
+        }
+        [AllowAnonymous]
+        [HttpPut("InventoryUpdate")]
+        public IActionResult UpdateInventory(int Id, decimal quantity)
+        {
+            if(Id is 0 && quantity is 0)
+            {
+                throw new FieldEmptyException("Id and quantity field cannot be zero");
+            }
+            _itemService.InventoryUpdate(Id, quantity);
+            return Ok("Item inventory updated successfully");
         }
     }
 }

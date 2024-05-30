@@ -6,7 +6,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace InventoryMgmt.Service
 {
-    
+
     public class UserService : IUserService
     {
         private readonly ApplicationDbContext _dbContext;
@@ -15,18 +15,18 @@ namespace InventoryMgmt.Service
             _dbContext = dbContext;
         }
 
-        public string UpdateuserPassword(LoginModel loginModel, string newPwd) 
-        { 
-            var userFromServer= _dbContext.users.Where(u=> u.username==loginModel.username && u.password == loginModel.password).FirstOrDefault();
-            if (userFromServer==null)
+        public string UpdateuserPassword(LoginModel loginModel, string newPwd)
+        {
+            var userFromServer = _dbContext.users.Where(u => u.username == loginModel.username && u.password == loginModel.password).FirstOrDefault();
+            if (userFromServer == null)
             {
                 return "username and password required";
             }
-            if(newPwd == null)
+            if (newPwd == null)
             {
                 return "New Password is required";
             }
-            if(newPwd.Length is < 4)
+            if (newPwd.Length is < 4)
             {
                 return "Password Length must be atleast 4";
             }
@@ -37,22 +37,22 @@ namespace InventoryMgmt.Service
         }
         public bool ChangeUserActiveStatus(LoginModel loginModel)
         {
-                var userFromServer = _dbContext.users.Where(u => u.username == loginModel.username && u.password == loginModel.password).FirstOrDefault();
-                if (userFromServer == null)
-                {
-                    throw new InvalidOperationException($"Cannot find matching detail");
-                }
-                userFromServer.isActive = false;
-                _dbContext.SaveChanges();
-                return true;
+            var userFromServer = _dbContext.users.Where(u => u.username == loginModel.username && u.password == loginModel.password).FirstOrDefault();
+            if (userFromServer == null)
+            {
+                throw new InvalidOperationException($"Cannot find matching detail");
+            }
+            userFromServer.isActive = false;
+            _dbContext.SaveChanges();
+            return true;
         }
         public List<UserModel> GetAllUser()
-        { 
-            return _dbContext.users.Where(u=> u.isActive==true).ToList();
+        {
+            return _dbContext.users.Where(u => u.isActive == true).ToList();
         }
         public UserModel GetUserByUsername(string username)
         {
-            var userFromServer = _dbContext.users.Where(u => u.username == username && u.isActive == true ).FirstOrDefault();
+            var userFromServer = _dbContext.users.Where(u => u.username == username && u.isActive == true).FirstOrDefault();
             if (userFromServer == null)
             {
                 throw new InvalidOperationException($"Cannot find matching detail");

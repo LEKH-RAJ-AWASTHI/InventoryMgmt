@@ -14,23 +14,29 @@ namespace InventoryMgmt.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class NotificationController : ControllerBase
+    public class EmailController : ControllerBase
     {
-        private readonly IHubContext<InventoryHub> _hubContext;
+        private readonly IEmailSender _sender;
         private readonly INotificationService _notificationService;
-        public NotificationController(IHubContext<InventoryHub> hubContext, INotificationService notification)
+        public EmailController(IEmailSender emailSender, INotificationService notificationService)
         {
-            _notificationService = notification;
-            _hubContext = hubContext;
+            _sender = emailSender;
+            _notificationService= notificationService;
         }
         // GET: api/<ValuesController>
         // GET api/<ValuesController>/5
-        [HttpGet]
-        public IActionResult GetLowStockNotfication()
+        [HttpPost]
+        public IActionResult SendEmail()
         {
-            _notificationService.LowStockMessage();
+            Message message = new Message(
+                new String[] { "lekhrajawasthi123@gmail.com" },
+                "Inventory Test Email",
+                "This is the content of email from Inventory Management System"
+            );
+            _sender.SendEmail(message);
+            _notificationService.EmailSentNotification(message.Subject);
 
-            return Ok();
+            return Ok("Email Sent Successfully");
         }
 
         // for now we don't need Milestone sales notification in api

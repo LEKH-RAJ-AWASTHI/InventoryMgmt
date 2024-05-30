@@ -7,7 +7,7 @@ namespace InventoryMgmt.Model
     public class UserModel : RegisterUserModel
     {
         [Key]
-        public int  userId {  get; set; }
+        public int userId { get; set; }
         public bool isActive { get; set; }
     }
 }

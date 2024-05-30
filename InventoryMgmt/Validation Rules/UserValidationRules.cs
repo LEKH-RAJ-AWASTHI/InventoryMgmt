@@ -6,7 +6,7 @@ namespace InventoryMgmt.Validation_Rules
 {
     public class UserValidationRules : AbstractValidator<RegisterUserModel>
     {
-        public UserValidationRules() 
+        public UserValidationRules()
         {
             //RuleFor(x=>x.userId).Cascade(CascadeMode.Stop)
             //    .NotEmpty().WithMessage(EmptyMessage("User Id"))

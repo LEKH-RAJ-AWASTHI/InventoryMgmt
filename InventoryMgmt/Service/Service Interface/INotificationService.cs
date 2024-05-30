@@ -10,6 +10,7 @@ namespace InventoryMgmt.Service
     {
         void LowStockMessage();
         void MileStoneSalesMessage(AddSalesModel saleDTO);
+        void EmailSentNotification(string Subject);
 
     }
 }

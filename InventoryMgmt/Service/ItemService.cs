@@ -1,6 +1,10 @@
-﻿using InventoryMgmt.DataAccess;
+﻿using Azure.Identity;
+using InventoryMgmt.DataAccess;
+using InventoryMgmt.Hubs;
 using InventoryMgmt.Model;
 using InventoryMgmt.Model.ApiUseModel;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Tokens;
@@ -13,8 +17,9 @@ namespace InventoryMgmt.Service
 {
     public class ItemService : IItemService
     {
-        ItemService service;
         private readonly ApplicationDbContext _context;
+        private readonly IEmailSender _emailSender;
+        private readonly IHubContext<InventoryHub> _hubContext;
         ItemModel itemModel = new ItemModel();
         StockModel stockModel = new StockModel();
         private IMemoryCache _memoryCache;
@@ -22,13 +27,18 @@ namespace InventoryMgmt.Service
 
         public ItemService(
             ApplicationDbContext context,
-            IMemoryCache memoryCache
-
+            IMemoryCache memoryCache,
+            IEmailSender emailSender,
+            IHubContext<InventoryHub> hubContext
             )
         {
             _memoryCache = memoryCache;
             _context = context;
+            _emailSender= emailSender;
+            _hubContext = hubContext;
         }
+
+
 
         public bool AddItem(AddItemFormModel item)
         {
@@ -178,7 +188,7 @@ namespace InventoryMgmt.Service
 
             ItemModel serverItemModel = _context.items.Where(i => i.ItemId == itemId).FirstOrDefault();
 
-            
+
 
             if (serverItemModel is null)
             {
@@ -193,7 +203,7 @@ namespace InventoryMgmt.Service
             List<GetItemModelDTO> GetItemList = new List<GetItemModelDTO>();
             Log.Information("Getting Information of all Items");
 
-            if (_memoryCache.TryGetValue(cachekey, out List<ItemModel>items))
+            if (_memoryCache.TryGetValue(cachekey, out List<ItemModel> items))
             {
                 Log.Information("Items found in the cache");
             }
@@ -201,27 +211,30 @@ namespace InventoryMgmt.Service
             {
                 Log.Information("Items not found in cache");
                 items = _context.items.Where(i => i.IsActive == true).ToList<ItemModel>();
-                var getItemDTO= from stock in _context.stocks join
-                                store in _context.stores on stock.storeId equals store.storeId join 
+                var getItemDTO = from stock in _context.stocks
+                                 join
+                                store in _context.stores on stock.storeId equals store.storeId
+                                 join
                                 item in _context.items on stock.itemId equals item.ItemId
-                                select new{
-                                    itemId= item.ItemId,
-                                    itemName= item.ItemName,
-                                    itemCode = item.ItemCode,
-                                    storeId = store.storeId,
-                                    storeName = store.storeName,
-                                    stockRemaining= stock.quantity
-                                };
+                                 select new
+                                 {
+                                     itemId = item.ItemId,
+                                     itemName = item.ItemName,
+                                     itemCode = item.ItemCode,
+                                     storeId = store.storeId,
+                                     storeName = store.storeName,
+                                     stockRemaining = stock.quantity
+                                 };
 
-                foreach(var item in getItemDTO)
+                foreach (var item in getItemDTO)
                 {
                     GetItemModelDTO getItem = new GetItemModelDTO
                     {
                         itemId = item.itemId,
                         itemName = item.itemName,
-                        itemCode= item.itemCode,
-                        storeId= item.storeId,
-                        storeName= item.storeName,
+                        itemCode = item.itemCode,
+                        storeId = item.storeId,
+                        storeName = item.storeName,
                         stockRemaining = item.stockRemaining
                     };
 
@@ -394,6 +407,48 @@ Cannot insert duplicate key row in object 'dbo.tbl_item' with unique index 'IX_t
                     }
                 }
             }
+        }
+        public void InventoryUpdate(int itemId, decimal quantity)
+        {
+            using(var context = _context.Database.BeginTransaction())
+            {
+
+                var stock = _context.stocks.Where(i=>i.itemId ==itemId).FirstOrDefault();
+                string item = _context.items.Where(i=> i.ItemId== stock.itemId).Select(i=>i.ItemName).FirstOrDefault();
+                string store = _context.stores.Where(s=> s.storeId==stock.storeId).Select(s=> s.storeName).FirstOrDefault();
+                if(stock is null)
+                {
+                    Log.Error($"No Item is found of given item id {itemId} in stock table while updating inventory");
+                    throw new Exception("Item Not of id {itemId} in stock table while updating inventory");
+                }
+                stock.quantity= quantity;
+                HubMessageDTO hubMessageDTO = new HubMessageDTO
+                {
+                    Item = item,
+                    StoreName = store,
+                    Quantity = quantity
+                };
+
+                _hubContext.Clients.All.SendAsync("AddingItemToInventory",hubMessageDTO);
+                string userEmail= "lekhrajawasthi123@gmail.com";
+                Message message = new Message
+                (
+                    new String[]{userEmail},
+                    "Purchase Item Stock",
+                    $"Purchase of item\n \n {item} is purchased with quantity {quantity}"
+
+                );
+                _emailSender.SendEmail(message);
+                EmailLogs emailLogs = new EmailLogs();
+                emailLogs.ItemId= itemId;
+                emailLogs.IsSent =true;
+                emailLogs.User= userEmail;
+                emailLogs.Type= NotificationVariableEnum.PurchaseItemInventory;
+
+                _context.Add(emailLogs);
+                _context.SaveChanges();
+            }
+
         }
     }
 }

@@ -13,8 +13,8 @@ namespace InventoryMgmt.DependencyInjections
         {
             services.AddScoped<IValidator<RegisterUserModel>, UserValidationRules>();
             services.AddScoped<IValidator<LoginModel>, LoginUserValidationRules>();
-            services.AddScoped<IValidator<AddItemFormModel>, AddItemValidationRules >();
-            services.AddScoped<IValidator<ItemFormModel>, UpdateItemValidationRules >();
+            services.AddScoped<IValidator<AddItemFormModel>, AddItemValidationRules>();
+            services.AddScoped<IValidator<ItemFormModel>, UpdateItemValidationRules>();
 
         }
     }

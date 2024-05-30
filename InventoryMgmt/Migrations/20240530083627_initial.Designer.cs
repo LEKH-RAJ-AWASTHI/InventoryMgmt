@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryMgmt.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240528092653_seed data added for user")]
-    partial class seeddataaddedforuser
+    [Migration("20240530083627_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,8 +43,9 @@ namespace InventoryMgmt.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("User")
-                        .HasColumnType("bit");
+                    b.Property<string>("User")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

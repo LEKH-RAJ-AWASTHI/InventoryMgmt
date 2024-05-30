@@ -17,7 +17,7 @@ namespace InventoryMgmt.Model.ApiUseModel
         [Column(TypeName = "decimal(18,2)")]
         public decimal SalesRate { get; set; }
 
-        public string GetItemCode( int itemNo)
+        public string GetItemCode(int itemNo)
         {
             return $"ITM-{itemNo + 1}";
         }

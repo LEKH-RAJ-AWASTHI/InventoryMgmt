@@ -72,7 +72,7 @@ namespace InventoryMgmt.Migrations
                     ItemId = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsSent = table.Column<bool>(type: "bit", nullable: false),
-                    User = table.Column<bool>(type: "bit", nullable: false)
+                    User = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -142,6 +142,11 @@ namespace InventoryMgmt.Migrations
                         principalColumn: "storeId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "tbl_user",
+                columns: new[] { "userId", "email", "fullName", "isActive", "password", "role", "username" },
+                values: new object[] { 1, "lekhrajawasthi123@gmail.com", "Admin Admin", true, "pass123", "Admin", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_email_logs_ItemId",

@@ -4,7 +4,7 @@ using InventoryMgmt.Model.ApiUseModel;
 
 namespace InventoryMgmt.Validation_Rules
 {
-    public class StoreValidationRules :AbstractValidator<StoreRegisterModel>
+    public class StoreValidationRules : AbstractValidator<StoreRegisterModel>
     {
         public StoreValidationRules()
         {

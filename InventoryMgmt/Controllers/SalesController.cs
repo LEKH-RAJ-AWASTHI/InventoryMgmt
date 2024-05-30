@@ -9,7 +9,7 @@ using Serilog;
 
 namespace InventoryMgmt.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
     public class SalesController : ControllerBase
@@ -21,7 +21,7 @@ namespace InventoryMgmt.Controllers
             _context = context;
             _salesService = salesService;
         }
-        
+
         // GET: api/<SalesController>
         //[HttpGet]
         //public IEnumerable<string> Get()
@@ -44,7 +44,7 @@ namespace InventoryMgmt.Controllers
                 }
                 else
                 {
-                    bool response= _salesService.SellItem(salesDTO);
+                    bool response = _salesService.SellItem(salesDTO);
                     if (response)
                     {
                         return Ok("Sale of Item successfull");
@@ -57,7 +57,7 @@ namespace InventoryMgmt.Controllers
             }
             catch (Exception ex)
             {
-                Log.Error("Exception occured while selling item"+ ex.Message);
+                Log.Error("Exception occured while selling item" + ex.Message);
                 return BadRequest();
             }
 

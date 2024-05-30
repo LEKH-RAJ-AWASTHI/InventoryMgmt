@@ -6,9 +6,9 @@ namespace InventoryMgmt.DataAccess
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
+
         }
         public DbSet<ItemModel> items { get; set; }
         public DbSet<UserModel> users { get; set; }
@@ -16,7 +16,7 @@ namespace InventoryMgmt.DataAccess
         public DbSet<StockModel> stocks { get; set; }
         public DbSet<SalesModel> sales { get; set; }
 
-        public DbSet<EmailLogs> emailLogs {get; set; }
+        public DbSet<EmailLogs> emailLogs { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EmailLogs>().ToTable("email_logs");
@@ -26,15 +26,15 @@ namespace InventoryMgmt.DataAccess
                 .WithOne(b => b.item)
                 .HasForeignKey(b => b.itemId);
             modelBuilder.Entity<ItemModel>()
-                .HasMany(a=> a.sales)
+                .HasMany(a => a.sales)
                 .WithOne(b => b.item)
                 .HasForeignKey(b => b.itemId);
 
-            modelBuilder.Entity<UserModel>().HasData(new UserModel {userId=1,role="Admin", username = "admin", password = "pass123", email = "lekhrajawasthi123@gmail.com", fullName = "Admin Admin", isActive = true });
+            modelBuilder.Entity<UserModel>().HasData(new UserModel { userId = 1, role = "Admin", username = "admin", password = "pass123", email = "lekhrajawasthi123@gmail.com", fullName = "Admin Admin", isActive = true });
             modelBuilder.Entity<ItemModel>()
-                .HasMany(a=> a.emailLogs)
-                .WithOne(b=> b.item)
-                .HasForeignKey(b=> b.ItemId);
+                .HasMany(a => a.emailLogs)
+                .WithOne(b => b.item)
+                .HasForeignKey(b => b.ItemId);
 
             //making itemCode as unique attribute
             modelBuilder.Entity<ItemModel>()
@@ -52,13 +52,13 @@ namespace InventoryMgmt.DataAccess
             //tbl_sales has foreign key of 
             modelBuilder.Entity<StoreModel>()
                 .HasMany(a => a.sales)
-                .WithOne(b=>b.store)
+                .WithOne(b => b.store)
                 .HasForeignKey(b => b.storeId);
 
             modelBuilder.Entity<SalesModel>().ToTable("tbl_sales");
             modelBuilder.Entity<SalesModel>().Property(x => x.Quantity).HasPrecision(18, 2);
             modelBuilder.Entity<SalesModel>().Property(x => x.SalesPrice).HasPrecision(18, 2);
-            modelBuilder.Entity<SalesModel>().Property(x =>x.TotalPrice).HasPrecision(18, 2);
+            modelBuilder.Entity<SalesModel>().Property(x => x.TotalPrice).HasPrecision(18, 2);
 
         }
     }

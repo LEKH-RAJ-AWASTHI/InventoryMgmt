@@ -4,12 +4,12 @@
     {
         public enum ErrorCode
         {
-            InsertItemError= 1000,
-            UpdateItemError= 1001,
-            GetItemError= 1002
+            InsertItemError = 1000,
+            UpdateItemError = 1001,
+            GetItemError = 1002
         }
     }
-     public static class SessionVariableEnum
+    public static class SessionVariableEnum
     {
         public static readonly string CurrentUser = "currentUser";
     }
@@ -17,5 +17,12 @@
     {
         public static readonly string LowStock = "LowInventory";
         public static readonly string MileStoneSales = "MileStoneSales";
+        public static readonly string PurchaseItemInventory= "PurchaseItemInventory";
+    }
+
+    public static class EmailLogAlertTypeEnum
+    {
+        public static readonly string MileStoneSales = "MileStoneSalesAlert";
+        public static readonly string QuantityLowStock = "StockLowAlert";
     }
 }

@@ -34,7 +34,7 @@ namespace InventoryMgmt.Service
 
                         _context.sales.Add(salesModel);
 
-                        bool response =_stockService.StockManager(saleDTO);
+                        bool response = _stockService.StockManager(saleDTO);
                         if (response)
                         {
                             _context.SaveChanges();

@@ -23,13 +23,13 @@ namespace InventoryMgmt.Controllers
 
         public StoreController(IStoreService storeService)
         {
-            _storeService= storeService;
+            _storeService = storeService;
         }
         // GET: api/<StoreController>
         [HttpGet("GetAllStore")]
         public IActionResult Get()
         {
-            if(_storeService.ShowAllStores == null)
+            if (_storeService.ShowAllStores == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound, "User Not Found in the Server");
             }
@@ -41,16 +41,16 @@ namespace InventoryMgmt.Controllers
         [HttpPost("AddStore")]
         public IActionResult Post([FromBody] AddStoreDTO addStoreDTO)
         {
-            string StoreName= addStoreDTO.StoreName;
+            string StoreName = addStoreDTO.StoreName;
             try
             {
 
-                if(StoreName is null)
+                if (StoreName is null)
                 {
-                     throw new ArgumentNullException($"{nameof(StoreName)} is required!");
+                    throw new ArgumentNullException($"{nameof(StoreName)} is required!");
                 }
-                bool response =_storeService.AddStore(StoreName);
-                if(response)
+                bool response = _storeService.AddStore(StoreName);
+                if (response)
                 {
                     return Ok("Store Added Successfully");
                 }
@@ -80,7 +80,7 @@ namespace InventoryMgmt.Controllers
                     throw new ArgumentNullException($"{nameof(oldStoreName)} is required!");
                 }
                 bool response = _storeService.UpdateStore(oldStoreName, newStoreName);
-                if(response)
+                if (response)
                 {
                     return Ok("Store Updated Successfully");
                 }
@@ -89,7 +89,7 @@ namespace InventoryMgmt.Controllers
                     return BadRequest("Something Went Wrong");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, $"Exception: {ex}");
 
@@ -99,7 +99,7 @@ namespace InventoryMgmt.Controllers
 
         // DELETE api/<StoreController>/5
         [HttpPut("ChangeStoreActiveStatus")]
-        public IActionResult ChangeStoreActiveStatus(AddStoreDTO addStoreDTO )
+        public IActionResult ChangeStoreActiveStatus(AddStoreDTO addStoreDTO)
         {
             string StoreName = addStoreDTO.StoreName;
             try
@@ -114,12 +114,12 @@ namespace InventoryMgmt.Controllers
                     return Ok("Store Deleted Successfully");
                 }
                 else
-                { 
+                {
                     return BadRequest("Something Went Wrong");
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, $"Exception {ex}");
             }
@@ -133,7 +133,7 @@ namespace InventoryMgmt.Controllers
                 List<dynamic> list = _storeService.showStockLevel();
                 return Ok(list);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, ex);
             }
@@ -159,6 +159,6 @@ namespace InventoryMgmt.Controllers
         //}
 
 
-       
+
     }
 }

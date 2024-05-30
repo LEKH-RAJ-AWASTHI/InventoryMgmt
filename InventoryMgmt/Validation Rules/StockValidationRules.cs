@@ -7,12 +7,12 @@ namespace InventoryMgmt.Validation_Rules
     {
         public StockValidationRules()
         {
-            RuleFor(x=> x.stockId).Cascade(CascadeMode.Stop)
+            RuleFor(x => x.stockId).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(EmptyMessage("Stock Id"))
                 .NotNull().WithMessage(NullMessage("Stock Id"))
                 .NotEqual(0).WithMessage("User Id Must Not be equal to 0");
 
-            RuleFor(x=> x.quantity).Cascade(CascadeMode.Stop)
+            RuleFor(x => x.quantity).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(EmptyMessage("Quantity"))
                 .NotNull().WithMessage(NullMessage("Quantity"))
                 .LessThanOrEqualTo(0).WithMessage("Quantity should be greater than 0");

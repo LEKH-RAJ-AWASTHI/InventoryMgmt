@@ -31,7 +31,7 @@ namespace InventoryMgmt.Validations
                 NotEmpty().WithMessage(EmptyMessage("Purchase Rate"))
                 .NotNull().WithMessage(NullMessage("Purchase Rate"))
                 .GreaterThan(0).WithMessage("Purchase Rate should be greater than 0");
-                
+
 
             RuleFor(x => x.salesRate).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(EmptyMessage("Sales Rate"))
