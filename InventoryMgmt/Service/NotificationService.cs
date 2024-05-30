@@ -43,7 +43,7 @@ namespace InventoryMgmt.Service
                             StoreName =storeName,
                             Quantity = item.quantity,
                         };
-                        _hubContext.Clients.All.SendAsync("ReceiveInventoryUpdate", hubMessage);
+                        _hubContext.Clients.All.SendAsync("GetLowStockNotification", hubMessage);
                         Log.Information($"Inventory update: {itemDetail.ItemName} - {item.quantity}");
                         //checking for if same email is sent
                         //1. By that particular ItemId
