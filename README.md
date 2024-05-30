@@ -14,13 +14,13 @@ Table of Contents
 
 - [Technology Stack] 
 
-- [Getting Started] 
+- [Getting Started]
 
-- [Installation](#installation) 
+- [Installation]
 
-- [Contributing](#contributing) 
+- [Contributing]
 
-- [Contact](#contact) 
+- [Contact]
 
   
 
