@@ -151,7 +151,54 @@ username: admin,
 Password: pass123 
 
    
+Additional Features:
+It uses signalr package for realtime notification. 
+Notification is sent through url https://localhost:7025/hub
+Notification is sent in a format of 
 
+```c#
+public class HubMessageDTO
+{
+
+    public string Item { get; set; }
+    public string StoreName { get; set; }
+    public decimal Quantity { get; set; }
+    public DateTime Date = DateTime.Now;
+}
+```
+and in Frontend (angular) you have this syntax to receive data
+
+```javascript
+public startConnection() {
+// Building the connection to the SignalR hub with automatic reconnection
+this.hubConnection = new signalR.HubConnectionBuilder()
+.withUrl('https://localhost:7025/hub')  // URL to the SignalR hub endpoint
+.withAutomaticReconnect()  // Enables automatic reconnection in case of disconnection
+.build();  // Completes the building of the HubConnection instance
+
+// Starting the SignalR connection
+this.hubConnection.start()
+.then(() => console.log('Connection started'))  // Log success message on successful connection
+.catch(err => console.log('Error while starting connection: ' + err));  // Log error message if the connection fails
+}
+
+// Method to add a listener for inventory updates from the server
+public addInventoryUpdateListener(callback: (itemName: string, quantity: number) => void) {
+// Setting up an event listener for 'ReceiveInventoryUpdate' event from the SignalR hub
+this.hubConnection.on('GetLowStockNotification', (itemName: string, quantity: number) => {
+callback(itemName, quantity);  // Invoke the callback function with the received data
+});
+
+```
+
+
+The Keyword 'GetLowStockNotification' is used to get Notification when Item is running out
+similarly there are two other keyword.
+
+1. MileStoneSale
+2. EmailNotification
+3. GetLowStockNotification
+   
 Contributing 
 
 Any contributions you make are greatly appreciated. 
