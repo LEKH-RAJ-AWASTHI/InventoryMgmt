@@ -24,6 +24,7 @@ namespace InventoryMgmt.Service
         StockModel stockModel = new StockModel();
         private IMemoryCache _memoryCache;
         private IConfiguration _configuration;
+        private INotificationService _notificationService;
         private readonly string cachekey = "itemCacheKey";
 
         public ItemService(
@@ -31,7 +32,8 @@ namespace InventoryMgmt.Service
             IMemoryCache memoryCache,
             IEmailSender emailSender,
             IHubContext<InventoryHub> hubContext,
-            IConfiguration configuration
+            IConfiguration configuration,
+            INotificationService notificationService
             )
         {
             _memoryCache = memoryCache;
@@ -39,6 +41,7 @@ namespace InventoryMgmt.Service
             _emailSender= emailSender;
             _hubContext = hubContext;
             _configuration = configuration;
+            _notificationService= notificationService;
         }
 
 
@@ -430,42 +433,56 @@ Cannot insert duplicate key row in object 'dbo.tbl_item' with unique index 'IX_t
         {
             using(var context = _context.Database.BeginTransaction())
             {
-
-                var stock = _context.stocks.Where(i=>i.itemId ==itemId).FirstOrDefault();
-                string item = _context.items.Where(i=> i.ItemId== stock.itemId).Select(i=>i.ItemName).FirstOrDefault();
-                string store = _context.stores.Where(s=> s.storeId==stock.storeId).Select(s=> s.storeName).FirstOrDefault();
-                if(stock is null)
+                try
                 {
-                    Log.Error($"No Item is found of given item id {itemId} in stock table while updating inventory");
-                    throw new Exception("Item Not of id {itemId} in stock table while updating inventory");
+
+                    var stock = _context.stocks.Where(i=>i.itemId ==itemId).FirstOrDefault();
+                    string item = _context.items.Where(i=> i.ItemId== stock.itemId).Select(i=>i.ItemName).FirstOrDefault();
+                    string store = _context.stores.Where(s=> s.storeId==stock.storeId).Select(s=> s.storeName).FirstOrDefault();
+                    if(stock is null)
+                    {
+                        Log.Error($"No Item is found of given item id {itemId} in stock table while updating inventory");
+                        throw new Exception("Item Not of id {itemId} in stock table while updating inventory");
+                    }
+
+                    stock.quantity= quantity;
+                    
+                    HubMessageDTO hubMessageDTO = new HubMessageDTO
+                    {
+                        Item = item,
+                        StoreName = store,
+                        Quantity = quantity
+                    };
+                    _notificationService.AddInventoryMessage(itemId, quantity);
+
+                    _hubContext.Clients.All.SendAsync("AddingItemToInventory",hubMessageDTO);
+                    string userEmail= "lekhrajawasthi123@gmail.com";
+                    string Subject = EmailSubjectEnum.AddingItemToInventory;
+                    string Content =  $"Updated Stock of item\n \n {item} with quantity {quantity} in store {store}";
+                    SendEmailModel sendEmailModel= new SendEmailModel(_configuration, Subject, Content);
+                    Message message = new Message
+                    (
+                    sendEmailModel
+
+                    );
+                    _emailSender.SendEmail(message);
+                    EmailLogs emailLogs = new EmailLogs();
+                    emailLogs.ItemId= itemId;
+                    emailLogs.IsSent =true;
+                    emailLogs.User= userEmail;
+                    emailLogs.Type= NotificationVariableEnum.PurchaseItemInventory;
+
+                    _context.Add(emailLogs);
+                    _context.SaveChanges();
+                    context.Commit();
                 }
-                stock.quantity= quantity;
-                HubMessageDTO hubMessageDTO = new HubMessageDTO
+                catch(Exception ex)
                 {
-                    Item = item,
-                    StoreName = store,
-                    Quantity = quantity
-                };
+                    Log.Error($"Updating Inventory failed : {ex.Message}");
+                    context.Rollback();
+                    throw new InvalidOperationException(ex.Message);
+                }
 
-                _hubContext.Clients.All.SendAsync("AddingItemToInventory",hubMessageDTO);
-                string userEmail= "lekhrajawasthi123@gmail.com";
-                string Subject = EmailSubjectEnum.AddingItemToInventory;
-                string Content =  $"Purchase of item\n \n {item} is purchased with quantity {quantity} in store {store}";
-                SendEmailModel sendEmailModel= new SendEmailModel(_configuration, Subject, Content);
-                Message message = new Message
-                (
-                   sendEmailModel
-
-                );
-                _emailSender.SendEmail(message);
-                EmailLogs emailLogs = new EmailLogs();
-                emailLogs.ItemId= itemId;
-                emailLogs.IsSent =true;
-                emailLogs.User= userEmail;
-                emailLogs.Type= NotificationVariableEnum.PurchaseItemInventory;
-
-                _context.Add(emailLogs);
-                _context.SaveChanges();
             }
 
         }

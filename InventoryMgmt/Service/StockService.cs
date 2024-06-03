@@ -16,12 +16,14 @@ namespace InventoryMgmt.Service
         private INotificationService _notificationService;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
         public StockService
         (ApplicationDbContext context,
         IServiceScopeFactory scopeFactory,
         INotificationService notificationService,
         IEmailSender emailSender,
-        IConfiguration configuration
+        IConfiguration configuration,
+        IEmailService emailService
         )
         {
             _context = context;
@@ -29,6 +31,7 @@ namespace InventoryMgmt.Service
             _notificationService = notificationService;
             _emailSender = emailSender;
             _configuration= configuration;
+            _emailService =emailService;
         }
 
         public bool IsStockAvailable(AddSalesModel saleDTO)
@@ -62,7 +65,7 @@ namespace InventoryMgmt.Service
             //{
             StockModel StockFromServer = _context.stocks.Where(s => s.itemId == saleDTO.ItemId && s.storeId == saleDTO.StoreId).FirstOrDefault();
 
-            string ItemFromServer = _context.items.Where(s => s.ItemId == StockFromServer.itemId).Select(s=>s.ItemName).FirstOrDefault();
+            var ItemFromServer = _context.items.Where(s => s.ItemId == StockFromServer.itemId).FirstOrDefault();
 
             decimal RemainingQuantity = StockFromServer.quantity - saleDTO.Quantity;
             if (RemainingQuantity < 0)
@@ -72,22 +75,7 @@ namespace InventoryMgmt.Service
             //this if condition is triggred when threshold is just crossed 
             if(StockFromServer.quantity> 50 && RemainingQuantity<= 50)
             {
-                string Subject = EmailSubjectEnum.QuantityLowStock;
-                string Content = $"Inventory of {ItemFromServer} is low in stock./n/n Remaining Quantity is {RemainingQuantity}. ";
-                SendEmailModel sendEmailModel = new SendEmailModel(_configuration, Subject, Content);
-                string userEmail= "lekhrajawasthi123@gmail.com";
-                Message message = new Message(
-                sendEmailModel
-                                 );
-                _emailSender.SendEmail(message);
-                _notificationService.EmailSentNotification(message.Subject);
-
-                EmailLogs emailLogs = new EmailLogs();
-                emailLogs.ItemId= StockFromServer.itemId;
-                emailLogs.Type= EmailLogAlertTypeEnum.QuantityLowStock;
-                emailLogs.User = userEmail;
-                emailLogs.IsSent = true;
-                _context.emailLogs.Add(emailLogs);
+                _emailService.LowStockEmailService(ItemFromServer, RemainingQuantity);
             }
             StockFromServer.quantity = RemainingQuantity;
             //checking for milestone sales 

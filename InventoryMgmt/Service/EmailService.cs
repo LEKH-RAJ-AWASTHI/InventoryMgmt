@@ -53,9 +53,19 @@ namespace InventoryMgmt.Service
             EmailSentNotification(message.Subject);
             AddEmailLogs(itemModel.ItemId);
         }
-        public void AddItemInventoryEmailService(ItemModel itemModel, decimal quantity)
+        public void AddItemInventoryEmailService(ItemModel itemModel, decimal quantity, string store)
         {
-            return;
+            string Subject = EmailSubjectEnum.AddingItemToInventory;
+            string Content =  $"Updated Stock of item\n \n {itemModel.ItemName} with quantity {quantity} in store {store}";
+            SendEmailModel sendEmailModel= new SendEmailModel(_configuration, Subject, Content);
+            Message message = new Message
+            (
+            sendEmailModel
+
+            );
+            _emailSender.SendEmail(message);
+            EmailSentNotification(message.Subject);
+            AddEmailLogs(itemModel.ItemId);
         }
         private void EmailSentNotification(String Subject)
         {

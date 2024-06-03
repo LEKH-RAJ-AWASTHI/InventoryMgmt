@@ -37,15 +37,14 @@ namespace InventoryMgmt.Service
                                             stocks in _context.stocks on store.storeId equals stocks.storeId
                                             where stocks.itemId == item.itemId select store.storeName).FirstOrDefault();
        
+                    HubMessageDTO hubMessage = new HubMessageDTO
+                    {
+                        Item = itemDetail.ItemName,
+                        StoreName =storeName,
+                        Quantity = item.quantity,
+                    };
                     if (itemDetail != null)
                     {
-                        string userEmail = "lekhrajawathi123@gmail.com";
-                        HubMessageDTO hubMessage = new HubMessageDTO
-                        {
-                            Item = itemDetail.ItemName,
-                            StoreName =storeName,
-                            Quantity = item.quantity,
-                        };
                         _hubContext.Clients.All.SendAsync("GetLowStockNotification", hubMessage);
                         Log.Information($"Inventory update: {itemDetail.ItemName} - {item.quantity}");
                         //checking for if same email is sent
@@ -55,23 +54,19 @@ namespace InventoryMgmt.Service
                         //4. Is the email is of the low stock message 
                         int day = DateTime.Now.Day -5;
                         var emailStatus= _context.emailLogs.Where(i=> i.ItemId== itemDetail.ItemId).OrderByDescending(e=> e.dateTime).FirstOrDefault();
-                        if(emailStatus.dateTime.Day > day && emailStatus.Type == EmailLogAlertTypeEnum.QuantityLowStock)
+                        if(emailStatus is not null)
                         {
-                            return;
+                            if(emailStatus.dateTime.Day > day && emailStatus.Type == EmailLogAlertTypeEnum.QuantityLowStock)
+                            {
+                                return;
+                            }
                         }
                         else
                         {
                             _emailService.LowStockEmailService(itemDetail, item.quantity);
-                            Notification notification = new Notification
-                            {
-                                Item = itemDetail.ItemName,
-                                Quantity = item.quantity,
-                                StoreName = storeName
-                            };
-                            _context.Add(notification);
-
-
+                            SaveNotificationInDB(hubMessage);
                         }
+                       
                         //if data comes in the emailStatus then the email is already sent and no need to send again if emailstatus is null then send email again.
 
                         
@@ -94,12 +89,42 @@ namespace InventoryMgmt.Service
             };
             _hubContext.Clients.All.SendAsync("MileStoneSale", hubMessage);
             _emailService.MilestoneItemSaleEmailService(maxSaleItem, saleDTO.Quantity);
+            SaveNotificationInDB(hubMessage);
             Log.Information($"Milestone sales : {maxSaleItem.ItemName} from store: {maxSaleItemStore.storeName} on date {DateTime.Now}");
         }
-        public void EmailSentNotification(String Subject)
+
+        public void AddInventoryMessage(int itemId, decimal quantity)
         {
-            
-            _hubContext.Clients.All.SendAsync("EmailNotification", Subject);
+            var stock = _context.stocks.Where(i=>i.itemId ==itemId).FirstOrDefault();
+            ItemModel item = _context.items.Where(i=> i.ItemId== stock.itemId).FirstOrDefault();
+            string store = _context.stores.Where(s=> s.storeId==stock.storeId).Select(s=> s.storeName).FirstOrDefault();
+            HubMessageDTO hubMessageDTO = new HubMessageDTO
+            {
+                Item = item.ItemName,
+                StoreName = store,
+                Quantity = quantity
+            };
+
+            _hubContext.Clients.All.SendAsync("AddingItemToInventory",hubMessageDTO);
+            _emailService.AddItemInventoryEmailService(item, quantity, store);
         }
+        public IQueryable<Notification> GetLatestNotification()
+        {
+            IQueryable<Notification> notification = _context.notifications.OrderByDescending(n=> n.Date).Take(10);
+            return notification;
+        }
+
+        private void SaveNotificationInDB(HubMessageDTO hubMessage)
+        {
+            Notification notification = new Notification
+            {
+                Item = hubMessage.Item,
+                Quantity = hubMessage.Quantity,
+                StoreName = hubMessage.StoreName
+            };
+            _context.Add(notification);
+        }
+
+
     }
 }

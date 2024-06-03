@@ -17,6 +17,7 @@ namespace InventoryMgmt.DataAccess
         public DbSet<SalesModel> sales { get; set; }
 
         public DbSet<EmailLogs> emailLogs { get; set; }
+        public DbSet<Notification> notifications {get; set;}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Notification>().ToTable("tbl_notifications");
