@@ -30,5 +30,6 @@
     {
         public static readonly string MileStoneSales= "Milestone Sales Alert";
         public static readonly string QuantityLowStock= "Low Stock Alert";
+        public static readonly string AddingItemToInventory= "Adding Item to inventory";
     }
 }
