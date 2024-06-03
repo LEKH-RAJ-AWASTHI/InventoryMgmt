@@ -206,14 +206,29 @@ namespace InventoryMgmt.Service
             List<GetItemModelDTO> GetItemList = new List<GetItemModelDTO>();
             Log.Information("Getting Information of all Items");
 
-            if (_memoryCache.TryGetValue(cachekey, out List<ItemModel> items))
+            if (_memoryCache.TryGetValue(cachekey, out List<GetItemModelDTO> items))
             {
                 Log.Information("Items found in the cache");
+                foreach(var item in items)
+                {
+
+                    GetItemModelDTO getItem = new GetItemModelDTO
+                    {
+                        itemId = item.itemId,
+                        itemName = item.itemName,
+                        itemCode = item.itemCode,
+                        storeId = item.storeId,
+                        storeName = item.storeName,
+                        stockRemaining = item.stockRemaining
+                    };
+
+                    GetItemList.Add(getItem);
+                }
             }
             else
             {
                 Log.Information("Items not found in cache");
-                items = _context.items.Where(i => i.IsActive == true).ToList<ItemModel>();
+                // items = _context.items.Where(i => i.IsActive == true).ToList<ItemModel>();
                 var getItemDTO = from stock in _context.stocks
                                  join
                                 store in _context.stores on stock.storeId equals store.storeId
@@ -249,7 +264,7 @@ namespace InventoryMgmt.Service
                     .SetSlidingExpiration(TimeSpan.FromMinutes(1))
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(10))
                     .SetPriority(CacheItemPriority.Normal);
-                _memoryCache.Set(cachekey, items, cacheSettings);
+                _memoryCache.Set(cachekey, GetItemList, cacheSettings);
             }
             return GetItemList;
         }
