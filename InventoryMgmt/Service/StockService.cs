@@ -75,7 +75,7 @@ namespace InventoryMgmt.Service
             //this if condition is triggred when threshold is just crossed 
             if(StockFromServer.quantity> 50 && RemainingQuantity<= 50)
             {
-                _emailService.LowStockEmailService(ItemFromServer, RemainingQuantity);
+                _emailService.LowStockEmailService(ItemFromServer.ItemId,ItemFromServer.ItemName, RemainingQuantity);
             }
             StockFromServer.quantity = RemainingQuantity;
             //checking for milestone sales 

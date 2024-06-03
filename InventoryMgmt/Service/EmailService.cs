@@ -23,10 +23,10 @@ namespace InventoryMgmt.Service
             _hubContext = hubContext;
             _emailSender = emailSender;
         }
-        public void LowStockEmailService(ItemModel itemModel, decimal quantity)
+        public void LowStockEmailService(int itemId, string itemName, decimal quantity)
         {
             string Subject= EmailSubjectEnum.QuantityLowStock;
-            string Content =$"Inventory of {itemModel.ItemName} is low in stock./n/n Remaining Quantity is {quantity}. ";
+            string Content =$"Inventory of {itemName} is low in stock./n/n Remaining Quantity is {quantity}. ";
 
             SendEmailModel sendEmailModel = new SendEmailModel(_configuration, Subject, Content);
             Message message = new Message
@@ -35,7 +35,7 @@ namespace InventoryMgmt.Service
             );
             _emailSender.SendEmail(message);
             EmailSentNotification(message.Subject);
-            AddEmailLogs(itemModel.ItemId);
+            AddEmailLogs(itemId);
             
         }
 
