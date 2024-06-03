@@ -23,19 +23,22 @@ namespace InventoryMgmt.Service
         ItemModel itemModel = new ItemModel();
         StockModel stockModel = new StockModel();
         private IMemoryCache _memoryCache;
+        private IConfiguration _configuration;
         private readonly string cachekey = "itemCacheKey";
 
         public ItemService(
             ApplicationDbContext context,
             IMemoryCache memoryCache,
             IEmailSender emailSender,
-            IHubContext<InventoryHub> hubContext
+            IHubContext<InventoryHub> hubContext,
+            IConfiguration configuration
             )
         {
             _memoryCache = memoryCache;
             _context = context;
             _emailSender= emailSender;
             _hubContext = hubContext;
+            _configuration = configuration;
         }
 
 
@@ -431,11 +434,12 @@ Cannot insert duplicate key row in object 'dbo.tbl_item' with unique index 'IX_t
 
                 _hubContext.Clients.All.SendAsync("AddingItemToInventory",hubMessageDTO);
                 string userEmail= "lekhrajawasthi123@gmail.com";
+                string Subject = EmailSubjectEnum.AddingItemToInventory;
+                string Content =  $"Purchase of item\n \n {item} is purchased with quantity {quantity} in store {store}";
+                SendEmailModel sendEmailModel= new SendEmailModel(_configuration, Subject, Content);
                 Message message = new Message
                 (
-                    new String[]{userEmail},
-                    "Purchase Item Stock",
-                    $"Purchase of item\n \n {item} is purchased with quantity {quantity}"
+                   sendEmailModel
 
                 );
                 _emailSender.SendEmail(message);

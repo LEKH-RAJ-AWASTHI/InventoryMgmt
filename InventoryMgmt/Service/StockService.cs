@@ -15,17 +15,20 @@ namespace InventoryMgmt.Service
         private readonly IServiceScopeFactory _scopeFactory;
         private INotificationService _notificationService;
         private readonly IEmailSender _emailSender;
+        private readonly IConfiguration _configuration;
         public StockService
         (ApplicationDbContext context,
         IServiceScopeFactory scopeFactory,
         INotificationService notificationService,
-        IEmailSender emailSender
+        IEmailSender emailSender,
+        IConfiguration configuration
         )
         {
             _context = context;
             _scopeFactory = scopeFactory;
             _notificationService = notificationService;
             _emailSender = emailSender;
+            _configuration= configuration;
         }
 
         public bool IsStockAvailable(AddSalesModel saleDTO)
@@ -69,13 +72,13 @@ namespace InventoryMgmt.Service
             //this if condition is triggred when threshold is just crossed 
             if(StockFromServer.quantity> 50 && RemainingQuantity<= 50)
             {
+                string Subject = EmailSubjectEnum.QuantityLowStock;
+                string Content = $"Inventory of {ItemFromServer} is low in stock./n/n Remaining Quantity is {RemainingQuantity}. ";
+                SendEmailModel sendEmailModel = new SendEmailModel(_configuration, Subject, Content);
                 string userEmail= "lekhrajawasthi123@gmail.com";
                 Message message = new Message(
-                
-                    new String[]{userEmail},
-                    "Inventory Stock Low",
-                    $"Inventory of {ItemFromServer} is low in stock./n/n Remaining Quantity is {RemainingQuantity}. "
-                );
+                sendEmailModel
+                                 );
                 _emailSender.SendEmail(message);
                 _notificationService.EmailSentNotification(message.Subject);
 
