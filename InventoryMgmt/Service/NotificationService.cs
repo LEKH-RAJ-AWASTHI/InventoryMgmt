@@ -13,14 +13,16 @@ namespace InventoryMgmt.Service
         private readonly ApplicationDbContext _context;
         private readonly IHubContext<InventoryHub> _hubContext;
         private readonly IEmailSender _emailSender;
+        private readonly IEmailService _emailService;
 
         private readonly IConfiguration _configuration;
-        public NotificationService(ApplicationDbContext context, IHubContext<InventoryHub> hubContext, IEmailSender emailSender, IConfiguration configuration)
+        public NotificationService(IEmailService emailService, ApplicationDbContext context, IHubContext<InventoryHub> hubContext, IEmailSender emailSender, IConfiguration configuration)
         {
             _context = context;
             _hubContext = hubContext;
             _emailSender = emailSender;
             _configuration= configuration;
+            _emailService= emailService;
 
         }
         public void LowStockMessage()
@@ -34,9 +36,7 @@ namespace InventoryMgmt.Service
                     var storeName =(from store in _context.stores join 
                                             stocks in _context.stocks on store.storeId equals stocks.storeId
                                             where stocks.itemId == item.itemId select store.storeName).FirstOrDefault();
-
-                                           
-                                            
+       
                     if (itemDetail != null)
                     {
                         string userEmail = "lekhrajawathi123@gmail.com";
@@ -61,24 +61,15 @@ namespace InventoryMgmt.Service
                         }
                         else
                         {
-                            string Subject= EmailSubjectEnum.QuantityLowStock;
-                            string Content =$"Inventory of {itemDetail.ItemName} is low in stock./n/n Remaining Quantity is {item.quantity}. ";
-
-                            SendEmailModel sendEmailModel = new SendEmailModel(_configuration, Subject, Content);
-                            Message message = new Message
-                            (
-                                sendEmailModel
-                            );
-                            _emailSender.SendEmail(message);
-                            EmailSentNotification(message.Subject);
-                            EmailLogs emailLogs = new EmailLogs
+                            _emailService.LowStockEmailService(itemDetail, item.quantity);
+                            Notification notification = new Notification
                             {
-                                ItemId = itemDetail.ItemId,
-                                IsSent = true,
-                                User = userEmail,
-                                Type = EmailLogAlertTypeEnum.QuantityLowStock
+                                Item = itemDetail.ItemName,
+                                Quantity = item.quantity,
+                                StoreName = storeName
                             };
-                            _context.emailLogs.Add(emailLogs);
+                            _context.Add(notification);
+
 
                         }
                         //if data comes in the emailStatus then the email is already sent and no need to send again if emailstatus is null then send email again.
@@ -89,6 +80,7 @@ namespace InventoryMgmt.Service
                 }
             }
         }
+
         public void MileStoneSalesMessage(AddSalesModel saleDTO)
         {
             ItemModel maxSaleItem = _context.items.Where(i => i.ItemId == saleDTO.ItemId).FirstOrDefault();
@@ -101,24 +93,7 @@ namespace InventoryMgmt.Service
                 Quantity = saleDTO.Quantity,
             };
             _hubContext.Clients.All.SendAsync("MileStoneSale", hubMessage);
-            string userEmail = "lekhrajawasthi123@gmail.com";
-            string Subject = EmailSubjectEnum.MileStoneSales;
-            string Content=$"Congratulations,\n {maxSaleItem.ItemName}, has sold today in the record quantity of {saleDTO.Quantity}";
-
-            SendEmailModel sendEmailModel = new SendEmailModel(_configuration, Subject, Content);
-            Message message = new Message(
-                sendEmailModel
-            );
-            _emailSender.SendEmail(message);
-            EmailSentNotification(message.Subject);
-            EmailLogs emailLog = new EmailLogs();
-            emailLog.ItemId = saleDTO.ItemId;
-            emailLog.IsSent = true;
-            emailLog.User = userEmail;
-            emailLog.Type = EmailLogAlertTypeEnum.MileStoneSales;
-
-            _context.emailLogs.Add(emailLog);
-
+            _emailService.MilestoneItemSaleEmailService(maxSaleItem, saleDTO.Quantity);
             Log.Information($"Milestone sales : {maxSaleItem.ItemName} from store: {maxSaleItemStore.storeName} on date {DateTime.Now}");
         }
         public void EmailSentNotification(String Subject)

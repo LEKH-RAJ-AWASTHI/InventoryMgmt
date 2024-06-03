@@ -13,5 +13,5 @@ public class EmailLogs
     public bool IsSent { get; set; }
     public string User { get; set; }
 
-    public DateTime dateTime= DateTime.Now;
+    public DateTime dateTime {get; set; } =DateTime.Now;
 }

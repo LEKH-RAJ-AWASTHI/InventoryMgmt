@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InventoryMgmt.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240530100430_initial")]
-    partial class initial
+    [Migration("20240603094712_First-migration")]
+    partial class Firstmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,9 @@ namespace InventoryMgmt.Migrations
                     b.Property<string>("User")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("dateTime")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -96,6 +99,33 @@ namespace InventoryMgmt.Migrations
                         .IsUnique();
 
                     b.ToTable("tbl_item", (string)null);
+                });
+
+            modelBuilder.Entity("InventoryMgmt.Model.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Item")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("StoreName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tbl_notifications", (string)null);
                 });
 
             modelBuilder.Entity("InventoryMgmt.Model.SalesModel", b =>
