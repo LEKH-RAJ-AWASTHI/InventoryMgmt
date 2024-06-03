@@ -1,0 +1,21 @@
+<div *ngIf="Items.length > 0">
+    <h2>Items List</h2>
+    <table class="item-table">
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Item Code</th>
+                <th>Store Name</th>
+                <th>Stock Remaining</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of Items">
+                <th>{{item.itemName}}</th>
+                <td>{{ item.itemCode }}</td>
+                <td>{{ item.storeName }}</td>
+                <td>{{ item.stockRemaining }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
