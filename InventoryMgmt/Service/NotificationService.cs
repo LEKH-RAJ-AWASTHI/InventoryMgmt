@@ -74,8 +74,8 @@ namespace InventoryMgmt.Service
 
         public void MileStoneSalesMessage(AddSalesModel saleDTO)
         {
-            ItemModel maxSaleItem = _context.items.Where(i => i.ItemId == saleDTO.ItemId).FirstOrDefault();
-            StoreModel maxSaleItemStore = _context.stores.Where(s => s.storeId == saleDTO.StoreId).FirstOrDefault();
+            ItemModel? maxSaleItem = _context.items.Where(i => i.ItemId == saleDTO.ItemId).FirstOrDefault();
+            StoreModel? maxSaleItemStore = _context.stores.Where(s => s.storeId == saleDTO.StoreId).FirstOrDefault();
 
             HubMessageDTO hubMessage = new HubMessageDTO
             {
@@ -92,8 +92,8 @@ namespace InventoryMgmt.Service
         public void AddInventoryMessage(int itemId, decimal quantity)
         {
             var stock = _context.stocks.Where(i => i.itemId == itemId).FirstOrDefault();
-            ItemModel item = _context.items.Where(i => i.ItemId == stock.itemId).FirstOrDefault();
-            string store = _context.stores.Where(s => s.storeId == stock.storeId).Select(s => s.storeName).FirstOrDefault();
+            ItemModel? item = _context.items.Where(i => i.ItemId == stock.itemId).FirstOrDefault();
+            string? store = _context.stores.Where(s => s.storeId == stock.storeId).Select(s => s.storeName).FirstOrDefault();
             HubMessageDTO hubMessageDTO = new HubMessageDTO
             {
                 Item = item.ItemName,

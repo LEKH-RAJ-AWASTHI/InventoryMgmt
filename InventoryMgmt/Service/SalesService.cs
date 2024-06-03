@@ -19,7 +19,7 @@ namespace InventoryMgmt.Service
         {
             try
             {
-                ItemModel ItemFromServer = _context.items.Where(i => i.ItemId == saleDTO.ItemId && i.IsActive == true).FirstOrDefault();
+                ItemModel? ItemFromServer = _context.items.Where(i => i.ItemId == saleDTO.ItemId && i.IsActive == true).FirstOrDefault();
                 if (_stockService.IsStockAvailable(saleDTO))
                 {
                     using (var context = _context.Database.BeginTransaction())

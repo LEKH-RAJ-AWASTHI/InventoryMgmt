@@ -36,20 +36,20 @@ namespace InventoryMgmt.Service
 
         public bool IsStockAvailable(AddSalesModel saleDTO)
         {
-            StoreModel StoreFromServer = _context.stores.Where(s => s.storeId == saleDTO.StoreId && s.isActive == true).FirstOrDefault();
+            StoreModel? StoreFromServer = _context.stores.Where(s => s.storeId == saleDTO.StoreId && s.isActive == true).FirstOrDefault();
             if (StoreFromServer is null)
             {
                 Log.Error("Store Not Found in the server while searching for Sales Of Item");
                 return false;
             }
-            ItemModel ItemFromServer = _context.items.Where(i => i.ItemId == saleDTO.ItemId && i.IsActive == true).FirstOrDefault();
+            ItemModel? ItemFromServer = _context.items.Where(i => i.ItemId == saleDTO.ItemId && i.IsActive == true).FirstOrDefault();
             if (ItemFromServer is null)
             {
                 Log.Error("Item Not Found in the server while searching for Sales Of Item");
                 return false;
             }
 
-            StockModel ServerStock = _context.stocks.Where(s => s.storeId.Equals(saleDTO.StoreId) && s.itemId.Equals(saleDTO.ItemId)).FirstOrDefault();
+            StockModel? ServerStock = _context.stocks.Where(s => s.storeId.Equals(saleDTO.StoreId) && s.itemId.Equals(saleDTO.ItemId)).FirstOrDefault();
             if (ServerStock is null && ServerStock.quantity < saleDTO.Quantity && ServerStock.expiryDate < DateTime.Now)
             {
                 return false;
@@ -63,7 +63,7 @@ namespace InventoryMgmt.Service
             //q.Enqueue(saleDTO);
             //foreach (var sales in q)
             //{
-            StockModel StockFromServer = _context.stocks.Where(s => s.itemId == saleDTO.ItemId && s.storeId == saleDTO.StoreId).FirstOrDefault();
+            StockModel? StockFromServer = _context.stocks.Where(s => s.itemId == saleDTO.ItemId && s.storeId == saleDTO.StoreId).FirstOrDefault();
 
             var ItemFromServer = _context.items.Where(s => s.ItemId == StockFromServer.itemId).FirstOrDefault();
 

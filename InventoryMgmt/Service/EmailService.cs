@@ -41,7 +41,6 @@ namespace InventoryMgmt.Service
 
         public void MilestoneItemSaleEmailService(ItemModel itemModel , decimal quantity)
         {
-             string userEmail = "lekhrajawasthi123@gmail.com";
             string Subject = EmailSubjectEnum.MileStoneSales;
             string Content=$"Congratulations,\n {itemModel.ItemName}, has sold today in the record quantity of {quantity}";
 
