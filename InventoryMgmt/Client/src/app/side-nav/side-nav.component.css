@@ -23,10 +23,12 @@
     height: 50px;
 }
 
-.nav-list-item:hover {
+.nav-list-open .nav-list-item:hover {
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 10px;
 }
+
+
 
 .nav-list-item i {
     font-size: 20px;
@@ -41,6 +43,7 @@
 .nav-list-item span {
     width: 120px;
     text-transform: capitalize;
+    font-weight: 600px;
 }
 
 a {

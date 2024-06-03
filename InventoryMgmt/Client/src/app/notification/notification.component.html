@@ -1,0 +1,8 @@
+<div class="notification">
+    <h3>Notification</h3>
+    <ul>
+        <li *ngFor="let notification of Notifications">
+            <strong>{{ notification.itemName }}</strong>: {{ notification.quantity }} remaining
+        </li>
+    </ul>
+</div>
