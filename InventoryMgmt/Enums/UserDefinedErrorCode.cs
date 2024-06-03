@@ -25,4 +25,10 @@
         public static readonly string MileStoneSales = "MileStoneSalesAlert";
         public static readonly string QuantityLowStock = "StockLowAlert";
     }
+
+    public static class EmailSubjectEnum
+    {
+        public static readonly string MileStoneSales= "Milestone Sales Alert";
+        public static readonly string QuantityLowStock= "Low Stock Alert";
+    }
 }

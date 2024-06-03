@@ -14,11 +14,14 @@ namespace InventoryMgmt.Service
         private readonly IHubContext<InventoryHub> _hubContext;
         private readonly IEmailSender _emailSender;
 
-        public NotificationService(ApplicationDbContext context, IHubContext<InventoryHub> hubContext, IEmailSender emailSender)
+        private readonly IConfiguration _configuration;
+        public NotificationService(ApplicationDbContext context, IHubContext<InventoryHub> hubContext, IEmailSender emailSender, IConfiguration configuration)
         {
             _context = context;
             _hubContext = hubContext;
             _emailSender = emailSender;
+            _configuration= configuration;
+
         }
         public void LowStockMessage()
         {
@@ -58,12 +61,13 @@ namespace InventoryMgmt.Service
                         }
                         else
                         {
+                            string Subject= EmailSubjectEnum.QuantityLowStock;
+                            string Content =$"Inventory of {itemDetail.ItemName} is low in stock./n/n Remaining Quantity is {item.quantity}. ";
+
+                            SendEmailModel sendEmailModel = new SendEmailModel(_configuration, Subject, Content);
                             Message message = new Message
                             (
-                                new String[]{userEmail},
-                                "Inventory Stock Low",
-                                $"Inventory of {itemDetail.ItemName} is low in stock./n/n Remaining Quantity is {item.quantity}. "
-
+                                sendEmailModel
                             );
                             _emailSender.SendEmail(message);
                             EmailSentNotification(message.Subject);
@@ -98,11 +102,12 @@ namespace InventoryMgmt.Service
             };
             _hubContext.Clients.All.SendAsync("MileStoneSale", hubMessage);
             string userEmail = "lekhrajawasthi123@gmail.com";
-            Message message = new Message(
-                new String[] { userEmail },
-                        $"Milestone sales from {maxSaleItemStore.storeName}",
-                        $"Congratulations,\n {maxSaleItem.ItemName}, has sold today in the record quantity of {saleDTO.Quantity}"
+            string Subject = EmailSubjectEnum.MileStoneSales;
+            string Content=$"Congratulations,\n {maxSaleItem.ItemName}, has sold today in the record quantity of {saleDTO.Quantity}";
 
+            SendEmailModel sendEmailModel = new SendEmailModel(_configuration, Subject, Content);
+            Message message = new Message(
+                sendEmailModel
             );
             _emailSender.SendEmail(message);
             EmailSentNotification(message.Subject);

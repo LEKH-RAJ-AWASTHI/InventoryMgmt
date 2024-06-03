@@ -18,26 +18,32 @@ namespace InventoryMgmt.Controllers
     {
         private readonly IEmailSender _sender;
         private readonly INotificationService _notificationService;
-        public EmailController(IEmailSender emailSender, INotificationService notificationService)
+        private readonly IConfiguration _configuration;
+        public EmailController(IEmailSender emailSender, INotificationService notificationService, IConfiguration configuration)
         {
             _sender = emailSender;
             _notificationService= notificationService;
+            _configuration= configuration;
         }
         // GET: api/<ValuesController>
         // GET api/<ValuesController>/5
-        [HttpPost]
-        public IActionResult SendEmail()
-        {
-            Message message = new Message(
-                new String[] { "lekhrajawasthi123@gmail.com" },
-                "Inventory Test Email",
-                "This is the content of email from Inventory Management System"
-            );
-            _sender.SendEmail(message);
-            _notificationService.EmailSentNotification(message.Subject);
+        // [HttpPost]
+        // public IActionResult SendEmail()
+        // {
+        //     string emails= _configuration.GetValue<string>("ClientEmail:To");
+        //     string[] emailArray= emails.Split(";");
+        //     List<string> emailList= [.. emailArray];
 
-            return Ok("Email Sent Successfully");
-        }
+        //     Message message = new Message(
+        //         emailList,
+        //         "Inventory Test Email",
+        //         "This is the content of email from Inventory Management System"
+        //     );
+        //     _sender.SendEmail(message);
+        //     _notificationService.EmailSentNotification(message.Subject);
+
+        //     return Ok("Email Sent Successfully");
+        // }
 
         // for now we don't need Milestone sales notification in api
         // [HttpGet]
