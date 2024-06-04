@@ -71,7 +71,7 @@ namespace InventoryMgmt.Service
                 // else
                 // {
                     _emailService.LowStockEmailService(hubMessageList,ItemIdList);
-                    SaveNotificationInDB(hubMessageList);
+                    SaveNotificationInDB(hubMessageList, NotificationVariableEnum.LowStock);
                 // }
         }
 
@@ -91,7 +91,7 @@ namespace InventoryMgmt.Service
             };
             _hubContext.Clients.All.SendAsync("MileStoneSale", hubMessage);
             _emailService.MilestoneItemSaleEmailService(maxSaleItem, saleDTO.Quantity);
-            SaveNotificationInDB(hubMessage);
+            SaveNotificationInDB(hubMessage, NotificationVariableEnum.MileStoneSales);
             Log.Information($"Milestone sales : {maxSaleItem.ItemName} from store: {maxSaleItemStore.storeName} on date {DateTime.Now}");
         }
 
@@ -123,6 +123,7 @@ namespace InventoryMgmt.Service
 
             _hubContext.Clients.All.SendAsync("AddingItemToInventory", hubMessageDTO);
             _emailService.AddItemInventoryEmailService(stockDetail.items, quantity, stockDetail.StoreName);
+            SaveNotificationInDB(hubMessageDTO, NotificationVariableEnum.PurchaseItemInventory);
         }
         public IQueryable<Notification> GetLatestNotification()
         {
@@ -130,17 +131,18 @@ namespace InventoryMgmt.Service
             return notification;
         }
 
-        private void SaveNotificationInDB(HubMessageDTO hubMessage)
+        private void SaveNotificationInDB(HubMessageDTO hubMessage, string type)
         {
             Notification notification = new Notification
             {
                 Item = hubMessage.Item,
                 Quantity = hubMessage.Quantity,
-                StoreName = hubMessage.StoreName
+                StoreName = hubMessage.StoreName,
+                Type = type
             };
             _context.Add(notification);
         }
-        private void SaveNotificationInDB(List<HubMessageDTO> hubMessages)
+        private void SaveNotificationInDB(List<HubMessageDTO> hubMessages, string type)
         {
             List<Notification> notificationList = new List<Notification>();
 
@@ -150,7 +152,8 @@ namespace InventoryMgmt.Service
                 {
                     Item= message.Item,
                     Quantity= message.Quantity,
-                    StoreName = message.StoreName
+                    StoreName = message.StoreName,
+                    Type= type
                 };
                 notificationList.Add(notification);
             }
