@@ -17,6 +17,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotificationComponent } from './notification/notification.component';
 import { ItemListComponent } from './item-list/item-list.component';
 import { InventoryManagementActionsComponent } from './inventory-management-actions/inventory-management-actions.component';
+import { AddItemComponent } from './add-item/add-item.component';
+import { SaleItemComponent } from './sale-item/sale-item.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +29,9 @@ import { InventoryManagementActionsComponent } from './inventory-management-acti
     LoginComponent,
     NotificationComponent,
     ItemListComponent,
-    InventoryManagementActionsComponent
+    InventoryManagementActionsComponent,
+    AddItemComponent,
+    SaleItemComponent
   ],
   imports: [
     BrowserModule,

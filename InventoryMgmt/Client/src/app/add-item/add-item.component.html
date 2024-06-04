@@ -1,0 +1,26 @@
+<form [formGroup]="AddItemForm">
+    <div class="form-group">
+        <label for="itemName">Item Name</label>
+        <input type="text" class="form-control" id="itemName" formControlName="itemName">
+        <label for="brandName">Brand Name</label>
+        <input type="text" class="form-control" id="brandName" formControlName="brandName">
+
+        <label for="unitOfMeasurement">Unit of Measurement</label>
+        <input type="text" class="form-control" id="unitOfMeasurement" formControlName="unitOfMeasurement">
+
+        <label for="purchaseRate">Purchase Rate</label>
+        <input type="number" class="form-control" id="purchaseRate" formControlName="purchaseRate">
+
+        <label for="salesRate">Sales Rate</label>
+        <input type="number" class="form-control" id="salesRate" formControlName="salesRate">
+
+        <label for="quantity">Quantity</label>
+        <input type="number" class="form-control" id="quantity" formControlName="quantity">
+
+        <label for="storeName">Store Name</label>
+        <input type="text" class="form-control" id="storeName" formControlName="storeName">
+    </div>
+</form>
+<div>
+    <button type="submit" class="btn btn-primary" [disabled]="AddItemForm.invalid" (click)="AddItem()">Add Item</button>
+</div>

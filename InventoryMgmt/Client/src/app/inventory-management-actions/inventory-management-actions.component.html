@@ -1,5 +1,12 @@
+<div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-12">
+        <h2>Items List</h2>
+    </div>
+    <div class="col-lg-8 col-md-8 col-sm-12">
+        <button class="btn btn-primary" data-bs-target="#add-item" data-bs-toggle="modal">Add New Item</button>
+    </div>
+</div>
 <div *ngIf="Items.length > 0">
-    <h2>Items List</h2>
     <table class="item-table">
         <thead>
             <tr>
@@ -7,6 +14,8 @@
                 <th>Item Code</th>
                 <th>Store Name</th>
                 <th>Stock Remaining</th>
+                <th>Action</th>
+
             </tr>
         </thead>
         <tbody>
@@ -15,7 +24,43 @@
                 <td>{{ item.itemCode }}</td>
                 <td>{{ item.storeName }}</td>
                 <td>{{ item.stockRemaining }}</td>
+                <td>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#sale-item">Sale</button>
+                </td>
             </tr>
         </tbody>
     </table>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="add-item" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Add the addItem component here -->
+                <app-add-item></app-add-item>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade tagify-model" id="sale-item" tabindex="-1" aria-labelledby="add-itemLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="center-typeLabel"><strong>Sale Item</strong></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <app-sale-item></app-sale-item>
+            </div>
+        </div>
+    </div>
 </div>

@@ -14,3 +14,11 @@
     background-color: #f2f2f2;
     font-weight: bold;
 }
+
+.btn-danger {
+    margin-left: 10px;
+}
+
+.btn-primary {
+    float: right;
+}
