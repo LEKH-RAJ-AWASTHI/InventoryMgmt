@@ -372,6 +372,7 @@ namespace InventoryMgmt.Service
             try
             {
                 int itemNo = _context.items.Max(i => i.ItemNo);
+                itm.ItemNo= itemNo+1;
                 itm.ItemCode = itm.GetItemCode(itemNo);
                 _context.Add(itm);
                 _context.SaveChanges();
