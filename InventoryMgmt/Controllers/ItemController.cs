@@ -218,7 +218,7 @@ namespace InventoryMgmt.Controllers
         }
         //[AllowAnonymous]
         [HttpGet("GetItemByStoreName")]
-        public IActionResult GetResult(string storeName)
+        public IActionResult GetResult(string? storeName)
         {
             try
             {

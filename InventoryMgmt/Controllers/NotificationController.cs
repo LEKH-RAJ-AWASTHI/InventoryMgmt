@@ -26,11 +26,11 @@ namespace InventoryMgmt.Controllers
         // GET: api/<ValuesController>
         // GET api/<ValuesController>/5
         [HttpGet]
-        public IActionResult GetLowStockNotfication()
+        public IActionResult GetNotification()
         {
-            _notificationService.LowStockMessage();
+            IQueryable<Notification> notifications= _notificationService.GetLatestNotification();
 
-            return Ok();
+            return Ok(notifications);
         }
 
         // for now we don't need Milestone sales notification in api

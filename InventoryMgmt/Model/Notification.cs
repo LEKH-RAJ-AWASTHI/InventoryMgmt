@@ -1,11 +1,12 @@
-﻿using Microsoft.Identity.Client;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.Identity.Client;
 
 namespace InventoryMgmt.Model
 {
-    public class Notification
+    public class Notification : HubMessageDTO
     {
-        public string NotificationTitle { get; set; }
-        public string Message { get; set; }
-
+        [Key]
+        public int Id {get; set;}
+        
     }
 }

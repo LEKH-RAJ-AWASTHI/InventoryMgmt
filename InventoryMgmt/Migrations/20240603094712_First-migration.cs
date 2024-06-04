@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InventoryMgmt.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Firstmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,6 +29,22 @@ namespace InventoryMgmt.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tbl_item", x => x.ItemId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tbl_notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Item = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StoreName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tbl_notifications", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,7 +88,8 @@ namespace InventoryMgmt.Migrations
                     ItemId = table.Column<int>(type: "int", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsSent = table.Column<bool>(type: "bit", nullable: false),
-                    User = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    User = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    dateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -185,6 +202,9 @@ namespace InventoryMgmt.Migrations
         {
             migrationBuilder.DropTable(
                 name: "email_logs");
+
+            migrationBuilder.DropTable(
+                name: "tbl_notifications");
 
             migrationBuilder.DropTable(
                 name: "tbl_sales");
