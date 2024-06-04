@@ -10,11 +10,10 @@ app-header {
     z-index: 2;
 }
 
-main {
+.main-content {
     position: absolute;
     width: 100%;
     top: 4rem;
-    z-index: 1;
 
 }
 

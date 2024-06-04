@@ -29,4 +29,14 @@ export class InventoryManagementActionsComponent {
       }
     });
   }
+
+  SellItem() {
+
+  }
+
+
+  AddItem() {
+
+  }
+
 }

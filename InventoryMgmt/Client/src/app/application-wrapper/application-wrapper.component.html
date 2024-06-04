@@ -1,12 +1,12 @@
 <!-- application-wrapper.component.html -->
 <div class="container-fluid g-0" *ngIf="isAuthenticated()">
     <app-header (SideNavToggled)="SideNavStatus = $event;"></app-header>
-    <main>
+    <div class="main-content">
         <app-side-nav [SideNavStatus]="SideNavStatus" [ngClass]="{'app-side-nav-open': SideNavStatus}"></app-side-nav>
         <div class="display-area p-3" [ngClass]="{'display-area-shrink': SideNavStatus}">
             <router-outlet></router-outlet>
         </div>
-    </main>
+    </div>
 </div>
 
 <div class="container-fluid g-0" *ngIf="!isAuthenticated()">

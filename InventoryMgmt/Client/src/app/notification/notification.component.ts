@@ -17,7 +17,9 @@ export class NotificationComponent implements OnInit {
     this.signalRService.addInventoryUpdateListener((data: any) => {
       console.log(data);
 
-      this.Notifications.unshift({ itemName: data.item, quantity: data.quantity, timestamp: new Date(), storeName: data.storeName });
+      this.Notifications.push({ itemName: data.item, quantity: data.quantity, timestamp: new Date(), storeName: data.storeName });
+      this.Notifications.push(data);
+
       this.sortNotifications();
     });
   }
