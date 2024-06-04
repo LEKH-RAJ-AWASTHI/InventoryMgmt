@@ -437,9 +437,9 @@ Cannot insert duplicate key row in object 'dbo.tbl_item' with unique index 'IX_t
                 try
                 {
 
-                    var stock = _context.stocks.Where(i=>i.itemId ==itemId).FirstOrDefault();
-                    string item = _context.items.Where(i=> i.ItemId== stock.itemId).Select(i=>i.ItemName).FirstOrDefault();
-                    string store = _context.stores.Where(s=> s.storeId==stock.storeId).Select(s=> s.storeName).FirstOrDefault();
+                    StockModel? stock = _context.stocks.Where(i=>i.itemId ==itemId).FirstOrDefault();
+                    // string? item = _context.items.Where(i=> i.ItemId== stock.itemId).Select(i=>i.ItemName).FirstOrDefault();
+                    // string? store = _context.stores.Where(s=> s.storeId==stock.storeId).Select(s=> s.storeName).FirstOrDefault();
                     if(stock is null)
                     {
                         Log.Error($"No Item is found of given item id {itemId} in stock table while updating inventory");
@@ -448,32 +448,32 @@ Cannot insert duplicate key row in object 'dbo.tbl_item' with unique index 'IX_t
 
                     stock.quantity= quantity;
                     
-                    HubMessageDTO hubMessageDTO = new HubMessageDTO
-                    {
-                        Item = item,
-                        StoreName = store,
-                        Quantity = quantity
-                    };
+                    // HubMessageDTO hubMessageDTO = new HubMessageDTO
+                    // {
+                    //     Item = item,
+                    //     StoreName = store,
+                    //     Quantity = quantity
+                    // };
                     _notificationService.AddInventoryMessage(itemId, quantity);
 
-                    _hubContext.Clients.All.SendAsync("AddingItemToInventory",hubMessageDTO);
-                    string userEmail= "lekhrajawasthi123@gmail.com";
-                    string Subject = EmailSubjectEnum.AddingItemToInventory;
-                    string Content =  $"Updated Stock of item\n \n {item} with quantity {quantity} in store {store}";
-                    SendEmailModel sendEmailModel= new SendEmailModel(_configuration, Subject, Content);
-                    Message message = new Message
-                    (
-                    sendEmailModel
+                    // _hubContext.Clients.All.SendAsync("AddingItemToInventory",hubMessageDTO);
+                    // string userEmail= "lekhrajawasthi123@gmail.com";
+                    // string Subject = EmailSubjectEnum.AddingItemToInventory;
+                    // string Content =  $"Updated Stock of item\n \n {item} with quantity {quantity} in store {store}";
+                    // SendEmailModel sendEmailModel= new SendEmailModel(_configuration, Subject, Content);
+                    // Message message = new Message
+                    // (
+                    // sendEmailModel
 
-                    );
-                    _emailSender.SendEmail(message);
-                    EmailLogs emailLogs = new EmailLogs();
-                    emailLogs.ItemId= itemId;
-                    emailLogs.IsSent =true;
-                    emailLogs.User= userEmail;
-                    emailLogs.Type= NotificationVariableEnum.PurchaseItemInventory;
+                    // );
+                    // _emailSender.SendEmail(message);
+                    // EmailLogs emailLogs = new EmailLogs();
+                    // emailLogs.ItemId= itemId;
+                    // emailLogs.IsSent =true;
+                    // emailLogs.User= userEmail;
+                    // emailLogs.Type= NotificationVariableEnum.PurchaseItemInventory;
 
-                    _context.Add(emailLogs);
+                    // _context.Add(emailLogs);
                     _context.SaveChanges();
                     context.Commit();
                 }

@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Text.Json;
 using InventoryMgmt.DataAccess;
 using InventoryMgmt.Hubs;
 using InventoryMgmt.Model;
@@ -88,6 +90,45 @@ namespace InventoryMgmt.Service
                 emailLogsList.Add(emailLogs);
             }
             _context.emailLogs.AddRange(emailLogsList);
+        }
+        private void AddEmailLogs(List<int> itemIdList)
+        {
+             string[] ClientEmails = _configuration.GetValue<string>("ClientEmail:To").Split(";");
+            List<EmailLogs> emailLogsList= new List<EmailLogs>();
+            foreach(int itemId in itemIdList)
+            {
+                foreach(var email in ClientEmails)
+                {
+                    EmailLogs emailLogs = new EmailLogs
+                    {
+                        ItemId = itemId,
+                        IsSent = true,
+                        User = email,
+                        Type = EmailLogAlertTypeEnum.QuantityLowStock
+                    };
+                    emailLogsList.Add(emailLogs);
+                }
+            }
+            _context.emailLogs.AddRange(emailLogsList);
+        }
+
+        public void LowStockEmailService(List<HubMessageDTO> hubMessages, List<int> itemIdList)
+        {
+            
+            string jsonHubMessages = JsonSerializer.Serialize(hubMessages);
+            string Subject= EmailSubjectEnum.QuantityLowStock;
+            string Content =$"Low Stock Alert \n{jsonHubMessages}";
+
+            SendEmailModel sendEmailModel = new SendEmailModel(_configuration, Subject, Content);
+            Message message = new Message
+            (
+                sendEmailModel
+            );
+            _emailSender.SendEmail(message);
+            EmailSentNotification(message.Subject);
+
+            AddEmailLogs(itemIdList);
+            
         }
     }
 }
