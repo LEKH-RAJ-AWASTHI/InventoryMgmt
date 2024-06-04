@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ItemDTO } from '../DTO/itemlist.dto';
 import { WebService } from '../Services/web.service';
+import { SaleService } from '../Services/sale.service';
 
 @Component({
   selector: 'app-inventory-management-actions',
@@ -10,7 +11,7 @@ import { WebService } from '../Services/web.service';
 export class InventoryManagementActionsComponent {
   Items: ItemDTO[] = [];
 
-  constructor(private _webService: WebService) {
+  constructor(private _webService: WebService, private _saleService: SaleService) {
     this.fetchItems();
 
   }
@@ -30,13 +31,8 @@ export class InventoryManagementActionsComponent {
     });
   }
 
-  SellItem() {
-
-  }
-
-
-  AddItem() {
-
+  OpenSaleModal(itemId: number, storeId: number) {
+    this._saleService.SetSaleData(storeId, itemId);
   }
 
 }

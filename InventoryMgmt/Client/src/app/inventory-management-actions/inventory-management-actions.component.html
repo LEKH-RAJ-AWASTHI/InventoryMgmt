@@ -25,7 +25,8 @@
                 <td>{{ item.storeName }}</td>
                 <td>{{ item.stockRemaining }}</td>
                 <td>
-                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#sale-item">Sale</button>
+                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#sale-item"
+                        (click)="OpenSaleModal(item.itemId, item.storeId)">Sale</button>
                 </td>
             </tr>
         </tbody>
