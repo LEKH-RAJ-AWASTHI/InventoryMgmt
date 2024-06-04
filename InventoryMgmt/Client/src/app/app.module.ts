@@ -19,6 +19,7 @@ import { ItemListComponent } from './item-list/item-list.component';
 import { InventoryManagementActionsComponent } from './inventory-management-actions/inventory-management-actions.component';
 import { AddItemComponent } from './add-item/add-item.component';
 import { SaleItemComponent } from './sale-item/sale-item.component';
+import { SettingComponent } from './setting/setting.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +32,8 @@ import { SaleItemComponent } from './sale-item/sale-item.component';
     ItemListComponent,
     InventoryManagementActionsComponent,
     AddItemComponent,
-    SaleItemComponent
+    SaleItemComponent,
+    SettingComponent
   ],
   imports: [
     BrowserModule,

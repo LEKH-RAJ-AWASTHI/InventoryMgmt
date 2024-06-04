@@ -1,16 +1,16 @@
+<!-- sale-item.component.html -->
 <form [formGroup]="SaleForm" class="container mt-4">
-    <div class="form-group row mb-3">
+    <div class="form-group row mb-3" style="display: none;">
         <label for="storeId" class="col-sm-2 col-form-label">Store ID</label>
         <div class="col-sm-10">
-            <input type="number" class="form-control" id="storeId" formControlName="storeId"
-                placeholder="Enter Store ID">
+            <input type="number" class="form-control" id="storeId" formControlName="storeId">
         </div>
     </div>
 
-    <div class="form-group row mb-3">
+    <div class="form-group row mb-3" style="display: none;">
         <label for="itemId" class="col-sm-2 col-form-label">Item ID</label>
         <div class="col-sm-10">
-            <input type="number" class="form-control" id="itemId" formControlName="itemId" placeholder="Enter Item ID">
+            <input type="number" class="form-control" id="itemId" formControlName="itemId">
         </div>
     </div>
 
@@ -24,7 +24,8 @@
 
     <div class="form-group row">
         <div class="col-sm-10 offset-sm-2">
-            <button type="submit" class="btn btn-primary" [disabled]="SaleForm.invalid" (click)=" SaleItem()">Sale
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="SaleForm.invalid"
+                (click)="SaleItem()">Sale
                 Item</button>
         </div>
     </div>
