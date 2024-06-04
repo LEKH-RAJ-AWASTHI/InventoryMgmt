@@ -41,6 +41,7 @@
   <ItemGroup>
     <Folder Include="Clients\" />
     <Folder Include="Enums\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
