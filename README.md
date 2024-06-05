@@ -219,7 +219,7 @@ Any contributions you make are greatly appreciated.
 
 Contact 
 
-Your Name – Lekh Raj Awasthi 
+Lekh Raj Awasthi 
 
 lekhrajawasthi123@gmail.com  
 
